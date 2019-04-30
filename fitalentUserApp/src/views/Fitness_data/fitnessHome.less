@@ -1,0 +1,225 @@
+.class-a {
+    color: #1DCE74;
+}
+
+.class-b {
+    color: #101D37;
+}
+.Fitness_data{
+    .posi_btn{
+        // position: absolute;
+        bottom: 20px;
+        right: 15px;
+        left: 15px;
+        z-index: 111;
+    padding: 20px 15px;
+
+    }
+    .Fitness_data_info{
+        height: 200px;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        background-color: #07c160;
+        ul{
+            display: flex;
+            flex-flow: row nowrap;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            padding-top: 30px;
+            li{
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: space-between;
+                align-content:  center;
+                text-align: center;
+                color: #fff;
+                dt:nth-child(1){
+                    font-size: 40px;
+                    padding-bottom: 10px;
+                    font-family:BebasNeueBold;
+                }
+                dt:nth-child(2){
+                    font-size: 13px;
+                    font-family:PingFangSC-Regular;
+                    font-weight: 400;
+                }
+            }
+        }
+    }
+    .Aerobic_anaerobic{
+        padding-top: 30px;
+        .aerobic_info{
+            .text-title{
+                font-size: 17px;
+                font-family:PingFangSC-Regular;
+                font-weight:400;
+            }
+            ul{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                flex-flow: row wrap;
+                padding-top: 15px;
+                li{
+                    display: flex;
+                    flex-flow: column nowrap;
+                    justify-content: space-between;
+                    align-content: center;
+                    margin-right: 10px;
+                    margin-bottom: 10px;
+                    text-align: center;
+                    img{
+                        width: 40px;
+                        height: 40px;
+                        display: block;
+                        margin: 0 auto;
+                    }
+                    dl{
+                        padding-top: 10px;
+                        dt{
+                            font-size: 10px;
+                        }
+                        dt:nth-child(2){
+                            color: #9FA4AF;
+                        }
+                    }
+                }
+            }
+        }
+        .aerobic_info:nth-child(2){
+            ul{
+                justify-content: space-around;
+                align-content: center;
+                li{
+                    margin-right: 0;
+                }
+            }
+        }
+    }
+    .tabs_date{
+        margin-top: 18px;
+        .date_info{
+            position: relative;
+            padding-bottom: 20px;
+            .ridate{
+                position: absolute;
+                    right: 15px;
+                    top: 10px;
+                    z-index: 111;
+                    img{
+                        width: 26px;
+                        height: 26px;
+                    }
+            }
+            ul{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                align-items: center;
+                flex-flow: row nowrap;
+                position: relative;
+                li:nth-child(1){
+                    flex: 1 2 auto;
+                    // margin-right: 15px;
+                }
+                
+                li{
+                    .van-tabs__content{
+                        position: relative;
+                        padding-top: 40px;
+                        .before{
+                            top:-8px;
+                            z-index: 111;
+                        }
+                        .Fitness_data{
+                            ul{
+                                display: flex;
+                                justify-content: space-around;
+                                align-items: center;
+                                flex-flow: row nowrap;
+                                li:nth-child(1){
+                                    flex: 0 0 auto;
+                                }
+                                li{
+                                    display:flex;
+                                    justify-content: space-between;
+                                    flex-flow: column nowrap;
+                                    align-content: center;
+                                    text-align: center;
+                                    dt:nth-child(1){
+                                        font-size:30px;
+                                        font-family:BebasNeue;
+                                    }
+                                    dt:nth-child(2){
+                                        font-size:13px;
+                                        font-family:PingFangSC-Regular;
+                                        font-weight:400;
+                                        color: #9FA4AF;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    // .tabs_group{
+                        .van-tabs__wrap {
+                            height: auto;
+                            width: 85%;
+                            .van-tabs__nav{
+                                .van-tab{
+                                    .van-ellipsis{
+                                        font-size: 13px;
+                                        font-family:PingFangSC-Regular;
+                                        font-weight:400;
+                                    }
+                                }
+                                .van-tab.van-tab--active{
+                                    color:#1DCE74 !important
+                                }
+                                .van-tabs__line{
+                                    background-color:#1DCE74
+                                }
+                                .van-tabs__line{
+                                    bottom: 8px;
+                                }
+                            }
+                            
+                        }
+                        .van-hairline--top-bottom::after{
+                            border-width: 0;
+                        }
+                        .van-tab{
+                            line-height: 30px;
+                            color: #9FA4AF;
+                        }
+                        
+                    // }
+                    
+                    .time_list {
+                        /* padding: 15px 0; */
+                        width: 85%;
+                        ul {
+                            display: flex;
+                            flex-flow: row nowrap;
+                            justify-content: space-around;
+                            align-items: center;
+                            li {
+                                font-size: 10px;
+                                // padding: 0 5px;
+                                width: calc(100% / 7);
+                                text-align: center;
+                                margin: 0;
+                                flex:1;
+                                font-size:17px;
+                                font-family:PingFangSC-Regular;
+                                font-weight:400;
+                            }
+                        }
+                    }
+                }
+            }
+            
+        }
+    }
+}

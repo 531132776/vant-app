@@ -1,0 +1,46 @@
+{
+    "images": [{
+            "src": "./images/43.png",
+            "name": "坐式胸推"
+        },
+        {
+            "src": "./images/876.png",
+            "name": "蝴蝶机"
+        },
+
+        {
+            "src": "./images/423.png",
+            "name": "坐式背肌"
+        },
+        {
+            "src": "./images/54.png",
+            "name": "坐式肩膊推举"
+        },
+        {
+            "src": "./images/6547.png",
+            "name": "高拉背"
+        },
+
+        {
+            "src": "./images/757.png",
+            "name": "踢腿训练"
+        },
+        {
+            "src": "./images/32.png",
+            "name": "臀部训练"
+        },
+        {
+            "src": "./images/213.png",
+            "name": "坐式腹肌训练"
+        },
+
+        {
+            "src": "./images/7567.png",
+            "name": "大腿肌训练"
+        },
+        {
+            "src": "./images/4235.png",
+            "name": "单双杠"
+        }
+    ]
+}

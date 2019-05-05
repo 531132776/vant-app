@@ -1,0 +1,17 @@
+{
+    "images": [{
+            "src": "./images/211.png",
+            "name": "跑步机"
+        },
+        {
+            "src": "./images/865.png",
+            "name": "动感单车"
+        },
+
+        {
+            "src": "./images/654.png",
+            "name": "椭圆机"
+        }
+
+    ]
+}

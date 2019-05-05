@@ -139,3 +139,19 @@ export function postPrivateMonth(p) {
         data: p
     })
 }
+
+//头部健身数据
+export function headFitnessData(p) {
+    return request({
+        url: 'gymApi/gymApi/motionData/totalData/' + p,
+        method: 'get',
+    })
+}
+
+//综合健身数据
+export function ComprehensiveData(p, s) {
+    return request({
+        url: 'gymApi/gymApi/motionData/motionDayData/' + p + '/' + s,
+        method: 'get',
+    })
+}

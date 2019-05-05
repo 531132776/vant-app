@@ -16,7 +16,7 @@
 
     }
     .Fitness_data_info{
-        height: 200px;
+        height: 180px;
         display: flex;
         align-content: center;
         justify-content: center;
@@ -67,8 +67,8 @@
                     flex-flow: column nowrap;
                     justify-content: space-between;
                     align-content: center;
-                    margin-right: 10px;
                     margin-bottom: 10px;
+                    flex: 0 1 25%;
                     text-align: center;
                     img{
                         width: 40px;
@@ -77,7 +77,7 @@
                         margin: 0 auto;
                     }
                     dl{
-                        padding-top: 10px;
+                        padding-top: 2px;
                         dt{
                             font-size: 10px;
                         }
@@ -90,10 +90,13 @@
         }
         .aerobic_info:nth-child(2){
             ul{
-                justify-content: space-around;
+                justify-content: flex-start;
+                flex-flow: row wrap;
                 align-content: center;
                 li{
                     margin-right: 0;
+                    flex: 0 1 25%;
+                    margin-bottom: 10px;
                 }
             }
         }
@@ -174,6 +177,10 @@
                                         font-weight:400;
                                     }
                                 }
+                                .van-tab:nth-child(7),
+                                .van-tab:nth-child(8){
+                                    display: none;
+                                }
                                 .van-tab.van-tab--active{
                                     color:#1DCE74 !important
                                 }
@@ -214,6 +221,10 @@
                                 font-size:17px;
                                 font-family:PingFangSC-Regular;
                                 font-weight:400;
+                            }
+                            li:nth-child(6),
+                            li:nth-child(7){
+                                display:none;
                             }
                         }
                     }

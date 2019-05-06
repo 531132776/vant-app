@@ -155,3 +155,20 @@ export function ComprehensiveData(p, s) {
         method: 'get',
     })
 }
+
+//健身数据详情头部list
+export function siveDataDetails(p, s) {
+    return request({
+        url: 'gymApi/gymApi/motionData/motionDayData/queryList/' + p + '/' + s,
+        method: 'get',
+    })
+}
+
+//健身数据详情运动数据
+export function typeDetails(p) {
+    return request({
+        url: 'gymApi/gymApi/motionData/queryMotionDataByUserAndType',
+        method: 'get',
+        params: p
+    })
+}

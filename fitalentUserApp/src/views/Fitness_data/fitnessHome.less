@@ -6,6 +6,67 @@
     color: #101D37;
 }
 .Fitness_data{
+    .installDay{
+        .wh_content_all{
+            background-color: #fff;
+            .wh_top_tag{
+                color:#9399A5;
+            }
+            .wh_item_date{
+                color:#101D37;
+            }
+            .wh_isToday{
+                color: #fff
+            }
+            .wh_content_li{
+                color: #101D37;
+                padding: 0 15px;
+            }
+            .wh_chose_day{
+                background: #E7E8EB;
+            }
+            .wh_top_changge{
+                justify-content: center;
+                align-items: center;
+                height: 47px;
+                li{
+                    flex:none;
+                    .wh_jiantou1,.wh_jiantou2{
+                        width: 8px;
+                        height: 8px;
+                    }
+                }
+                li:nth-child(1),li:nth-child(3){
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    background: #07c160;
+                }
+            }
+            
+        }
+        .wh_content_item .wh_isToday{
+            background-color: #07c160;
+        }
+    }
+    .noDateList{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-flow: column nowrap;
+        text-align: center;
+        img{
+            width: 245px;
+            height: 172px;
+            margin: 0 auto;
+        }
+        span{
+            padding-top: 43px;
+            font-size: 17px;
+            font-weight: 400;
+            color: #B2B6BC;
+        }
+    }
     .posi_btn{
         // position: absolute;
         bottom: 20px;

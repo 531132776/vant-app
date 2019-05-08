@@ -162,6 +162,7 @@
             }
         }
     }
+    
     .tabs_date{
         margin-top: 18px;
         .date_info{
@@ -190,6 +191,22 @@
                 }
                 
                 li{
+                    .slot_content{
+                        padding: 8px 0;
+                        position: relative;
+                        dd{
+                            position: absolute;
+                            top:0;
+                            bottom: 0;
+                            right:0;
+                            left:0;
+                            z-index: 11;
+                            // background-color: #fff;
+                        }
+                        span{
+                            padding-top: 12px;
+                        }
+                    }
                     .van-tabs__content{
                         position: relative;
                         padding-top: 40px;
@@ -197,7 +214,7 @@
                             top:-8px;
                             z-index: 111;
                         }
-                        .Fitness_data{
+                        .Fitness_data2{
                             ul{
                                 display: flex;
                                 justify-content: space-around;
@@ -246,11 +263,10 @@
                                     color:#1DCE74 !important
                                 }
                                 .van-tabs__line{
-                                    background-color:#1DCE74
+                                    background-color:#1DCE74;
+                                    bottom: 20px;
                                 }
-                                .van-tabs__line{
-                                    bottom: 8px;
-                                }
+                                
                             }
                             
                         }
@@ -291,6 +307,37 @@
                     }
                 }
             }
+            .installDay{
+                .Fitness_data2{
+                    ul{
+                        display: flex;
+                        justify-content: space-around;
+                        align-items: center;
+                        flex-flow: row nowrap;
+                        li:nth-child(1){
+                            flex: 0 0 auto;
+                        }
+                        li{
+                            display:flex;
+                            justify-content: space-between;
+                            flex-flow: column nowrap;
+                            align-content: center;
+                            text-align: center;
+                            dt:nth-child(1){
+                                font-size:30px;
+                                font-family:BebasNeue;
+                            }
+                            dt:nth-child(2){
+                                font-size:13px;
+                                font-family:PingFangSC-Regular;
+                                font-weight:400;
+                                color: #9FA4AF;
+                            }
+                        }
+                    }
+                }
+            }
+
             
         }
     }

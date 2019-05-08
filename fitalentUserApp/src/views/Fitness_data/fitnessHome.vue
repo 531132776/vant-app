@@ -22,20 +22,25 @@
                 <div class="date_info">
                     <ul>
                         <li>
-                            <div class="time_list" id="monitor">
+                            <!-- <div class="time_list" id="monitor">
                                 <ul>
                                     <li :class="active==index ? 'class-a' : 'class-b'" v-for="(item,index) in 7" :key="index">
                                         {{item}}
                                     </li>
                                 </ul>
-                            </div>
-                            <van-tabs v-model="active" :swipeable="false" :swipe-threshold="8" @change="tabClick">
-                                <span class="before"></span>
+                            </div> -->
+                            <van-tabs v-model="active" :swipeable="false" :swipe-threshold="8" >
+                                <!-- <span class="before"></span> -->
                                 
-                                <van-tab v-for="(item,i) in timeList" :key="i" :title="getWeek(item)" class="var_tab">
-                                    
-                                    <div class="Fitness_data" v-if="totalFitnessData.totalExerciseTime==null">
-                                        <ul>
+                                <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab" :disabled="disabledTab">
+                                    <div slot="title" class="slot_content" @click="onTabClick($event,item,i)">
+                                        
+                                        <dd>{{getNextDate(dayTime,-(i))}}</dd>
+                                        <span>{{getnewDay(i)}}</span>
+                                        
+                                    </div>
+                                    <div class="Fitness_data2" >
+                                        <ul v-if="!show && totalFitnessData.totalExerciseTime!==0">
                                             <li>
                                                 <dt>{{totalFitnessData.totalExerciseTime}}</dt>
                                                 <dt>运动时间/分钟</dt>
@@ -57,13 +62,29 @@
                     </ul>
                     <span class="before" v-if="totalFitnessData.totalExerciseTime==null"></span>
                     <div class="ridate" @click="calendar">
-                            <img :src="img" alt="">
+                            <img :src="show?img3:img" alt="">
                         </div>
-                    <div class="installDay">
+                    <div class="installDay" v-show="show">
                         <Calendar
                         v-on:choseDay="clickDay"
                         v-on:changeMonth="changeDate"
                         ></Calendar>
+                        <div class="Fitness_data2">
+                                        <ul>
+                                            <li>
+                                                <dt>{{totalFitnessData.totalExerciseTime}}</dt>
+                                                <dt>运动时间/分钟</dt>
+                                            </li>
+                                            <li>
+                                                <dt>{{totalFitnessData.consume}}</dt>
+                                                <dt>消耗/大卡</dt>
+                                            </li>
+                                            <li>
+                                                <dt>{{totalFitnessData.powerGeneration!=null?totalFitnessData.powerGeneration:''}}</dt>
+                                                <dt>发电量/千焦</dt>
+                                            </li>
+                                        </ul>
+                                    </div>
                     </div>
                 </div>
             </div>
@@ -99,16 +120,17 @@
                 </div>
             </div>
         </div>
-        <!-- 查看详情 -->
-        <div class="posi_btn" v-if="totalFitnessData.totalExerciseTime == null">
-            <van-button type="primary" size="large" round @click="echartsSurface">查看详情</van-button>
-        </div>
+        
         <!-- 没有数据 -->
-        <div class="pr_pl15" v-else>
+        <div class="pr_pl15" v-if="totalFitnessData.totalExerciseTime==0 || totalFitnessData.totalExerciseTime==null">
             <div class="noDateList">
                 <img :src="img2" alt="">
                 <span>您还没有健身数据哦~</span>
             </div>
+        </div>
+        <!-- 查看详情 -->
+        <div class="posi_btn">
+            <van-button type="primary" size="large" round @click="echartsSurface">查看详情</van-button>
         </div>
     </div>
 </template>
@@ -124,15 +146,19 @@ import {
 export default {
     data(){
         return {
-            img:require('../../assets/images/3.jpg'),
+            img:require('../../assets/images/历史记录@2x.png'),
+            img3:require('../../assets/images/日历@2x.png'),
             img2:require('../../assets/images/没有健身数据@2x.png'),
-            active:0,
+            active:'0',
             Fitnessdata:{},
             totalFitnessData:{},
             timeList:[],
             aerobic: houseAimg.images,//有氧
             anaerobic: houseAimg2.images,//无氧
             show:false,
+            disabledTab:false,
+            userId:this.$route.query.userId,
+            dayTime:''
         }
     },
     components:{
@@ -144,11 +170,80 @@ export default {
     
     mounted(){
         this.initTime();
-        this.getAweek();
+        // this.getAweek();
         this.initFitnessData();
-        this.initComprehensiveData();
+        // this.initComprehensiveData();
+        var startx, starty;
+        document.addEventListener("touchstart", function(e){
+    startx = e.touches[0].pageX;
+    starty = e.touches[0].pageY;
+}, false);
+        document.addEventListener("touchend", function(e) {
+            console.log(e)
+    var endx, endy;
+    endx = e.changedTouches[0].pageX;
+    endy = e.changedTouches[0].pageY;
+    var direction = this.getDirection(startx, starty, endx, endy);
+    switch (direction) {
+        case 0:
+            alert("未滑动！");
+            break;
+        case 1:
+            alert("向上！");
+            break;
+        case 2:
+            alert("向下！");
+            break;
+        case 3:
+            alert("向左！");
+            break;
+        case 4:
+            alert("向右！");
+            break;
+        default:
+    }
+}, false);
     },
     methods:{
+         getAngle(angx, angy) {
+    return Math.atan2(angy, angx) * 180 / Math.PI;
+},
+
+//根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+ getDirection(startx, starty, endx, endy) {
+    var angx = endx - startx;
+    var angy = endy - starty;
+    var result = 0;
+
+    //如果滑动距离太短
+    if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+        return result;
+    }
+
+    var angle = this.getAngle(angx, angy);
+    if (angle >= -135 && angle <= -45) {
+        result = 1;
+    } else if (angle > 45 && angle < 135) {
+        result = 2;
+    } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+        result = 3;
+    } else if (angle >= -45 && angle <= 45) {
+        result = 4;
+    }
+
+    return result;
+},
+        onTabClick(event,item,i){
+            var dd = new Date();
+            var y = dd.getFullYear();
+            console.log(y)
+            // console.log('tab',event,item,i)
+            console.log('哦哦',event.target.innerHTML)
+            var inHtml = event.target.innerHTML;
+            var date = y+'-'+inHtml;
+            console.log('lolo ',date)
+            this.initComprehensiveData(date)
+        },
         clickDay(data) {
       console.log(data); //选中某天
       var data = data.split('/');
@@ -195,6 +290,7 @@ export default {
                     if (res.data.obj != undefined)
                         this.timeList = res.data.obj.timeList;
                         console.log('时间戳',this.formatDate(new Date(this.timeList[0])))
+                        this.$set(this,'dayTime',this.formatDate(new Date(this.timeList[0])))
                         this.initComprehensiveData(this.formatDate(new Date(this.timeList[0])))
                 }).catch(err => {
                     console.log(err)
@@ -202,13 +298,49 @@ export default {
             },
             tabClick(index,title){
                 // alert(1)
-                console.log(index,title)
-                this.initComprehensiveData(this.formatDate(new Date(this.timeList[index])))
+                console.log('哈哈',index,title)
+                //     this.initComprehensiveData(this.formatDate(new Date(this.timeList[index])))
             },
             calendar(){
                 // alert(1)
-                this.show = !this.show; 
+                this.show = !this.show;
+                this.disabledTab = !this.disabledTab;
             },
+            getnewDay(i){
+                var curDate = new Date();
+                var preDate = new Date(curDate.getTime() - 24*60*60*1000*i).getDay(); //前一天
+                var weekday=["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+                return weekday[preDate];
+            },
+            getNextDate(date,day) {  
+                var dd = new Date(date);
+                dd.setDate(dd.getDate() + day);
+                var y = dd.getFullYear();
+                var m = dd.getMonth() + 1 < 10 ? "0" + (dd.getMonth() + 1) : dd.getMonth() + 1;
+                var d = dd.getDate() < 10 ? "0" + dd.getDate() : dd.getDate();
+                // return y + "-" + m + "-" + d;
+                return  m + "-" + d;
+            },
+            formatDate2(i) {
+                    var date = new Date();
+                    var preDate = new Date(date.getTime() - 24*60*60*1000*i); //前一天
+                    var month = (date.getMonth() + 1) + '.';
+                    var day = date.getDate();
+                    var m,d;
+                    // console.log('日期',day);
+                    // return month+day
+                    if(month<10){
+                        m = '0' + month
+                    }else{
+                        m = month
+                    };
+                    if(day<10){
+                        d = '0' + day
+                    }else{
+                        d = day;
+                    }
+                    return m + d ;
+                },
             getAweek() {
                 // console.log(JSON.stringify(this.obj))
                 var cells = document.getElementById('monitor').getElementsByTagName('li');
@@ -218,7 +350,7 @@ export default {
                     var month = (date.getMonth() + 1) + '.';
                     var day = date.getDate();
                     var m,d;
-                    console.log('日期',day);
+                    // console.log('日期',day);
                     // return month+day
                     if(month<10){
                         m = '0' + month
@@ -277,28 +409,28 @@ export default {
             getWeek(dateString) {
                 var d;
                 var day = new Date(dateString).getDay();
-                console.log(day)
+                // console.log(day)
                 switch (day) {
                     case 0:
-                        d = "星期一";
+                        d = "星期五";
                         break;
                     case 1:
-                        d = "星期二";
+                        d = "星期四";
                         break;
                     case 2:
                         d = "星期三";
                         break;
                     case 3:
-                        d = "星期四";
+                        d = "星期二";
                         break;
                     case 4:
-                        d = "星期五";
+                        d = "星期一";
                         break;
                     case 5:
-                        d = "星期六";
+                        d = "星期日";
                         break;
                     case 6:
-                        d = "星期日";
+                        d = "星期六";
                         break;
 
                 }
@@ -306,8 +438,8 @@ export default {
             },
             //头部健身数据
             initFitnessData(){
-                const userId = '100';
-                // const userId = this.$route.query.userId;
+                const userId = '1126068421100445697';
+                // const userId = this.userId;
                 
                 headFitnessData(userId).then(res =>{
                     console.log('健身数据',res);
@@ -321,10 +453,11 @@ export default {
                 })
             },
             //综合数据
-            initComprehensiveData(){
-                const userId = '100';
-                // const userId = this.$route.query.userId;
-                const subscribeDate = '2019-05-06'
+            initComprehensiveData(subscribeDate){
+                console.log('开饭',subscribeDate)
+                const userId = '1126068421100445697';
+                // const userId = this.userId;
+                // const subscribeDate = '2019-05-06'
                 ComprehensiveData(userId,subscribeDate).then(res =>{
                     console.log('综合数据',res);
                     if(res.data.code == 2000){
@@ -372,7 +505,8 @@ export default {
             },
         echartsSurface(){
             this.$router.push({
-                path:'/echartsInfo'
+                path:'/echartsInfo',
+                userId: this.userId,
             })
         }
     }

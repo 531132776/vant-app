@@ -1,7 +1,7 @@
 <template>
   <div class="echarts_info">
     <div>
-      <van-tabs v-model="active" swipeable :swipe-threshold="4" >
+      <van-tabs v-model="active" :swipe-threshold="4" >
         <van-tab v-for="(item,i) in aggregate" :title="'选项 ' + item.type + item.id" :key="i" >
             <div slot="title" class="slot_content pt15" @click="onTabClick(item,i)">
               <span class="slot_span_img" >
@@ -11,7 +11,7 @@
               <span>{{item.time}}</span>
             </div>
             <div class="tab_content mt20">
-              <div v-if="item.type==0">
+              <div v-if="item.type==0 || item.type==1">
                 <div class="Treadmill pr_pl15">
                   <span class="text_title">{{startTime}}-{{endTime.substring(0,5)}}</span>
                   <div class="pt10 heart_rate">
@@ -61,13 +61,20 @@
                 </div>
                 <!-- 饼图 -->
                 <div class="pr_pl15 Pie_chart mt15">
-                  <canvas id="mountNodeList"></canvas>
+                  <div> 
+                    <canvas id="mountNodeList"></canvas>
+                  </div>
+                  
+                  <!-- <echartsInfoPir></echartsInfoPir> -->
+                  <!-- <span>4324</span> -->
                 </div>
                 <!-- 柱状图 -->
                 <div class="Histogram_info pr_pl15">
                   <div class="text-title p15">心率等级分布/分钟</div>
                   <div class="Histogram">
+                    <!-- <span>4354</span> -->
                       <canvas id="histogramList"></canvas>
+                      <!-- <echartsInfobar></echartsInfobar> -->
                   </div>
                 </div>
               </div>
@@ -91,7 +98,7 @@
                           <dt>
                             <img src="../../assets/images/时长copy@2x.png" alt>
                           </dt>
-                          <dt><em>{{Math.floor(powerMotionData.distance/(new Number(powerMotionData.motionTime/3600)).toFixed(2))}}</em>公里/每小时</dt>
+                          <dt><em>{{Math.floor((powerMotionData.distance/1000).toFixed(2)/(new Number(powerMotionData.motionTime/3600)).toFixed(2))}}</em>公里/每小时</dt>
                           <dt>平均速度</dt>
                         </dl>
                       </li>
@@ -114,14 +121,14 @@
                           <dt>
                             <img src="../../assets/images/Shape@2x.png" alt>
                           </dt>
-                          <dt><em>{{powerMotionData.calorie}}</em>大卡</dt>
+                          <dt><em>{{(powerMotionData.calorie/1000).toFixed(2)}}</em>大卡</dt>
                           <dt>卡路里</dt>
                         </dl>
                         <dl>
                           <dt>
                             <img src="../../assets/images/分组6@2x.png" alt>
                           </dt>
-                          <dt><em>{{powerMotionData.distance}}</em>公里</dt>
+                          <dt><em>{{(powerMotionData.distance/1000).toFixed(2)}}</em>公里</dt>
                           <dt>距离</dt>
                         </dl>
                       </li>
@@ -367,10 +374,12 @@
   </div>
 </template>
 <script>
-import { Tab, Tabs } from "vant";
+import { Tab, Tabs, version } from "vant";
 import {siveDataDetails,typeDetails} from '@/request/api'
 import houseAimg3 from '../../../public/aggregate.json'
 import F2 from "@antv/f2";
+// import echartsInfoPir from '../../components/chart/echartsinfo_pir'
+// import echartsInfobar from '../../components/chart/echartsinfo_bar'
 export default {
   data() {
     return {
@@ -565,23 +574,22 @@ export default {
       startTime:'',
       stopTime:'',
       endTime:'',
-      distance:''
+      distance:'',
+      heartRate:[],
+      heartArr:[]
     }
   },
   components: {
     [Tab.name]: Tab,
-    [Tabs.name]: Tabs
+    [Tabs.name]: Tabs,
+    // echartsInfoPir,
+    // echartsInfobar
   },
   mounted() {
-    
     this.init();
-    // this.initTypeDetail();
   },
-   updated() {
-    this.$nextTick(function() {
-      this.initPiechart();
-      this.initHistogram();
-    });
+   created() {
+      // this.initHistogram()
   },
   methods: {
     onTabClick(item,title){
@@ -591,9 +599,10 @@ export default {
       var id = item.id
       console.log('type',type)
       console.log('id',id)
-      this.initTypeDetail(type,id)
+      this.initTypeDetail(type,id);
     },
     init(){
+      // const userId = '1110074077168619521';
       const userId = '100';
       // const userId = this.userId;
       // const subscribeDate = this.getNowFormatDate();
@@ -612,6 +621,10 @@ export default {
                 // debugger
                 value.name = "动感单车"
               }
+              // if(value.name.includes('坐式胸肌推')){
+              //   // alert(1)
+              //   value.name = "坐式胸推"
+              // }
               console.log("value:" + value.name)
               return value;
 
@@ -644,6 +657,7 @@ export default {
     initTypeDetail(type,id){
       let params = {
           type:type,
+          // userId:'1110074077168619521',
           userId:'100',
           // userId: this.userId,
           motionId: id
@@ -652,6 +666,7 @@ export default {
         console.log('心率数据',res);
         if(res.data.code == 2000){
           if(type==0 || type==1){
+            this.heartRate = res.data.obj.motionData.heartRate || []
             this.motionDataObj = res.data.obj.motionData || {};
             this.distance = this.motionDataObj.distance.toFixed(2)
             this.endTime = this.motionDataObj.endTime.split(' ')[1];
@@ -661,6 +676,9 @@ export default {
             this.$set(this.data[2],'percent',this.motionDataObj.aerobicExercise);
             this.$set(this.data[3],'percent',this.motionDataObj.fatMovement);
             this.$set(this.data[4],'percent',this.motionDataObj.warmUp);
+            // debugger
+            this.initPiechart();
+            this.initHistogram()
           }
           else if(type==2 || type==3){
             this.powerMotionData = res.data.obj.powerMotionData || {};
@@ -682,10 +700,10 @@ export default {
 
       const chart = new F2.Chart({
         id: "mountNodeList",
-        width: 320,
-        height: 250,
+        // width: 320,
+        // height: 250,
         pixelRatio: window.devicePixelRatio,
-        padding: [20, "auto"]
+        padding: [20, "auto"],
       });
       chart.source(this.data, {
         percent: {
@@ -700,7 +718,8 @@ export default {
         position: "right",
         itemFormatter: function itemFormatter(val) {
           return val + "    " + map[val];
-        }
+        },
+        
       });
       chart.coord("polar", {
         transposed: true,
@@ -708,10 +727,11 @@ export default {
         radius: 0.85
       });
       chart.axis(false);
+      
       chart
         .interval()
         .position("a*percent")
-        .color("name", ["#F85842", "#FFCB14", "#14D36B","#9399A5","#3FA6F2"])
+        .color("name", ["#F85842", "#FFCB14", "#14D36B","#3FA6F2","#9399A5"])
         .adjust("stack");
 
       chart.guide().html({
@@ -726,55 +746,362 @@ export default {
       
     },
     initHistogram() {
+     var chartData = this.heartRate.map((v,index) =>{
+       console.log('哈哈',v,index)
+        if(v>0 && v <= 60){
+          
+          this.heartArr.push({
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          );
+          console.log('和噶干哈',this.heartArr)
+          this.$set(this,'data2',this.heartArr)
+        }
+        if(v>60 && v <= 70){
+          this.heartArr.push({
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          );
+          this.$set(this,'data2',this.heartArr)
+        }
+        if(v>70 && v <= 80){
+          this.heartArr.push({
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          );
+          this.$set(this,'data2',this.heartArr)
+        }
+        if(v>80 && v <= 90){
+          this.heartArr.push({
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          
+          );
+          this.$set(this,'data2',this.heartArr)
+        }
+        if(v>90){
+          this.heartArr.push({
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"极限运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"燃脂运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"热身",
+            value:index,
+            price:v
+          },
+          {
+            name:"有氧运动",
+            value:index,
+            price:v
+          },
+          {
+            name:"无氧运动",
+            value:index,
+            price:v
+          },
+          
+          );
+          this.$set(this,'data2',this.heartArr)
+        }
+      })
+     
+      console.log('返回',this.data2)
       let chart = new F2.Chart({
         id: "histogramList",
-        width: 320,
-        height: 250,
+        // width: 320,
+        // height: 250,
         pixelRatio: window.devicePixelRatio
       });
       chart.source(this.data2, {
-        percent: {
-          min: 0,
-          formatter: function formatter(val) {
+        price: {
+          min: 2,
+          max: 7,
+          formatter(val) {
             console.log('val值',val)
-            return (val * 100).toFixed(0) + '%';
+            return (val * 20).toFixed(0) + '%';
           }
         }
       });
       chart.tooltip({
         custom: true, // 自定义 tooltip 内容框
-        onChange: function onChange(obj) {
-          console.log(obj)
-          var legend = chart.get("legendController").legends.top[0];
-          var tooltipItems = obj.items;
-          var legendItems = legend.items;
-          var map = {};
-          legendItems.map(function(item) {
-            map[item.name] = _.clone(item);
-          });
-          tooltipItems.map(function(item) {
-            var name = item.name;
-            var value = item.value;
-            if (map[name]) {
-              map[name].value = value;
-            }
-          });
-          legend.setItems(_.values(map));
-        },
-        onHide: function onHide() {
-          var legend = chart.get("legendController").legends.top[0];
-          legend.setItems(chart.getLegendItems().country);
+        // onChange: function onChange(obj) {
+        //   console.log(obj)
+        //   var legend = chart.get("legendController").legends.top[0] ? chart.get("legendController").legends.top[0] : '';
+        //   var tooltipItems = obj.items;
+        //   var legendItems = legend.items;
+        //   var map = {};
+        //   legendItems.map(function(item) {
+        //     map[item.name] = _.clone(item);
+        //   });
+        //   tooltipItems.map(function(item) {
+        //     var name = item.name;
+        //     var value = item.value;
+        //     if (map[name]) {
+        //       map[name].value = value;
+        //     }
+        //   });
+        //   legend.setItems(_.values(map));
+        // },
+        // onHide: function onHide() {
+        //   var legend = chart.get("legendController").legends.top[0] ? chart.get("legendController").legends.top[0] : '';
+        //   legend.setItems(chart.getLegendItems().country);
+        // },
+  
+      });
+      chart.axis('value',{
+        label: (text, index, total) => {
+          const cfg = {
+            textAlign: 'center',
+            fontSize:17
+          };
+          // 第一个点左对齐，最后一个点右对齐，其余居中，只有一个点时左对齐
+          if (index === 0) {
+            cfg.textAlign = 'start';
+          }
+          if (index > 0 && index === total - 1) {
+            cfg.textAlign = 'end';
+          }
+          cfg.text = text ;  // cfg.text 支持文本格式化处理
+          return cfg;
         }
       });
-
+      chart.axis('price',{
+        label: (text, index, total) => {
+          const cfg = {
+            textAlign: 'end',
+            fontSize:17
+          };
+          cfg.text = text ;  // cfg.text 支持文本格式化处理
+          return cfg;
+        }
+      });
       chart
         .interval()
         .position("value*price")
-        .color("name", ["#F85842", "#FFCB14", "#14D36B","#9399A5","#3FA6F2"])
+        .color("name", ["#9399A5","#3FA6F2","#14D36B","#FFCB14","#F85842",])
         .adjust({
           type: "dodge",
-          marginRatio: 0.5,
-          stack:'stack' // 设置分组间柱子的间距
+          marginRatio: 0,// 设置分组间柱子的间距
+          // stack:'stack' 
         });
       chart.render();
     },

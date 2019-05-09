@@ -1,6 +1,6 @@
 <template>
     <div class="Fitness_data">
-        <div class="Fitness_data_info" v-show="!show">
+        <div class="Fitness_data_info" v-show="show">
             <ul>
                 <li>
                     <dt>{{Fitnessdata.totalExerciseTime}}</dt>
@@ -62,9 +62,9 @@
                     </ul>
                     <span class="before" v-if="totalFitnessData.totalExerciseTime==null"></span>
                     <div class="ridate" @click="calendar">
-                            <img :src="show?img3:img" alt="">
+                            <img :src="show3?img3:img" alt="">
                         </div>
-                    <div class="installDay" v-show="show">
+                    <div class="installDay" v-show="show2">
                         <Calendar
                         v-on:choseDay="clickDay"
                         v-on:changeMonth="changeDate"
@@ -155,7 +155,9 @@ export default {
             timeList:[],
             aerobic: houseAimg.images,//有氧
             anaerobic: houseAimg2.images,//无氧
-            show:false,
+            show:true,
+            show2:false,
+            show3:false,
             disabledTab:false,
             userId:this.$route.query.userId,
             dayTime:''
@@ -169,70 +171,100 @@ export default {
     },
     
     mounted(){
-        this.initTime();
+        var that = this;
+        // this.initTime();
         // this.getAweek();
         this.initFitnessData();
         // this.initComprehensiveData();
-        var startx, starty;
-        document.addEventListener("touchstart", function(e){
-    startx = e.touches[0].pageX;
-    starty = e.touches[0].pageY;
-}, false);
-        document.addEventListener("touchend", function(e) {
-            console.log(e)
-    var endx, endy;
-    endx = e.changedTouches[0].pageX;
-    endy = e.changedTouches[0].pageY;
-    var direction = this.getDirection(startx, starty, endx, endy);
-    switch (direction) {
-        case 0:
-            alert("未滑动！");
-            break;
-        case 1:
-            alert("向上！");
-            break;
-        case 2:
-            alert("向下！");
-            break;
-        case 3:
-            alert("向左！");
-            break;
-        case 4:
-            alert("向右！");
-            break;
-        default:
-    }
-}, false);
+        this.$nextTick(() =>{
+            var startx, starty;
+            document.addEventListener("touchstart", function(e){
+                startx = e.touches[0].pageX;
+                starty = e.touches[0].pageY;
+            }, false);
+            document.addEventListener("touchend", function(e) {
+                console.log(e)
+                var endx, endy;
+                endx = e.changedTouches[0].pageX;
+                endy = e.changedTouches[0].pageY;
+                var direction = that.getDirection(startx, starty, endx, endy);
+                switch (direction) {
+                    case 0:
+                        // alert("未滑动！");
+                        break;
+                    case 1:
+                        // alert("向上！");
+                        break;
+                    case 2:
+                        // alert("向下！");
+                        that.show = true;
+                        // that.show2 = true;
+                        // that.show3 = true;
+                        this.disabledTab = !this.disabledTab;
+                        break;
+                    case 3:
+                        // alert("向左！");
+                        break;
+                    case 4:
+                        // alert("向右！");
+                        break;
+                    default:
+                }
+            }, false);
+        })
+    },
+    created(){
+        let newDate;
+        var now = new Date();
+        var year=now.getFullYear(); 
+                var month=now.getMonth()+1; 
+                var date=now.getDate(); 
+                var m,d;
+                if(month<10){
+                        m = '0' + month
+                    }else{
+                        m = month
+                    };
+                    if(date<10){
+                        d = '0' + date
+                    }else{
+                        d = date;
+                    }
+                    // return m + d ;
+                 newDate = year+"-"+m+"-"+d;
+                console.log('当天日期',newDate)
+                this.$set(this,'dayTime',newDate)
+                this.initComprehensiveData(newDate)
     },
     methods:{
          getAngle(angx, angy) {
-    return Math.atan2(angy, angx) * 180 / Math.PI;
-},
+            return Math.atan2(angy, angx) * 180 / Math.PI;
+        },
 
-//根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
- getDirection(startx, starty, endx, endy) {
-    var angx = endx - startx;
-    var angy = endy - starty;
-    var result = 0;
+        //根据起点终点返回方向 1向上 2向下 3向左 4向右 0未滑动
+        getDirection(startx, starty, endx, endy) {
+            var angx = endx - startx;
+            var angy = endy - starty;
+            var result = 0;
 
-    //如果滑动距离太短
-    if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
-        return result;
-    }
+            //如果滑动距离太短
+            if (Math.abs(angx) < 2 && Math.abs(angy) < 2) {
+                return result;
+            }
 
-    var angle = this.getAngle(angx, angy);
-    if (angle >= -135 && angle <= -45) {
-        result = 1;
-    } else if (angle > 45 && angle < 135) {
-        result = 2;
-    } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-        result = 3;
-    } else if (angle >= -45 && angle <= 45) {
-        result = 4;
-    }
+            var angle = this.getAngle(angx, angy);
+            if (angle >= -135 && angle <= -45) {
+                result = 1;
+            } else if (angle > 45 && angle < 135) {
+                result = 2;
+            } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+                result = 3;
+            } else if (angle >= -45 && angle <= 45) {
+                result = 4;
+            }
 
-    return result;
-},
+            return result;
+        },
         onTabClick(event,item,i){
             var dd = new Date();
             var y = dd.getFullYear();
@@ -304,6 +336,8 @@ export default {
             calendar(){
                 // alert(1)
                 this.show = !this.show;
+                this.show2 = !this.show2;
+                this.show3 = !this.show3;
                 this.disabledTab = !this.disabledTab;
             },
             getnewDay(i){
@@ -321,26 +355,7 @@ export default {
                 // return y + "-" + m + "-" + d;
                 return  m + "-" + d;
             },
-            formatDate2(i) {
-                    var date = new Date();
-                    var preDate = new Date(date.getTime() - 24*60*60*1000*i); //前一天
-                    var month = (date.getMonth() + 1) + '.';
-                    var day = date.getDate();
-                    var m,d;
-                    // console.log('日期',day);
-                    // return month+day
-                    if(month<10){
-                        m = '0' + month
-                    }else{
-                        m = month
-                    };
-                    if(day<10){
-                        d = '0' + day
-                    }else{
-                        d = day;
-                    }
-                    return m + d ;
-                },
+            
             getAweek() {
                 // console.log(JSON.stringify(this.obj))
                 var cells = document.getElementById('monitor').getElementsByTagName('li');
@@ -438,7 +453,7 @@ export default {
             },
             //头部健身数据
             initFitnessData(){
-                const userId = '1126068421100445697';
+                const userId = '100';
                 // const userId = this.userId;
                 
                 headFitnessData(userId).then(res =>{
@@ -455,7 +470,7 @@ export default {
             //综合数据
             initComprehensiveData(subscribeDate){
                 console.log('开饭',subscribeDate)
-                const userId = '1126068421100445697';
+                const userId = '100';
                 // const userId = this.userId;
                 // const subscribeDate = '2019-05-06'
                 ComprehensiveData(userId,subscribeDate).then(res =>{

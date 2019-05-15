@@ -84,4 +84,28 @@ export function GetMeTrainingCamp(p){
     })
 }
 
+//优惠券列表
+export function GetCouponRecordList(params){
+    return request({
+        url:'/gymManager/manager/couponRecord/listCouponRecordVoByBuyInfo',
+        method:'get',
+        params
+    })
+}
+
+//会员判断
+export function IsVIP(userId){
+    return request({
+        url:'/gymApi/gymApi/membership/getExpireByUserId/'+userId,
+        method:'get',
+    })
+}
+
+export function GetVipList(){
+    return request({
+        url:'/gymApi/gymApi/membershipCard/listAllShow',
+        method:'get',
+    })
+}
+
 

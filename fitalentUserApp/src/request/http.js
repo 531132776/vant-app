@@ -8,13 +8,17 @@ import store from '../store.js'
 
 //环境的切换
 if (process.env.NODE_ENV == 'development') {
-    // axios.defaults.baseURL = 'http://192.168.10.118:8769';
-    axios.defaults.baseURL = 'http://192.168.10.203:8769';
-    // axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+
+    // axios.defaults.baseURL = 'http://192.168.10.203:8769/';
+    // axios.defaults.baseURL = 'http://192.168.10.121:8769/';
+    axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+
 } else if (process.env.NODE_ENV == 'production') {
-    // axios.defaults.baseURL = 'http://192.168.10.118:8769';
-    axios.defaults.baseURL = 'http://192.168.10.203:8769';
-    // axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+
+    // axios.defaults.baseURL = 'http://192.168.10.203:8769/';
+    // axios.defaults.baseURL = 'http://192.168.10.121:8769/';
+    axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+
 }
 
 // 请求超时时间

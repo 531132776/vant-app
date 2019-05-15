@@ -94,9 +94,9 @@
                                             <span>已约{{item.reservationAndTotal}}</span>
                                         </dt>
                                     </li>
-                                    <div class="appointment" v-if="item.status == 0">可预约</div>
+                                    <div class="appointment" v-if="item.status == 7">可购买</div>
                                     <div class="Full_starffed" v-if="item.status == 6">已满员</div>
-                                    <div class="Full_starffed" v-if="item.status == 1">已预约</div>
+                                    <div class="Full_starffed" v-if="item.status == 8">已购买</div>
                                 </ul>
                                 <!-- <img v-if="teamClassList.length == 0" src="../../assets/images/no_data.png" > -->
                                 <div class="tipsImgInfo" v-if="teamClassList.length == 0">

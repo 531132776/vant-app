@@ -6,40 +6,15 @@
                 <div class="header_info pb15">
                     <ul>
                         <li>
-                            <img :src="immageDto.coverUrl!== (null && undefined) ? immageDto.coverUrl.url : ''" alt="">
-                            </li>
+                            <!-- <img :src="immageDto.coverUrl!== (null && undefined) ? immageDto.coverUrl.url : ''" alt=""> -->
+                        </li>
                         <li>
-                            <dt v-if="status==1">{{educationsectorDetails.courseName}}</dt>
+                            <dt v-if="status==1">年会员</dt>
                             <dt v-if="status==2">{{privateCourse.courseName}}</dt>
                             <dt v-if="status==0">{{educationexperie.courseName}}</dt>
                             <dt>
-                                <span class="head_people">
-                                    <img :src="peopleHead" alt="">
-                                </span>
-                                <span v-if="status==1">{{educationsectorDetails.coachName}}</span>
-                                <span v-if="status==2">{{privateCourse.coachName}}</span>
-                                <span v-if="status==0">{{educationexperie.coachName}}</span>
+                                ￥1280/365天
                             </dt>
-                        </li>
-                    </ul>
-                    <span class="before"></span>
-                </div>
-            </div>
-            <!-- 地点 -->
-            <div class="address_info pr_pl15">
-                <div class="content_text pb15">
-                    <ul>
-                        <li>
-                            地点
-                        </li>
-                        <li v-if="status==0">
-                            {{educationexperie.clubName}}
-                        </li>
-                        <li v-if="status==1">
-                            {{educationsectorDetails.clubName}}
-                        </li>
-                        <li v-if="status==2">
-                            {{privateCourse.clubName}}
                         </li>
                     </ul>
                     <span class="before"></span>
@@ -89,61 +64,33 @@
                             <van-button type="default" @click="monthlyIncrease">+</van-button>
                         </li>
                     </ul>
-                    <!-- <span class="before"></span> -->
-                </div>
-            </div>
-            <div class="couponInfo">
-                <div class="address_info pr_pl15">
-                    <div class="content_text pt_pb15">
-                        <ul @click="popup">
-                            <li>选择优惠券</li>
-                                <li>
-                            <dt class="text_gray">
-                                <span>1张可用</span>
-                                <span class="head_people">
-                                    <img :src="rightIcon" alt="">
-                                </span>
-                                
-                            </dt>
-                            </li>
-                        </ul>
-                        <span class="before"></span>
-                    </div>
-                </div>
-                <div class="address_info pr_pl15">
-                <div class="content_text pt_pb15">
-                    <ul>
-                        <li>
-                            价格
-                        </li>
-                        <li class="price_font" v-if="status==0">
-                            <em>¥ </em><em>{{educationexperie.price}}</em>
-                        </li>
-                        <li class="price_font" v-if="status==2">
-                            <em>¥ </em>
-                            <em v-if="contrastStatus==0">{{privateCourse.onePrice}}</em>
-                            <em v-if="contrastStatus==1">{{privateCourse.twoPrice}}</em>
-                            <em>/节</em>
-                        </li>
-                        <li class="price_font" v-if="status==1">
-                            <em>¥ </em><em>{{educationsectorDetails.price}}{{educationsectorDetails.unit}}</em>
-                        </li>
-                    </ul>
-                    <span class="before"></span>
-                </div>
-            </div>
-                        <div class="address_info pr_pl15">
-                        <div class="content_text pt_pb15">
-                        <ul>
-                        <li>优惠券</li>
-                        <li class="price_font"><em>-</em><em>¥</em><em>0</em></li>
-                    </ul>
-                    <!-- <span class="before"></span> -->
-                    </div>
                 </div>
             </div>
             <!-- 价格 -->
-            
+            <div class="address_info">
+                <van-cell-group>
+                <div class="grapLine"></div>
+                <van-cell @click="popup" is-link>
+                    <div class="flex_between">
+                        <span>选择优惠券</span>
+                        <span>张可用优惠券</span>
+                    </div>
+                </van-cell>
+                <van-cell >
+                    <div class="flex_between">
+                        <span>商品价格</span>
+                        <span style="color: #1DCE74;">¥</span>
+                    </div>
+                </van-cell>
+                <van-cell>
+                    <div class="flex_between">
+                        <span>优惠券</span>
+                        <span style="color: #1DCE74;">-¥</span>
+                    </div>
+                </van-cell>
+            </van-cell-group>
+            </div>
+            <div class="grapLine"></div>
             <!-- 协议 -->
             <div class="address_info pr_pl15">
                 <div class="content_text pt_pb15">
@@ -151,7 +98,7 @@
                             <li style="width:100%">
                                 <dd>购前需知</dd>
                                 <dd style="display:flex;justify-content: space-between;" class="Agreement">
-                                    <router-link to="/privateEducationAgreement" style="color:#3A5891">同意《健康传奇私教协议》</router-link>
+                                    <router-link to="/privateEducationAgreement" style="color:#3A5891">同意《健康传奇开通会员协议》</router-link>
                                     <van-checkbox v-model="checked">
                                             <img
                                                 style="width:22px;"
@@ -165,6 +112,40 @@
                     </ul>
                 </div>
             </div>
+             <van-popup v-model="show" position="bottom" :overlay="true">
+                <div style="height:480px;background:rgba(242,242,242,1);">
+                    <div class="popupTitel">
+                        <span>选择优惠券</span>
+                        <van-icon id="close" name="cross" />
+                    </div>
+                    <div class="popupwarp">
+                        <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
+                            <div class="popupItemOne">
+                                <span style="font-size:17px">{{item.discountValue}}</span>
+                                <span v-if="item.couponType == 0">代金券</span>
+                                <span v-if="item.couponType == 1">免费券</span>
+                            </div>
+                            <div class="popupItemTwo">
+                                <div class="popupText">
+                                    <p>{{item.remark}}</p>
+                                    <p>{{item.effectiveTime}}-{{item.expireTime}}</p>
+                                </div>
+                                <div class="popupIcon">
+                                    <van-checkbox v-model="item.checkStatus" >
+                                        <img
+                                            @click="aaa(item)"
+                                            style="width:18px;"
+                                            slot="icon"
+                                            :src="item.checkStatus ? couponIcon.normal : couponIcon.active"
+                                        >
+                                    </van-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="popupBottom" @click="choosePopup()">确定</div>
+                </div>
+            </van-popup>
         </div>
         <!-- 联系客服+购买课程 -->
         <div class="Immediate_purchase">
@@ -203,40 +184,6 @@
                 </ul>
             </div>
         </div>
-        <van-popup v-model="show" position="bottom" :overlay="true">
-                <div style="height:480px;background:rgba(242,242,242,1);">
-                    <div class="popupTitel">
-                        <span>选择优惠券</span>
-                        <van-icon id="close" name="cross" @click="choosePopup()"/>
-                    </div>
-                    <div class="popupwarp">
-                        <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
-                            <div class="popupItemOne">
-                                <span style="font-size:17px">{{item.discountValue}}</span>
-                                <span v-if="item.couponType == 0">代金券</span>
-                                <span v-if="item.couponType == 1">免费券</span>
-                            </div>
-                            <div class="popupItemTwo">
-                                <div class="popupText">
-                                    <p>{{item.remark}}</p>
-                                    <p>{{item.effectiveTime}}-{{item.expireTime}}</p>
-                                </div>
-                                <div class="popupIcon">
-                                    <van-checkbox v-model="item.checkStatus" >
-                                        <img
-                                            @click="aaa(item)"
-                                            style="width:18px;"
-                                            slot="icon"
-                                            :src="item.checkStatus ? couponIcon.normal : couponIcon.active"
-                                        >
-                                    </van-checkbox>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="popupBottom" @click="choosePopup()">确定</div>
-                </div>
-            </van-popup>
     </div>
 </template>
 <script>
@@ -246,7 +193,11 @@
         Checkbox,
         Toast,
         CheckboxGroup,
-        Popup,Radio,Icon
+        Cell, 
+        CellGroup,
+        Popup,
+        Radio,
+        Icon
     } from 'vant';
     import {
         generateOrder
@@ -254,50 +205,48 @@
     export default {
         data() {
             return {
-                show:false,
-                checked1:'',
-                couponIcon:{
-                normal:require("../../assets/images/勾 2@2x(3).png"),
-                active: require('../../assets/images/勾 2@2x(2).png'),
-            },
-                couponList:[
-                {
-                    "uid": "1127782648666824706",
-                    "userId": "1127782637304496129",
-                    "couponName": "广东分公司",
-                    "couponType": 0,
-                    "effectiveTime": "2019-05-12",
-                    "expireTime": "2019-05-19",
-                    "discountValue": "0.10",
-                    "remark": "仅限训练营使用",
-                    "discountType": 0,
-                    "thresholdType": 0,
-                    "thresholdValue": "0.00",
-                    "checkStatus": true,
-                    "activeAble": 0
-                },
-                 {
-                    "uid": "1127782648666824701",
-                    "userId": "1127782637304496129",
-                    "couponName": "广东分公司",
-                    "couponType": 0,
-                    "effectiveTime": "2019-05-12",
-                    "expireTime": "2019-05-19",
-                    "discountValue": "0.10",
-                    "remark": "仅限训练营使用",
-                    "discountType": 0,
-                    "thresholdType": 0,
-                    "thresholdValue": "0.00",
-                    "checkStatus": false,
-                    "activeAble": 0
-                },
-            ],
                 checked: false,
-                rightIcon:require("../../assets/images/14.png"),
+                show:false,
+                couponList:[
+                    {
+                        "uid": "1127782648666824706",
+                        "userId": "1127782637304496129",
+                        "couponName": "广东分公司",
+                        "couponType": 0,
+                        "effectiveTime": "2019-05-12",
+                        "expireTime": "2019-05-19",
+                        "discountValue": "0.10",
+                        "remark": "仅限训练营使用",
+                        "discountType": 0,
+                        "thresholdType": 0,
+                        "thresholdValue": "0.00",
+                        "checkStatus": true,
+                        "activeAble": 0
+                    },
+                    {
+                        "uid": "1127782648666824701",
+                        "userId": "1127782637304496129",
+                        "couponName": "广东分公司",
+                        "couponType": 0,
+                        "effectiveTime": "2019-05-12",
+                        "expireTime": "2019-05-19",
+                        "discountValue": "0.10",
+                        "remark": "仅限训练营使用",
+                        "discountType": 0,
+                        "thresholdType": 0,
+                        "thresholdValue": "0.00",
+                        "checkStatus": false,
+                        "activeAble": 0
+                    },
+                ],
+                couponIcon:{
+                    normal:require("../../assets/images/勾 2@2x(2).png"),
+                    active: require('../../assets/images/勾 2@2x(3).png'),
+                },
                 icon: {
                     normal: require("../../assets/images/勾 2@2x.png"),
                     active: require('../../assets/images/勾 2@2x(1).png'),
-                },
+                }, 
                 phomeIcon: require("../../assets/images/13.png"),
                 peopleHead: require('../../assets/images/10.png'),
                 oneImg: require('../../assets/images/4.jpg'),
@@ -340,11 +289,14 @@
             [Checkbox.name]: Checkbox,
             [Toast.name]: Toast,
             [CheckboxGroup.name]: CheckboxGroup,
+            [Cell.name]:Cell, 
+            [CellGroup.name]:CellGroup,
             [Popup.name]:Popup,
             [Radio.name]:Radio,
-            [Icon.name]:Icon,
+            [Icon.name]:Icon
         },
         mounted() {
+            this.status = 1
             console.log(this.status);
             if (this.status == 2) {
                 //私教课详情
@@ -362,10 +314,10 @@
                 console.log('私教体验课', this.privateTwo);
             } else if (this.status == 1) {
                 //包月课详情
-                this.educationsectorDetails = this.$route.query.obj;
-                this.privateThree = this.$route.query.privateThree;
-                this.immageDto = this.educationsectorDetails.immageDto;
-                this.monthlyTotalPrice = this.educationsectorDetails.price;
+                // this.educationsectorDetails = this.$route.query.obj;
+                // this.privateThree = this.$route.query.privateThree;
+                // this.immageDto = this.educationsectorDetails.immageDto;
+                // this.monthlyTotalPrice = this.educationsectorDetails.price;
                 console.log('包月课详情', this.educationsectorDetails)
             }
 
@@ -375,23 +327,9 @@
             this.$store.commit('getUserId', this.privateOne.privateCourseId)
         },
         methods: {
-            aaa(item){
-            if(!item.checkStatus){
-                this.couponList.map(function(res){
-                    if(res.uid != item.uid){
-                        res.checkStatus = false
-                        return res
-                    }
-                   
-                })
-            }
-        },
             popup(){
-            this.show = true
-        },
-            choosePopup(){
-            this.show = false
-        },
+                this.show = true
+            },
             //选中一对一，二对二
             activeItem(v, index) {
                 console.log(v, index)
@@ -571,7 +509,24 @@
         color: #3A5891 !important;
         font-size: 13px;
     }
-    
+    .grapLine{
+        height: 10px;
+        background: rgba(242,242,242,1);
+        width: 100%;
+    }
+    .van-cell:not(:last-child)::after {
+            content: ' ';
+            position: absolute;
+            pointer-events: none;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            left: 0.4rem;
+            right: 0.4rem;
+            bottom: 0;
+            -webkit-transform: scaleY(.5);
+            transform: scaleY(.5);
+            border-bottom: 0.02667rem solid #ebedf0;
+        }
     .class-a {
         background-color: #1DCE74 !important;
         color: #fff;
@@ -580,100 +535,14 @@
     .class-b {
         background-color: #ECEDF0;
     }
-    .popupTitel{
-            width:100%;
-            height:50px;
-            background:rgba(255,255,255,1);
-            display:flex;
-            justify-content: space-between;
-            align-items: center;
-            // padding-left:15px;
-            span{
-                display: inline-block;
-                line-height: 50px;
-                font-size:17px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                margin-left: 15px;
-                color:rgba(16,29,55,1);
-            }
-            .van-icon{
-                font-size: 25px;
-                margin-right: 15px;
-            }
-        }
-        .popupBottom{
-                width: 375px;
-                height: 50px;
-                background: rgba(29,206,116,1);
-                position: fixed;
-                bottom: 0;
-                font-size:17px;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(255,255,255,1);
-                line-height:24px;
-                text-align: center;
-                line-height: 50px;
-            }
-        .popupwarp{
-             margin-top:10px; 
-        }
-        .popupwarp{
-             margin-top:10px; 
-        }
-        .popupItem{
-            display: flex;
-            padding: 10px 20px;
-            .popupItemOne{
-                background-image: url(../../assets/images/blue.png);
-                background-repeat: no-repeat;
-                background-size: contain;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                text-align: center;
-                color: rgba(255,255,255,1);
-                width:114px;
-                height:104px;
-                
-            }
-            
-            .popupItemTwo{
-                background-image: url(../../assets/images/矩形copy2@2x1.png);
-                background-repeat: no-repeat;
-                background-size: contain;
-                width: 230px;
-                height: 104px;
-                display: flex;
-                justify-content: space-between;
-                .popupText{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: space-between;
-                    padding: 15px 10px;
-                    // font-size:15px;
-                    font-family:PingFangSC-Regular;
-                    font-weight:400;
-                    color:rgba(16,29,55,1);
-                }
-                .popupIcon{
-                    display: flex;
-                    align-self: center;
-                    padding-right:10px;
-                }
-            }   
-        }
+
+    .flex_between{
+        display: flex;
+        justify-content: space-between;
+    }
+    
     .privatemonthlyOrder_content {
         padding-bottom: 70px;
-        .couponInfo{
-            background-color: #F2F2F2;
-            padding: 10px 0;
-            .address_info{
-                background-color: #fff;
-            }
-        }
-        
         .header_info {
             position: relative;
             ul {
@@ -681,10 +550,11 @@
                 justify-content: flex-start;
                 flex-flow: row nowrap;
                 li:nth-child(1) {
-                    padding-right: 15px;
+                    margin-right: 15px;
                     width: 100px;
                     height: 100px;
-                    border-radius: 8px;
+                    background: linear-gradient(315deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
+                    border-radius: 6px;
                     img {
                         display: block;
                         width: 100%;
@@ -697,24 +567,12 @@
                     justify-content: space-between;
                     align-content: flex-start;
                     flex-flow: column nowrap;
-                    dt:nth-child(1) {
+                    dt{
                         font-size: 17px;
                         font-weight: 600;
                     }
                     dt:nth-child(2) {
-                        padding-top: 5px;
-                        font-size: 12px;
-                        color: #9399A5;
-                        .head_people {
-                            width: 12px;
-                            height: 12px;
-                            display: inline-block;
-                            padding-right: 5px;
-                            img {
-                                display: block;
-                                width: 100%;
-                            }
-                        }
+                        margin-bottom: 15px;
                     }
                 }
             }
@@ -795,7 +653,81 @@
             }
         }
     }
-    
+    .popupTitel{
+            width:100%;
+            height:50px;
+            background:rgba(255,255,255,1);
+            display:flex;
+            justify-content: space-between;
+            // padding-left:15px;
+            span{
+                display: inline-block;
+                line-height: 50px;
+                font-size:17px;
+                font-family:PingFangSC-Regular;
+                font-weight:400;
+                margin-left: 15px;
+                color:rgba(16,29,55,1);
+            }
+        }
+        .popupBottom{
+            width: 375px;
+            height: 50px;
+            background: rgba(29,206,116,1);
+            position: fixed;
+            bottom: 0;
+            font-size:17px;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:rgba(255,255,255,1);
+            line-height:24px;
+            text-align: center;
+            line-height: 50px;
+        }
+        .popupwarp{
+             margin-top:10px; 
+        }
+        .popupItem{
+            display: flex;
+            padding: 10px 20px;
+            .popupItemOne{
+                background-image: url(../../assets/images/blue.png);
+                background-repeat: no-repeat;
+                background-size: contain;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                color: rgba(255,255,255,1);
+                width:114px;
+                height:104px;
+                
+            }
+            .popupItemTwo{
+                background-image: url(../../assets/images/矩形copy2@2x1.png);
+                background-repeat: no-repeat;
+                background-size: contain;
+                width: 230px;
+                height: 104px;
+                display: flex;
+                justify-content: space-between;
+                .popupText{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                    padding: 15px 10px;
+                    // font-size:15px;
+                    font-family:PingFangSC-Regular;
+                    font-weight:400;
+                    color:rgba(16,29,55,1);
+                }
+                .popupIcon{
+                    display: flex;
+                    align-self: center;
+                    padding-right:10px;
+                }
+            }   
+        }
     .Immediate_purchase {
         position: fixed;
         bottom: 0;
@@ -804,6 +736,7 @@
         z-index: 333;
         padding: 10px 15px;
         background-color: #fff;
+        box-shadow:0px 1px 10px 0px rgba(78,144,158,0.12);
         border-top: 0.5px solid rgba(0, 0, 0, .12);
         .purchase_info {
             ul {
@@ -839,6 +772,7 @@
                     color: #fff;
                     font-weight: 400;
                     border-radius: 23px;
+                    height: 28px;
                     background: rgba(29, 206, 116, 1);
                     text-align: center;
                 }

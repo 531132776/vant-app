@@ -34,13 +34,15 @@
                                 
                                 <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab" :disabled="disabledTab">
                                     <div slot="title" class="slot_content" @click="onTabClick($event,item,i)">
-                                        
+                                        <span class="timeThis" v-if="i==0">今天</span>
+                                        <span class="timeThis" v-if="i==1">昨天</span>
+                                        <span class="timeThis" v-if="i==2">前天</span>
                                         <dd>{{getNextDate(dayTime,-(i))}}</dd>
                                         <span>{{getnewDay(i)}}</span>
                                         
                                     </div>
                                     <div class="Fitness_data2" >
-                                        <ul v-if="!show && totalFitnessData.totalExerciseTime!==0">
+                                        <ul v-if="show && totalFitnessData.totalExerciseTime!==0">
                                             <li>
                                                 <dt>{{totalFitnessData.totalExerciseTime}}</dt>
                                                 <dt>运动时间/分钟</dt>
@@ -80,7 +82,7 @@
                                                 <dt>消耗/大卡</dt>
                                             </li>
                                             <li>
-                                                <dt>{{totalFitnessData.powerGeneration!=null?totalFitnessData.powerGeneration:''}}</dt>
+                                                <dt>{{totalFitnessData.powerGeneration}}</dt>
                                                 <dt>发电量/千焦</dt>
                                             </li>
                                         </ul>
@@ -129,7 +131,7 @@
             </div>
         </div>
         <!-- 查看详情 -->
-        <div class="posi_btn">
+        <div class="posi_btn" v-if="totalFitnessData.totalExerciseTime!==0">
             <van-button type="primary" size="large" round @click="echartsSurface">查看详情</van-button>
         </div>
     </div>
@@ -266,13 +268,21 @@ export default {
             return result;
         },
         onTabClick(event,item,i){
+            this.show2 = false;
+            this.show3 = false;
             var dd = new Date();
             var y = dd.getFullYear();
             console.log(y)
-            // console.log('tab',event,item,i)
-            console.log('哦哦',event.target.innerHTML)
-            var inHtml = event.target.innerHTML;
-            var date = y+'-'+inHtml;
+            console.log('tab',event,item,i)
+            console.log('哦哦',event.target.nextElementSibling.innerHTML)
+            if(event.target.innerHTML=='今天' || event.target.innerHTML=='昨天' || event.target.innerHTML=='前天'){
+                var inHtml = event.target.nextElementSibling.innerHTML;
+                var date = y+'-'+inHtml;
+            }else{
+                var inHtml = event.target.innerHTML;
+                var date = y+'-'+inHtml;
+            }   
+            
             console.log('lolo ',date)
             this.initComprehensiveData(date)
         },
@@ -338,7 +348,7 @@ export default {
                 this.show = !this.show;
                 this.show2 = !this.show2;
                 this.show3 = !this.show3;
-                this.disabledTab = !this.disabledTab;
+                // this.disabledTab = !this.disabledTab;
             },
             getnewDay(i){
                 var curDate = new Date();
@@ -453,8 +463,8 @@ export default {
             },
             //头部健身数据
             initFitnessData(){
-                const userId = '100';
-                // const userId = this.userId;
+                // const userId = '100';
+                const userId = this.userId;
                 
                 headFitnessData(userId).then(res =>{
                     console.log('健身数据',res);
@@ -470,8 +480,8 @@ export default {
             //综合数据
             initComprehensiveData(subscribeDate){
                 console.log('开饭',subscribeDate)
-                const userId = '100';
-                // const userId = this.userId;
+                // const userId = '100';
+                const userId = this.userId;
                 // const subscribeDate = '2019-05-06'
                 ComprehensiveData(userId,subscribeDate).then(res =>{
                     console.log('综合数据',res);

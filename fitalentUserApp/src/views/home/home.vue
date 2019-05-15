@@ -26,7 +26,7 @@
         </div>
         <!-- 团体课 -->
         <div class="Group_course pr_pl15">
-            <span class="title_text">团体课</span>
+            <span class="title_text">门店团课</span>
             <div class="cours_list">
                 <div class="time_list" id="monitor">
                     <ul>
@@ -62,9 +62,9 @@
                                         <span>已约 {{item.reservationAndTotal}}</span>
                                     </dt>
                                 </li>
-                                <div class="appointment" v-if="item.status == 0">可预约</div>
+                                <div class="appointment" v-if="item.status == 7">可购买</div>
                                 <div class="Full_starffed" v-if="item.status == 6">已满员</div>
-                                <div class="Full_starffed" v-if="item.status == 1">已预约</div>
+                                <div class="Full_starffed" v-if="item.status == 8">已购买</div>
                             </ul>
                             <div class="tipsImgInfo" v-if="teamClassList.length == 0">
                                 <div class="noDataImgWarp" >
@@ -487,7 +487,8 @@
             //团课 userId,courseId
             toLeagueClass(item) {
                 let url = {
-                    url: this.LeagueClass.url + "?courseId=" + item.courseId + "&userId=" + this.userId
+                    // url: this.LeagueClass.url + "?courseId=" + item.courseId + "&userId=" + this.userId
+                    url: this.TrainingCamp.url + "?courseId=" + item.courseId + "&userId=" + this.userId
                 }
                 console.log("LeagueClass jump url:" + url.url)
                 if (this.isAndroid) {

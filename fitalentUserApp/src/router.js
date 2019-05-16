@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from './views/Home.vue'
+// import Home from './views/Home.vue'
 
 Vue.use(Router)
 
@@ -11,15 +11,6 @@ export default new Router({
     // mode: 'history',
     base: process.env.BASE_URL,
     routes: [{
-            path: '/Home',
-            name: 'Home',
-            component: () =>
-                import ( /* webpackChunkName: "about" */ './views/Home.vue'),
-            meta: {
-                // keepAlive: true
-            }
-        },
-        {
             path: '/home',
             name: 'home',
             component: () =>
@@ -115,7 +106,7 @@ export default new Router({
             path: '/trainingCamp',
             name: 'trainingCamp',
             meta: {
-                title: '训练营详情'
+                title: '训练营详情',            
             },
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Training_camp/detail.vue')

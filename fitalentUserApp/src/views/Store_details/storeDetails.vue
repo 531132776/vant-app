@@ -432,10 +432,11 @@
             toLeagueClass(item) {
                 console.log(item)
                 this.$router.push({
-                        path: '/leagueDetails',
+                        path: '/trainingCamp',
                         query: {
                             courseId: item.courseId,
-                            userId: this.userId
+                            userId: this.userId,
+                            leagueStatus:4
                         }
                     })
                     // let url  = {

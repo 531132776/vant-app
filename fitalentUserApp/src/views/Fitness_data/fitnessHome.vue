@@ -1,6 +1,6 @@
 <template>
     <div class="Fitness_data">
-        <div class="Fitness_data_info" v-show="show">
+        <div class="Fitness_data_info" v-show="show4">
             <ul>
                 <li>
                     <dt>{{Fitnessdata.totalExerciseTime}}</dt>
@@ -32,7 +32,7 @@
                             <van-tabs v-model="active" :swipeable="false" :swipe-threshold="8" >
                                 <!-- <span class="before"></span> -->
                                 
-                                <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab" :disabled="disabledTab">
+                                <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab" >
                                     <div slot="title" class="slot_content" @click="onTabClick($event,item,i)">
                                         <span class="timeThis" v-if="i==0">今天</span>
                                         <span class="timeThis" v-if="i==1">昨天</span>
@@ -42,7 +42,8 @@
                                         
                                     </div>
                                     <div class="Fitness_data2" >
-                                        <ul v-if="show && totalFitnessData.totalExerciseTime!==0">
+                                        
+                                        <!-- <ul v-if="show && totalFitnessData.totalExerciseTim!==0">
                                             <li>
                                                 <dt>{{totalFitnessData.totalExerciseTime}}</dt>
                                                 <dt>运动时间/分钟</dt>
@@ -55,24 +56,15 @@
                                                 <dt>{{totalFitnessData.powerGeneration!=null?totalFitnessData.powerGeneration:''}}</dt>
                                                 <dt>发电量/千焦</dt>
                                             </li>
-                                        </ul>
-                                    </div>
-                                </van-tab>
-                            </van-tabs>
-                        </li>
-                        
-                    </ul>
-                    <span class="before" v-if="totalFitnessData.totalExerciseTime==null"></span>
-                    <div class="ridate" @click="calendar">
-                            <img :src="show3?img3:img" alt="">
-                        </div>
-                    <div class="installDay" v-show="show2">
+                                        </ul> -->
+                                        <div class="installDay" >
                         <Calendar
                         v-on:choseDay="clickDay"
                         v-on:changeMonth="changeDate"
+                        v-show="show2"
                         ></Calendar>
                         <div class="Fitness_data2">
-                                        <ul>
+                                        <ul v-if="show && totalFitnessData.totalExerciseTim!==0">
                                             <li>
                                                 <dt>{{totalFitnessData.totalExerciseTime}}</dt>
                                                 <dt>运动时间/分钟</dt>
@@ -88,34 +80,45 @@
                                         </ul>
                                     </div>
                     </div>
+                                    </div>
+                                </van-tab>
+                            </van-tabs>
+                        </li>
+                        
+                    </ul>
+                    <span class="before" v-if="totalFitnessData.totalExerciseTime==null"></span>
+                    <div class="ridate" @click="calendar">
+                            <img :src="show3?img3:img" alt="">
+                        </div>
+                    
                 </div>
             </div>
         </div>
         <!-- 有氧无氧数据 -->
         <div class="Aerobic_anaerobic" >
             <div class="pr_pl15">
-                <div class="aerobic_info " v-if="totalFitnessData.aerobicDeviceList == []">
+                <div class="aerobic_info " v-if="aerobic.length > 0">
                     <div class="text-title">有氧</div>
                     <ul>
                         <li v-for="(item,i) in aerobic" :key="i">
                             <img :src="item.src" alt="">
                             <dl>
                                 <dt>{{item.name}}</dt>
-                                <dt v-if="item.time<3600">{{Math.floor(item.time/60)}}分钟</dt>
-                                <dt v-if="item.time>3600">{{Math.floor(item.time/3600)}}小时</dt>
+                                <dt v-if="item.time<3600">{{item.time}}分钟</dt>
+                                <dt v-if="item.time>3600">{{item.time}}小时</dt>
                             </dl>
                         </li>
                     </ul>
                 </div>
-                <div class="aerobic_info " v-if="totalFitnessData.anaerobicDeviceList == []">
+                <div class="aerobic_info " v-if="anaerobic.length > 0">
                     <div class="text-title">无氧</div>
                     <ul>
                         <li v-for="(item,i) in anaerobic" :key="i">
                             <img :src="item.src" alt="">
                             <dl>
                                 <dt>{{item.name}}</dt>
-                                <dt v-if="item.time<3600">{{Math.floor(item.time/60)}}分钟</dt>
-                                <dt v-if="item.time>3600">{{Math.floor(item.time/3600)}}小时</dt>
+                                <dt v-if="item.time<3600">{{item.time}}分钟</dt>
+                                <dt v-if="item.time>3600">{{item.time}}小时</dt>
                             </dl>
                         </li>
                     </ul>
@@ -131,7 +134,7 @@
             </div>
         </div>
         <!-- 查看详情 -->
-        <div class="posi_btn" v-if="totalFitnessData.totalExerciseTime!==0">
+        <div class="posi_btn" v-if="totalFitnessData.totalExerciseTime!==0 || totalFitnessData.totalExerciseTime==!null">
             <van-button type="primary" size="large" round @click="echartsSurface">查看详情</van-button>
         </div>
     </div>
@@ -160,7 +163,9 @@ export default {
             show:true,
             show2:false,
             show3:false,
+            show4:true,
             disabledTab:false,
+            // userId:'1128609374529040385',
             userId:this.$route.query.userId,
             dayTime:''
         }
@@ -176,8 +181,11 @@ export default {
         var that = this;
         // this.initTime();
         // this.getAweek();
+        sessionStorage.setItem('aa',JSON.stringify(this.aerobic))
+        sessionStorage.setItem('bb',JSON.stringify(this.anaerobic))
         this.initFitnessData();
         // this.initComprehensiveData();
+        that.show4 = true;
         this.$nextTick(() =>{
             var startx, starty;
             document.addEventListener("touchstart", function(e){
@@ -199,10 +207,11 @@ export default {
                         break;
                     case 2:
                         // alert("向下！");
-                        that.show = true;
-                        // that.show2 = true;
-                        // that.show3 = true;
-                        this.disabledTab = !this.disabledTab;
+                        // that.show = false;
+                        that.show4 = true;
+                        that.show = true
+                        
+                        // this.disabledTab = !this.disabledTab;
                         break;
                     case 3:
                         // alert("向左！");
@@ -268,6 +277,7 @@ export default {
             return result;
         },
         onTabClick(event,item,i){
+            this.show = true;
             this.show2 = false;
             this.show3 = false;
             var dd = new Date();
@@ -345,9 +355,10 @@ export default {
             },
             calendar(){
                 // alert(1)
-                this.show = !this.show;
+                // this.show = !this.show;
                 this.show2 = !this.show2;
                 this.show3 = !this.show3;
+                this.show4 = !this.show4;
                 // this.disabledTab = !this.disabledTab;
             },
             getnewDay(i){
@@ -487,8 +498,11 @@ export default {
                     console.log('综合数据',res);
                     if(res.data.code == 2000){
                         this.totalFitnessData = res.data.obj
-                        const aerobic = this.aerobic;
-                        const anaerobic = this.anaerobic;
+                        // const aerobic = this.aerobic;
+                        const aerobic = JSON.parse(sessionStorage.getItem('aa'));
+                        console.log(aerobic,'json')
+                        // const anaerobic = this.anaerobic;
+                        const anaerobic = JSON.parse(sessionStorage.getItem('bb'));
                         const arr = [];//有氧
                         const arr2 = [];//无氧
                         if(this.totalFitnessData.aerobicDeviceList !=null || this.totalFitnessData.aerobicDeviceList != undefined){
@@ -496,24 +510,36 @@ export default {
                             const anaerobicDeviceList = this.totalFitnessData.anaerobicDeviceList;
                             console.log('有氧1',aerobicDeviceList)
                             // console.log('有氧2',aerobic)
-                            for(var n in aerobicDeviceList){
-                                if(aerobicDeviceList[n].name == aerobic[n].name){
-                                    arr.push({"src":aerobic[n].src,"name":aerobic[n].name,"time":aerobicDeviceList[n].time})
+                            var newList = aerobicDeviceList.map((value, index) => {
+                                if (value.name !==null ? value.name.includes("跑步机") : '') {
+                                    value.name = "跑步机";
+                                }
+                                if (value.name !==null ? value.name.includes("动感单车") : '') {
+                                    value.name = "动感单车";
+                                }
+                                
+                                console.log("value:" + value.name);
+                                return value;
+                                });
+                                console.log("还是", newList);
+                            for(var n in newList){
+                                if(newList[n].name == aerobic[n].name){
+                                    arr.push({"src":aerobic[n].src,"name":aerobic[n].name,"time":newList[n].time})
                                 }else {
                                     for(var j in aerobic){
-                                        if(aerobic[j].name == aerobicDeviceList[n].name){
-                                            arr.push({"src":aerobic[j].src,"name":aerobic[j].name,"time":aerobicDeviceList[n].time})
+                                        if(aerobic[j].name == newList[n].name){
+                                            arr.push({"src":aerobic[j].src,"name":aerobic[j].name,"time":newList[n].time})
                                         }
                                     }
                                 }
                             }
                             for(var n in anaerobicDeviceList){
                                 if(anaerobicDeviceList[n].name == anaerobic[n].name){
-                                    arr.push({"src":anaerobic[n].src,"name":anaerobic[n].name,"time":anaerobicDeviceList[n].time})
+                                    arr2.push({"src":anaerobic[n].src,"name":anaerobic[n].name,"time":anaerobicDeviceList[n].time})
                                 }else {
                                     for(var j in anaerobic){
                                         if(anaerobic[j].name == aerobicDeviceList[n].name){
-                                            arr.push({"src":anaerobic[j].src,"name":anaerobic[j].name,"time":anaerobicDeviceList[n].time})
+                                            arr2.push({"src":anaerobic[j].src,"name":anaerobic[j].name,"time":anaerobicDeviceList[n].time})
                                         }
                                     }
                                 }
@@ -522,6 +548,7 @@ export default {
                         console.log('有氧新数据',arr);
                         console.log('无氧新数据',arr2);
                         this.$set(this,'aerobic',[...arr])
+                        console.log(this.aerobic.length)
                         this.$set(this,'anaerobic',[...arr2])
                     }
                 }).catch(err =>{
@@ -531,7 +558,10 @@ export default {
         echartsSurface(){
             this.$router.push({
                 path:'/echartsInfo',
-                userId: this.userId,
+                query:{
+                    userId: this.userId,
+                }
+                
             })
         }
     }

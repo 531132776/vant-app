@@ -172,3 +172,12 @@ export function typeDetails(p) {
         params: p
     })
 }
+
+//获取包月私教的购买数量
+export function getMonthCoachNumb(p) {
+    return request({
+        url: 'gymCoach/gymAndClubManager/privateMonthCourse/selectByCourseId',
+        method: 'get',
+        params: p
+    })
+}

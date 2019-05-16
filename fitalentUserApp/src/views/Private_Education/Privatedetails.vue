@@ -279,7 +279,8 @@ export default {
             else if(item.courseType == 4){
                 //团课预约
                 this.$router.push({
-                    path:'/leagueDetails?courseId='+item.courseId+'&userId='+this.userId,
+                    // path:'/leagueDetails?courseId='+item.courseId+'&userId='+this.userId,
+                    path:'/trainingCamp?courseId='+item.courseId+'&userId='+this.userId,
                     // query:{
                     //     privateCourseId:item.courseId,
                     //     courseType:item.courseType

@@ -80,7 +80,7 @@
                 <div style="height:480px;background:rgba(242,242,242,1);">
                     <div class="popupTitel">
                         <span>选择优惠券</span>
-                        <!-- <van-icon id="close" name="cross" /> -->
+                        <van-icon @click="show=false" id="close" name="cross" />
                     </div>
                     <div class="popupwarp">
                         <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
@@ -122,7 +122,7 @@
 </template>
 <script>
 import { Cell, CellGroup,Checkbox,Button,Toast,Popup,Radio,Icon} from 'vant';
-import { GetTrainingCamp,AddTrainingOrder,GetCouponRecordList} from '@/request/api-liu'
+import { GetTrainingCamp,AddOrder,GetCouponRecordList} from '@/request/api-liu'
 export default {
        data(){
         return{
@@ -167,8 +167,6 @@ export default {
         this.courseId = this.$route.query.courseId
         this.userId = this.$route.query.userId
         this.init()
-        
-        
     },
     methods:{
         //确认订单
@@ -191,7 +189,7 @@ export default {
         },
         GetCouponList(){
             GetCouponRecordList({
-                userId:'1128594557592317953',
+                userId: this.$route.query.userId,
                 type:this.trainingCampList.courseType,
                 goodsNum:this.trainingCampList.classHour,
                 amount:this.trainingCampList.price,
@@ -245,9 +243,7 @@ export default {
                 }
                 this.total = this.afterCoupon
             }
-           
             console.log(choosePopup[0],'uid')
-            
         },
          trainingMayment(){
            if(!this.checked){
@@ -261,9 +257,9 @@ export default {
                     couponId:this.couponId,
                     productId: this.trainingCampList.trainingCampBusinessId,
                     productType: this.trainingCampList.courseType,
-                    userId: '1128594557592317953'
+                    userId: this.$route.query.userId
                 }
-            AddTrainingOrder(params).then(res=>{
+            AddOrder(params).then(res=>{
                 this.obj = res.data.obj
                 this.obj.type = 'pay'
                 if(this.total = 0){
@@ -319,7 +315,12 @@ export default {
             height:50px;
             background:rgba(255,255,255,1);
             display:flex;
+            align-items: center;
             justify-content: space-between;
+            .van-icon{
+                font-size: 25px;
+                margin-right: 15px;
+            }
             // padding-left:15px;
             span{
                 display: inline-block;

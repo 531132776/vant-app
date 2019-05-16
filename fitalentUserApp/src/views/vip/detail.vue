@@ -10,14 +10,14 @@
         <div class="order_cell">
             <div class="tabs">
                 <div class="tab_year" @click="toggleYear()"  :class="{'active':yearShow===true}">
-                    <p class="title">年会员</p>
-                    <p class="day">365天</p>
-                    <p class="money">￥1280</p>
+                    <p class="title">{{yearObj[0].name}}</p>
+                    <p class="day">{{yearObj[0].validity}}天</p>
+                    <p class="money">￥{{yearObj[0].price}}</p>
                 </div>
                 <div class="tab_month" @click="toggleMonth()" :class="{'active':monthShow===true}">
-                    <p class="title">月会员</p>
-                    <p class="day">30天</p>
-                    <p class="money">￥200</p>
+                    <p class="title">{{monthObj[0].name}}</p>
+                    <p class="day">{{monthObj[0].validity}}天</p>
+                    <p class="money">￥{{monthObj[0].price}}</p>
                 </div>
             </div>
             <div class="year_content pr_pl15" v-if="yearShow">
@@ -77,6 +77,10 @@ export default {
         return{
             yearShow:true,
             monthShow:false,
+            yearObj:[],
+            monthObj:{},
+            uid:'',
+            userId:111,
             timeStr:'',
             vipList:[],
         }
@@ -93,18 +97,34 @@ export default {
                 
             })
             GetVipList().then(res=>{
-                this.vipList = res.obj
+                this.yearObj = res.data.obj.filter((item=>{
+                    if(item.type == 1000){
+                        return item.uid
+                    }
+                }))
+                this.monthObj = res.data.obj.filter((item=>{
+                    if(item.type == 1001){
+                        return item.uid
+                    }
+                }))
+                this.uid = this.yearObj[0].uid
             })
 
         },
-        
+        appointment(){
+            this.$router.push({
+                path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
+            })
+        },
         toggleYear(){
             this.yearShow = true
             this.monthShow = false
+            this.uid = this.yearObj[0].uid
         },
         toggleMonth(){
             this.monthShow = true
             this.yearShow = false
+            this.uid = this.monthObj[0].uid
         }
     },
      components:{

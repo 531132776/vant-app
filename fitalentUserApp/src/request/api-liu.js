@@ -67,7 +67,7 @@ export function GetTrainingCamp(p) {
 }
 
 //生成训练营订单
-export function AddTrainingOrder(p) {
+export function AddOrder(p) {
     return request({
         url:'/gym-order/order',
         method: 'post',
@@ -101,11 +101,31 @@ export function IsVIP(userId){
     })
 }
 
+//会员列表
 export function GetVipList(){
     return request({
         url:'/gymApi/gymApi/membershipCard/listAllShow',
         method:'get',
     })
 }
+
+//会员详情
+export function GetVipDetail(uid){
+    return request({
+        url:'/gymApi/gymApi/membershipCard/'+uid,
+        method:'get',
+    })
+}
+
+export function AddOrderMen(p){
+    return request({
+        url:'/gym-order/order/mem',
+        method:'post',
+        data:p
+    })
+}
+
+
+
 
 

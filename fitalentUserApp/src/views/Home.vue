@@ -133,7 +133,7 @@ export default {
         
       ],
       heartRate:[],
-      newDate:[15,47,7,54,43,32,89,90,98.67,76,84,55,32,69]
+      newDate:[0,0,0,0,0,0,0,0]
     }
   },
   mounted(){
@@ -144,7 +144,7 @@ export default {
      var item = this.newDate.map((v,i) => {
        console.log('股份',v,i)
        
-          if(v>0 && v<=59){
+          if(v>=0 && v<=59){
             // alert(1)
               this.heartRate.push({
                 color:'4',
@@ -190,16 +190,7 @@ export default {
         num = 2
         console.log(num)
       }
-      // else if(this.heartRate.length>=30 && this.heartRate.length<=40){
-      //   num = 4
-      // }else if(this.heartRate.length>=40 && this.heartRate.length<=50){
-      //   num = 6
-      // }
-      // else if(this.heartRate.length<=60){
-      //   num = 7
-      // }else if(this.heartRate.length>60){
-      //   num = 5
-      // }
+      
           var chart = new F2.Chart({
         id: 'histogramList',
         pixelRatio: window.devicePixelRatio
@@ -234,105 +225,105 @@ export default {
 }
 </script>
 <style lang="less">
-.canvasWarp{
-  overflow: hidden;margin-left: -15px;
-}
-* {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  -webkit-overflow-scrolling: touch;
-  -webkit-overflow-scrolling: none;
-}
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-html {
-  font-family: "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif;
-}
-body {
-  margin: 0;
-  font-weight: 400;
-  line-height: 1.5;
-  overflow: hidden;
-}
-img {
-  vertical-align: middle;
-  border-style: none;
-}
-.tip {
-  font-size: 12px;
-  color: #808080;
-  text-align: center;
-}
-.header {
-  padding: 4.26666667vw;
-  font-size: 4.26666667vw;
-  line-height: 6vw;
-}
-.icon {
-  display: inline-block;
-  width: 4.26666667vw;
-  height: 4.26666667vw;
-  background-image: url(https://gw.alipayobjects.com/zos/rmsportal/oLOjjJWHatTpgfygoLbE.png);
-  background-size: cover;
-  vertical-align: -1px;
-  margin-right: 6.66666667vw;
-  position: relative;
-}
-.icon:after {
-  content: '';
-  position: absolute;
-  top: 1px;
-  right: -12px;
-  width: 1px;
-  height: 4.26666667vw;
-  background-color: #979797;
-}
-.chart-wrapper {
-  background-color: #fff;
-}
-canvas {
-  display: block;
-  width: 100vw;
-  height: 69.33333333vw;
-}
-@media all and (orientation: landscape) {
-  canvas {
-    display: block;
-    width: 100vw;
-    height: 48.12593703vw;
-  }
-  .header {
-    padding: 2.3988006vw;
-    font-size: 2.3988006vw;
-    line-height: 3.37331334vw;
-  }
-  .icon {
-    display: inline-block;
-    width: 2.3988006vw;
-    height: 2.3988006vw;
-    background-image: url(https://gw.alipayobjects.com/zos/rmsportal/oLOjjJWHatTpgfygoLbE.png);
-    background-size: cover;
-    vertical-align: -1px;
-    margin-right: 3.74812594vw;
-    position: relative;
-  }
-  .icon:after {
-    content: '';
-    position: absolute;
-    top: 1px;
-    right: -12px;
-    width: 1px;
-    height: 2.3988006vw;
-    background-color: #979797;
-  }
+// .canvasWarp{
+//   overflow: hidden;margin-left: -15px;
+// }
+// * {
+//   -webkit-user-select: none;
+//   -moz-user-select: none;
+//   -khtml-user-select: none;
+//   -ms-user-select: none;
+//   -o-user-select: none;
+//   user-select: none;
+//   -webkit-overflow-scrolling: touch;
+//   -webkit-overflow-scrolling: none;
+// }
+// *,
+// *::before,
+// *::after {
+//   box-sizing: border-box;
+// }
+// html {
+//   font-family: "Helvetica Neue", "San Francisco", Helvetica, Tahoma, Arial, "PingFang SC", "Hiragino Sans GB", "Heiti SC", "Microsoft YaHei", sans-serif;
+// }
+// body {
+//   margin: 0;
+//   font-weight: 400;
+//   line-height: 1.5;
+//   overflow: hidden;
+// }
+// img {
+//   vertical-align: middle;
+//   border-style: none;
+// }
+// .tip {
+//   font-size: 12px;
+//   color: #808080;
+//   text-align: center;
+// }
+// .header {
+//   padding: 4.26666667vw;
+//   font-size: 4.26666667vw;
+//   line-height: 6vw;
+// }
+// .icon {
+//   display: inline-block;
+//   width: 4.26666667vw;
+//   height: 4.26666667vw;
+//   background-image: url(https://gw.alipayobjects.com/zos/rmsportal/oLOjjJWHatTpgfygoLbE.png);
+//   background-size: cover;
+//   vertical-align: -1px;
+//   margin-right: 6.66666667vw;
+//   position: relative;
+// }
+// .icon:after {
+//   content: '';
+//   position: absolute;
+//   top: 1px;
+//   right: -12px;
+//   width: 1px;
+//   height: 4.26666667vw;
+//   background-color: #979797;
+// }
+// .chart-wrapper {
+//   background-color: #fff;
+// }
+// canvas {
+//   display: block;
+//   width: 100vw;
+//   height: 69.33333333vw;
+// }
+// @media all and (orientation: landscape) {
+//   canvas {
+//     display: block;
+//     width: 100vw;
+//     height: 48.12593703vw;
+//   }
+//   .header {
+//     padding: 2.3988006vw;
+//     font-size: 2.3988006vw;
+//     line-height: 3.37331334vw;
+//   }
+//   .icon {
+//     display: inline-block;
+//     width: 2.3988006vw;
+//     height: 2.3988006vw;
+//     background-image: url(https://gw.alipayobjects.com/zos/rmsportal/oLOjjJWHatTpgfygoLbE.png);
+//     background-size: cover;
+//     vertical-align: -1px;
+//     margin-right: 3.74812594vw;
+//     position: relative;
+//   }
+//   .icon:after {
+//     content: '';
+//     position: absolute;
+//     top: 1px;
+//     right: -12px;
+//     width: 1px;
+//     height: 2.3988006vw;
+//     background-color: #979797;
+//   }
 
-}
+// }
 </style>
 

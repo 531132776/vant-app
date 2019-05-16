@@ -22,7 +22,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(motionDataObj.totalExerciseTime/60)}}</em>分钟
+                          <em>{{(motionDataObj.totalExerciseTime)}}</em>分钟
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -100,7 +100,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{Math.floor(powerMotionData.motionTime/60)}}</em>分钟
+                          <em>{{powerMotionData.motionTime}}</em>分钟
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -109,7 +109,7 @@
                           <img src="../../assets/images/时长copy@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{Math.floor((powerMotionData.distance/1000).toFixed(2)/(new Number(powerMotionData.motionTime/3600)).toFixed(2))}}</em>公里/每小时
+                          <em>{{powerMotionData.distance/(powerMotionData.motionTime/60)}}</em>公里/小时
                         </dt>
                         <dt>平均速度</dt>
                       </dl>
@@ -134,7 +134,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.calorie/1000).toFixed(2)}}</em>大卡
+                          <em>{{powerMotionData.calorie}}</em>大卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -143,7 +143,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.distance/1000).toFixed(2)}}</em>公里
+                          <em>{{powerMotionData.distance}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -162,7 +162,7 @@
                       :key="i"
                     >
                       <td>{{item.speed}}公里/小时</td>
-                      <td>{{Math.floor(item.time/60)}}分钟</td>
+                      <td>{{item.time}}分钟</td>
                     </tr>
                     <!-- 
                           <tr>
@@ -184,7 +184,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{Math.floor(powerMotionData.motionTime/60)}}</em>分钟
+                          <em>{{powerMotionData.motionTime}}</em>分钟
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -244,8 +244,8 @@
                     v-for="(item,i) in powerMotionData.dataDetails!=null?powerMotionData.dataDetails:[]"
                     :key="i"
                   >
-                    <!-- <td>{{item}}</td> -->
-                    <!-- <td>{{item}}</td> -->
+                    <td>{{item.heavy}}公斤</td>
+                    <td>{{item.times}}次</td>
                   </tr>
                   <!-- </tbody> -->
                 </table>
@@ -436,256 +436,7 @@ export default {
           a: "1"
         }
       ],
-      data2: [
-        {
-          year: 1,
-          sales: 38
-        },
-        {
-          year: 2,
-          sales: 52
-        },
-        {
-          year: 3,
-          sales: 61
-        },
-        {
-          year: 4,
-          sales: 145
-        },
-        {
-          year: 5,
-          sales: 18
-        },
-        {
-          year: 6,
-          sales: 38
-        },
-        {
-          year: 7,
-          sales: 8
-        },
-        {
-          year: 8,
-          sales: 38
-        },
-        {
-          year: 9,
-          sales: 38
-        },
-        {
-          year: 10,
-          sales: 52
-        },
-        {
-          year: 11,
-          sales: 61
-        },
-        {
-          year: 12,
-          sales: 145
-        },
-        {
-          year: 13,
-          sales: 48
-        },
-        {
-          year: 14,
-          sales: 38
-        },
-        {
-          year: 15,
-          sales: 38
-        },
-        {
-          year: 16,
-          sales: 38
-        },
-        {
-          year: 17,
-          sales: 38
-        },
-        {
-          year: 18,
-          sales: 52
-        },
-        {
-          year: 19,
-          sales: 61
-        },
-        {
-          year: 20,
-          sales: 145
-        },
-        {
-          year: 21,
-          sales: 18
-        },
-        {
-          year: 22,
-          sales: 38
-        },
-        {
-          year: 23,
-          sales: 8
-        },
-        {
-          year: 24,
-          sales: 52
-        },
-        {
-          year: 25,
-          sales: 61
-        },
-        {
-          year: 26,
-          sales: 145
-        },
-        {
-          year: 27,
-          sales: 18
-        },
-        {
-          year: 28,
-          sales: 38
-        },
-        {
-          year: 29,
-          sales: 8
-        },
-        {
-          year: 30,
-          sales: 8
-        },
-        {
-          year: 31,
-          sales: 8
-        },
-        {
-          year: 32,
-          sales: 10
-        },
-        {
-          year: 33,
-          sales: 8
-        },
-        {
-          year: 34,
-          sales: 8
-        },
-        {
-          year: 35,
-          sales: 10
-        },
-        {
-          year: 36,
-          sales: 8
-        },
-        {
-          year: 37,
-          sales: 10
-        },
-        {
-          year: 38,
-          sales: 8
-        },
-        {
-          year: 39,
-          sales: 8
-        },
-        {
-          year: 40,
-          sales: 10
-        },
-        {
-          year: 41,
-          sales: 8
-        },
-        {
-          year: 42,
-          sales: 10
-        },
-        {
-          year: 43,
-          sales: 10
-        },
-        {
-          year: 44,
-          sales: 8
-        },
-        {
-          year: 45,
-          sales: 10
-        },
-        {
-          year: 46,
-          sales: 18
-        },
-        {
-          year: 47,
-          sales: 10
-        },
-        {
-          year: 48,
-          sales: 12
-        },
-        {
-          year: 49,
-          sales: 18
-        },
-        {
-          year: 50,
-          sales: 20
-        },
-        {
-          year: 51,
-          sales: 18
-        },
-        {
-          year: 52,
-          sales: 10
-        },
-        {
-          year: 53,
-          sales: 12
-        },
-        {
-          year: 54,
-          sales: 18
-        },
-        {
-          year: 55,
-          sales: 20
-        },
-        {
-          year: 56,
-          sales: 20
-        },
-        {
-          year: 57,
-          sales: 18
-        },
-        {
-          year: 58,
-          sales: 20
-        },
-        {
-          year: 59,
-          sales: 20
-        },
-        {
-          year: 60,
-          sales: 18
-        },
-        {
-          year: 61,
-          sales: 20
-        },
-        {
-          year: 62,
-          sales: 20
-        }
-      ],
+      
       userId: this.$route.query.userId,
       tabLists: [],
       aggregate: houseAimg3.images,
@@ -724,10 +475,10 @@ export default {
       this.initTypeDetail(type, id);
     },
     init() {
-      const userId = "100";
-      // const userId = this.userId;
-      // const subscribeDate = this.getNowFormatDate();
-      const subscribeDate = "2019-05-05";
+      // const userId = "1128609374529040385";
+      const userId = this.userId;
+      const subscribeDate = this.getNowFormatDate();
+      // const subscribeDate = "2019-05-05";
       console.log(subscribeDate);
       siveDataDetails(userId, subscribeDate)
         .then(res => {
@@ -735,10 +486,10 @@ export default {
           if (res.data.code == 2000) {
             this.tabLists = res.data.obj || [];
             var newList = this.tabLists.map((value, index) => {
-              if (value.name.includes("跑步机")) {
+              if (value.name !==null ? value.name.includes("跑步机") : '') {
                 value.name = "跑步机";
               }
-              if (value.name.includes("动感单车")) {
+              if (value.name !==null ? value.name.includes("动感单车") : '') {
                 value.name = "动感单车";
               }
               
@@ -747,10 +498,14 @@ export default {
             });
             console.log("还是", newList);
             const aggregate = this.aggregate;
+            console.log('josn',aggregate)
             const arr = [];
             if (this.tabLists.length > 0) {
               for (var n in newList) {
-                if (newList[n].name == aggregate[n].name) {
+                if(newList[n].name !==null){
+
+                
+                if (newList[n].name === aggregate[n].name) {
                   arr.push({
                     src: aggregate[n].src,
                     img: aggregate[n].img,
@@ -761,7 +516,7 @@ export default {
                   });
                 } else {
                   for (var j in aggregate) {
-                    if (aggregate[j].name == newList[n].name) {
+                    if (aggregate[j].name === newList[n].name) {
                       arr.push({
                         src: aggregate[j].src,
                         img: aggregate[j].img,
@@ -772,6 +527,7 @@ export default {
                       });
                     }
                   }
+                }
                 }
               }
             }
@@ -792,8 +548,8 @@ export default {
     initTypeDetail(type, id) {
       let params = {
         type: type,
-        userId: "100",
-        // userId: this.userId,
+        // userId: "1128609374529040385",
+        userId: this.userId,
         motionId: id
       };
       typeDetails(params)
@@ -842,31 +598,7 @@ export default {
           console.log("请求错误！", err);
         });
     },
-    intipriec() {
-      var num = 4;
-      var chart = new F2.Chart({
-        id: "histogramList",
-        pixelRatio: window.devicePixelRatio
-      });
-
-      chart.source(this.data2, {
-        year: {
-          tickCount: num,
-          min: 0
-        }
-      });
-      chart.tooltip({
-        showItemMarker: false,
-        onShow: function onShow(ev) {
-          var items = ev.items;
-          items[0].name = null;
-          items[0].name = items[0].title;
-          items[0].value = "¥ " + items[0].value;
-        }
-      });
-      chart.interval().position("year*sales");
-      chart.render();
-    },
+  
     initPiechart() {
       var motionPoint = new Number(
         this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
@@ -922,7 +654,87 @@ export default {
       });
       chart.render();
     },
-
+    intipriec(){
+     var item = this.heartRate.map((v,i) => {
+       console.log('股份',v,i)
+       
+          if(v>=0 && v<=59){
+            // alert(1)
+              this.heartArr.push({
+                color:'4',
+                year: i+1,
+                sales: v
+              })
+          }
+          else if(v>59 && v<=69){
+            // alert(1)
+              this.heartArr.push({
+                color:'1',
+                year: i+1,
+                sales: v
+              })
+          }
+          else if(v>69 && v<=79){
+            
+              this.heartArr.push({
+                color:'2',
+                year: i+1,
+                sales: v
+              })
+          }
+          else if(v>79 && v<=89){
+            // alert(1)
+              this.heartArr.push({
+                color:'3',
+                year: i+1,
+                sales: v
+              })
+          }
+          else if(v>=90){
+              this.heartArr.push({
+                color:'0',
+                year: i+1,
+                sales: v
+              })
+          }
+          console.log(this.heartArr)
+     })
+      var num = 4;
+      if(this.heartArr.length<=3){
+        num = 2
+        console.log(num)
+      }
+      
+          var chart = new F2.Chart({
+        id: 'histogramList',
+        pixelRatio: window.devicePixelRatio
+      });
+      chart.legend(false);
+      chart.source(this.heartArr, {
+        year: {
+          tickCount: num,
+          // min:0,
+          formatter: function formatter(val,i) {
+            console.log('year',val,i)
+            return val.toFixed(0)+'min'
+          }
+        },
+        sales:{
+          // tickCount: 4,
+          // min:0,
+          // max:100,
+          formatter: function formatter(val) {
+            console.log(val)
+            return (val * 1).toFixed(0)+'%';
+           
+          }
+        }
+      });
+      
+      chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
+      chart.render();
+      
+      },
     //时间戳转换日期
 
     getNowFormatDate() {

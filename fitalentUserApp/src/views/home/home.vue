@@ -488,7 +488,7 @@
             toLeagueClass(item) {
                 let url = {
                     // url: this.LeagueClass.url + "?courseId=" + item.courseId + "&userId=" + this.userId
-                    url: this.TrainingCamp.url + "?courseId=" + item.courseId + "&userId=" + this.userId
+                    url: this.TrainingCamp.url + "?courseId=" + item.courseId + "&userId=" + this.userId + '&leagueStatus=4'
                 }
                 console.log("LeagueClass jump url:" + url.url)
                 if (this.isAndroid) {

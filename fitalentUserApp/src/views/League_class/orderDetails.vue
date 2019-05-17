@@ -1,8 +1,8 @@
 <template>
     <div class="order_details">
         <div class="order_img pr_pl15">
-            <div >
-                <img :src="immageDto.coverUrl.url" alt="">
+            <div>
+                <img :src="coverImg" alt="">
             </div>
             <div class="order_text">
                 <span>{{trainingCampList.courseName}}</span>
@@ -63,7 +63,8 @@
                 <van-cell>
                     <span>购前须知</span>
                     <p style="display:flex;justify-content: space-between;">
-                        <router-link to="/trainingCampAgreement" style="color:#3A5891">同意《健康传奇训练营服务协议》</router-link>
+                        <router-link v-if="trainingCampList.courseType == 0" to="/trainingCampAgreement" style="color:#3A5891">同意《健康传奇训练营服务协议》</router-link>
+                        <router-link v-if="trainingCampList.courseType == 4" to="/leagueClassAgreement" style="color:#3A5891">同意《健康传奇团课服务协议》</router-link>
                         <van-checkbox v-model="checked">
                             <img
                                 style="width:22px;"
@@ -84,7 +85,12 @@
                     </div>
                     <div class="popupwarp">
                         <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
-                            <div class="popupItemOne">
+                            <div class="popupItemOneBlue" v-if="item.couponType == 1">
+                                <span style="font-size:17px">{{item.discountValue}}</span>
+                                <span v-if="item.couponType == 0">代金券</span>
+                                <span v-if="item.couponType == 1">免费券</span>
+                            </div>
+                            <div class="popupItemOneYellow" v-if="item.couponType == 0">
                                 <span style="font-size:17px">{{item.discountValue}}</span>
                                 <span v-if="item.couponType == 0">代金券</span>
                                 <span v-if="item.couponType == 1">免费券</span>
@@ -92,7 +98,7 @@
                             <div class="popupItemTwo">
                                 <div class="popupText">
                                     <p>{{item.remark}}</p>
-                                    <p>{{item.effectiveTime}}-{{item.expireTime}}</p>
+                                    <p>{{item.effectiveTime}} ~ {{item.expireTime}}</p>
                                 </div>
                                 <div class="popupIcon">
                                     <van-checkbox v-model="item.checkStatus" >
@@ -114,20 +120,21 @@
           <!-- 预约 -->
         <div class="appointment pr_pl15">
             <div class="appointment_icon" @click="callService()"> 
-                <span>共计：¥{{trainingCampList.price - afterCoupon}}</span>
+                <span>共计：¥{{total}}</span>
             </div>
             <van-button class="appointment_btn"  @click="trainingMayment()" type="primary">确认订单</van-button>
         </div>
     </div>
 </template>
 <script>
-import { Cell, CellGroup,Checkbox,Button,Toast,Popup,Radio,Icon} from 'vant';
+import { Cell, CellGroup,Checkbox,Button,Toast,Popup,Radio,Icon,Dialog} from 'vant';
 import { GetTrainingCamp,AddOrder,GetCouponRecordList} from '@/request/api-liu'
 export default {
        data(){
         return{
             checked: false,
             courseId:'',
+            coverImg:'',
             checked1:false,
             checked2:false,
             afterCoupon:0,
@@ -136,6 +143,36 @@ export default {
             goodCourse:[],
             couponCount:'',
             couponList:[
+                {
+                    activeAble:0,
+                    checkStatus:false,
+                    couponName:"代金券",
+                    couponType:0,
+                    discountType:0,
+                    discountValue:"0.0005",
+                    effectiveTime:"2019-05-17",
+                    expireTime:"2019-06-16",
+                    remark:"仅限训练营使用",
+                    thresholdType:0,
+                    thresholdValue:"0.01",
+                    uid:"1129297205593272322",
+                    userId:"1129297203911352322",
+                }, 
+                {
+                    activeAble:0,
+                    checkStatus:false,
+                    couponName:"代金券",
+                    couponType:0,
+                    discountType:0,
+                    discountValue:"0.0007",
+                    effectiveTime:"2019-05-17",
+                    expireTime:"2019-06-16",
+                    remark:"仅限训练营使用",
+                    thresholdType:0,
+                    thresholdValue:"0.01",
+                    uid:"1129297205593272321",
+                    userId:"1129297203911352321",
+                }
             ],
             icon: {
             normal:require("../../assets/images/勾 2@2x.png"),
@@ -161,7 +198,8 @@ export default {
         [Toast.name]:Toast,
         [Popup.name]:Popup,
         [Radio.name]:Radio,
-        [Icon.name]:Icon
+        [Icon.name]:Icon,
+        [Dialog.name]:Dialog
     },
     created(){
         this.courseId = this.$route.query.courseId
@@ -178,8 +216,8 @@ export default {
                 this.coachList = res.data.obj.coach
                 this.immageDto = res.data.obj.immageDto
                 this.goodCourse = res.data.obj.classStartTime.split("/ ")
-                this.total = this.trainingCampList.price
-                console.log(this.goodCourse)
+                this.total = this.trainingCampList.price*this.trainingCampList.classHour
+                this.coverImg = this.immageDto.coverUrl.url
                 // this.goodCourse = res.data.obj.coach.goodCourse.split("、")
                 // this.onlyPeopele = (res.data.obj.startClassNum - res.data.obj.peopleNum)
                 // this.swiperImgs = this.immageDto.spreadUrl
@@ -196,8 +234,12 @@ export default {
             }).then(res=>{
                 console.log(res,'res')
                 this.couponCount = res.data.obj.count
-                res.data.obj.list[0].checkStatus = true
-                this.couponList = res.data.obj.list
+                if(res.data.obj.list.length>0){
+                    res.data.obj.list[0].checkStatus = true
+                    this.couponList = res.data.obj.list
+                }
+                //this.couponCount = 2
+                //this.couponCount[0].checkStatus = true
                 console.log(res)
             })
         },
@@ -213,44 +255,47 @@ export default {
             }
         },
         checked1111(){
-            alert(1)
+           
         },
         popup(){
             if(this.couponCount != 0){
                 this.show = true
             }
         },
-        appointment(){
-            if(!this.checked){
-                Toast('请勾选健康传奇训练营服务协议');
-            }
-            
-        },
         choosePopup(){
             this.show = false
-            var choosePopup = this.couponList.filter((item)=>{
+            var choosePopup = this.couponList.find((item)=>{
                 if(item.checkStatus == true){
-                    return item.uid
+                    return item
+                }else{
+                    return item
                 }
             })
-            this.couponId = choosePopup[0].uid
-            if(choosePopup[0].couponType == 1){
-                 this.afterCoupon = this.trainingCampList.price
-            }else if(choosePopup[0].couponType == 0){
-                this.afterCoupon = this.trainingCampList.price - choosePopup[0].discountValue
-                if(this.afterCoupon < 0){
+            if(choosePopup.checkStatus){
+                this.couponId = choosePopup.uid
+                if(choosePopup.couponType == 1){
                     this.afterCoupon = this.trainingCampList.price
+                }else if(choosePopup.couponType == 0){
+                    this.afterCoupon = this.trainingCampList.price*this.trainingCampList.classHour - choosePopup.discountValue
+                    if(this.afterCoupon < 0){
+                        this.afterCoupon = this.trainingCampList.price
+                    }
+                    this.total = this.afterCoupon
                 }
-                this.total = this.afterCoupon
+            }else{
+                this.afterCoupon = 0
+                this.total = this.trainingCampList.price*this.trainingCampList.classHour
             }
-            console.log(choosePopup[0],'uid')
         },
          trainingMayment(){
-           if(!this.checked){
-                Toast('请勾选健康传奇训练营服务协议');
+            if(!this.checked){
+                if(this.trainingCampList.courseType == 4){
+                    Toast('请勾选健康传奇团课服务协议');
+                }else{
+                     Toast('请勾选健康传奇训练营服务协议');
+                }
                 return
             }
-           
             const params = 
                 {   
                     amount: this.trainingCampList.classHour,
@@ -262,8 +307,34 @@ export default {
             AddOrder(params).then(res=>{
                 this.obj = res.data.obj
                 this.obj.type = 'pay'
-                if(this.total = 0){
-                    alert('购买成功')
+                if(this.total == 0){
+                    Dialog.confirm({
+                        title: '下单成功',
+                        cancelButtonText:'首页',
+                        confirmButtonText:'订单中心',
+                        }).then(() => {
+                        // on confirm
+                            if(this.isAndroid){
+                                window.andriod.postMessage(JSON.stringify({
+                                    type:'orderCenter'
+                                }))
+                            }else if (this.isiOS){
+                                window.webkit.messageHandlers.orderCenter.postMessage({
+                                    type:'orderCenter'
+                                })
+                            }
+                        }).catch(() => {
+                        // on cancel
+                            if(this.isAndroid){
+                                window.andriod.postMessage(JSON.stringify({
+                                    type:'Home'
+                                }))
+                            }else if (this.isiOS){
+                                window.webkit.messageHandlers.Home.postMessage({
+                                    type:'Home'
+                                })
+                            }
+                    });
                 }else{
                     if(this.isAndroid){
                         window.andriod.postMessage(JSON.stringify(this.obj))
@@ -287,7 +358,7 @@ export default {
                 margin: 20px 0 10px;
                 color: #323233;
             }
-        } 
+        }
         .van-cell:not(:last-child)::after {
             content: ' ';
             position: absolute;
@@ -352,7 +423,7 @@ export default {
         .popupItem{
             display: flex;
             padding: 10px 20px;
-            .popupItemOne{
+            .popupItemOneBlue{
                 background-image: url(../../assets/images/blue.png);
                 background-repeat: no-repeat;
                 background-size: contain;
@@ -363,7 +434,18 @@ export default {
                 color: rgba(255,255,255,1);
                 width:114px;
                 height:104px;
-                
+            }
+            .popupItemOneYellow{
+                background-image: url(../../assets/images/yellow.png);
+                background-repeat: no-repeat;
+                background-size: contain;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                text-align: center;
+                color: rgba(255,255,255,1);
+                width:114px;
+                height:104px;
             }
             .popupItemTwo{
                 background-image: url(../../assets/images/矩形copy2@2x1.png);

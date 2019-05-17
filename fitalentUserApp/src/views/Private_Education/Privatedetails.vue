@@ -9,7 +9,7 @@
                     <li>
                         <span>{{coachInfo.nickName}}</span>
                         <span>{{coachInfo.age}} {{coachInfo.gender}}</span>
-                        <span>累积上课{{coachInfo.privateCourseNum && coachInfo.privateMonthCourseNum && coachInfo.privateTasteCourseNum && coachInfo.teamClassCourseNum && coachInfo.trainingCampCourseNum ? coachInfo.privateCourseNum+coachInfo.privateMonthCourseNum+coachInfo.privateTasteCourseNum+coachInfo.teamClassCourseNum+coachInfo.trainingCampCourseNum : ''}}节,累积学员{{coachInfo.totalStudent}}人</span>
+                        <span>累积上课{{coachInfo.privateCourseNum==0 && coachInfo.privateMonthCourseNum==0 && coachInfo.privateTasteCourseNum==0 && coachInfo.teamClassCourseNum==0 && coachInfo.trainingCampCourseNum==0?'0':(coachInfo.privateCourseNum + coachInfo.privateMonthCourseNum + coachInfo.privateTasteCourseNum + coachInfo.teamClassCourseNum + coachInfo.trainingCampCourseNum)}}节,累积学员{{coachInfo.totalStudent}}人</span>
                     </li>
                 </ul>
             </div>

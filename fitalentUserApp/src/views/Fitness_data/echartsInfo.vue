@@ -119,7 +119,7 @@
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
-                        <dt>85次/分钟</dt>
+                        <dt>{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.heart==0">
                         <dt>
@@ -485,45 +485,45 @@ export default {
           console.log("初始化数据", res);
           if (res.data.code == 2000) {
             this.tabLists = res.data.obj || [];
-            var newList = this.tabLists.map((value, index) => {
-              if (value.name !==null ? value.name.includes("跑步机") : '') {
-                value.name = "跑步机";
-              }
-              if (value.name !==null ? value.name.includes("动感单车") : '') {
-                value.name = "动感单车";
-              }
+            // var newList = this.tabLists.map((value, index) => {
+            //   if (value.name !==null ? value.name.includes("跑步机") : '') {
+            //     value.name = "跑步机";
+            //   }
+            //   if (value.name !==null ? value.name.includes("动感单车") : '') {
+            //     value.name = "动感单车";
+            //   }
               
-              console.log("value:" + value.name);
-              return value;
-            });
-            console.log("还是", newList);
+            //   console.log("value:" + value.name);
+            //   return value;
+            // });
+            // console.log("还是", newList);
             const aggregate = this.aggregate;
             console.log('josn',aggregate)
             const arr = [];
             if (this.tabLists.length > 0) {
-              for (var n in newList) {
-                if(newList[n].name !==null){
+              for (var n in this.tabLists) {
+                if(this.tabLists[n].name !==null){
 
                 
-                if (newList[n].name === aggregate[n].name) {
+                if (this.tabLists[n].name === aggregate[n].name) {
                   arr.push({
                     src: aggregate[n].src,
                     img: aggregate[n].img,
                     name: aggregate[n].name,
-                    time: newList[n].time,
-                    type: newList[n].type,
-                    id: newList[n].id
+                    time: this.tabLists[n].time,
+                    type: this.tabLists[n].type,
+                    id: this.tabLists[n].id
                   });
                 } else {
                   for (var j in aggregate) {
-                    if (aggregate[j].name === newList[n].name) {
+                    if (aggregate[j].name === this.tabLists[n].name) {
                       arr.push({
                         src: aggregate[j].src,
                         img: aggregate[j].img,
                         name: aggregate[j].name,
-                        time: newList[n].time,
-                        type: newList[n].type,
-                        id: newList[n].id
+                        time: this.tabLists[n].time,
+                        type: this.tabLists[n].type,
+                        id: this.tabLists[n].id
                       });
                     }
                   }

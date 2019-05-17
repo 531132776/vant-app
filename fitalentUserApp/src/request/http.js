@@ -21,14 +21,18 @@ if (process.env.NODE_ENV == 'development') {
 
 }
 
+const service = axios.create({
+    baseURL: "https://gateway.fitalent.com.cn/", // api的base_url
+    timeout: 50000, // 请求超时时间
+})
 // 请求超时时间
-axios.defaults.timeout = 10000;
+service.defaults.timeout = 10000;
 
 // post请求头
-axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+service.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 // 请求拦截器
-axios.interceptors.request.use(
+service.interceptors.request.use(
     config => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
         // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
@@ -42,13 +46,16 @@ axios.interceptors.request.use(
     })
 
 // 响应拦截器
-axios.interceptors.response.use(
+service.interceptors.response.use(
     response => {
-        console.log(response, 'ss')
         if (response.data.code === 2000) {
             return Promise.resolve(response);
         } else {
-            return Promise.reject(err);
+            Toast({
+                message: response.data.message,
+                duration: 3000,
+                forbidClick: true
+            });
         }
     },
     // 服务器状态码不是200的情况    
@@ -98,7 +105,7 @@ axios.interceptors.response.use(
                     // 其他错误，直接抛出错误提示                
                 default:
                     Toast({
-                        message: error.response.data.message,
+                        message: '服务器异常',
                         duration: 1500,
                         forbidClick: true
                     });
@@ -107,43 +114,5 @@ axios.interceptors.response.use(
         }
     }
 );
-/** 
- * get方法，对应get请求 
- * @param {String} url [请求的url地址] 
- * @param {Object} params [请求时携带的参数] 
- */
-export function get(url, params) {
-    return new Promise((resolve, reject) => {
-        axios.get(url, {
-                params: params
-            })
-            .then(res => {
-                resolve(res.data);
-            })
-            .catch(err => {
-                reject(err.data)
-            })
-    });
-}
-/** 
- * post方法，对应post请求 
- * @param {String} url [请求的url地址] 
- * @param {Object} params [请求时携带的参数] 
- */
-export function post(url, params) {
-    return new Promise((resolve, reject) => {
-        axios.post(url, params)
-            .then(res => {
-                resolve(res.data);
-            })
-            .catch(err => {
-                reject(err.data)
-            })
-    });
-}
-
-const service = axios.create({
-    timeout: 5000 // request timeout
-})
 
 export default service

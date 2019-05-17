@@ -4,7 +4,7 @@
             <div class="vip_top">
                 <div>VIP会员</div>
                  <div v-if="timeStr" style="font-size:13px;font-family:PingFangSC-Regular;font-weight:400;">{{timeStr}}</div>
-                <div v-else style="font-size:13px;font-family:PingFangSC-Regular;font-weight:400;">开通即享受会员特权</div>
+                 <div v-else style="font-size:13px;font-family:PingFangSC-Regular;font-weight:400;">开通即享受会员特权</div>
             </div>
         </div>
         <div class="order_cell">
@@ -33,10 +33,22 @@
                         </div>
                     </van-cell>
                     <div class="privilege">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 4@2x.png" alt="">
+                            <span>特权一</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 5@2x.png" alt="">
+                            <span>特权二</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 7@2x.png" alt="">
+                            <span>特权三</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 8@2x.png" alt="">
+                            <span>送手表</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -53,9 +65,18 @@
                         </div>
                     </van-cell>
                     <div class="privilege">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
-                        <img src="../../assets/images/分组 4@2x.png" alt="">
+                       <div class="privilegeItem">
+                            <img src="../../assets/images/分组 4@2x.png" alt="">
+                            <span>特权一</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 5@2x.png" alt="">
+                            <span>特权二</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 7@2x.png" alt="">
+                            <span>特权三</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,19 +101,20 @@ export default {
             yearObj:[],
             monthObj:{},
             uid:'',
-            userId:111,
+            userId:'',
             timeStr:'',
             vipList:[],
         }
     },
     created(){
+        this.userId = this.$route.query.userId
         this.init()
     },
     methods:{
         init(){
-            IsVIP('111').then(res=>{
-                if(res.obj){
-                    this.timeStr = res.obj
+            IsVIP(this.userId).then(res=>{
+                if(res.data.obj){
+                    this.timeStr = res.data.obj
                 }
                 
             })
@@ -288,11 +310,25 @@ export default {
                 display: flex;
                 // justify-content: space-between;
                 margin-top: 20px;
-                img{
-                    width:60px;
-                    margin-right: 35px;
-                    height: 60px;
+                .privilegeItem{
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    margin-right:35px;
+                    img{
+                        width:60px;
+                        height: 60px;
+                    }
+                    span{
+                        height:18px;
+                        font-size:13px;
+                        font-family:PingFangSC-Regular;
+                        font-weight:400;
+                        color:rgba(125,86,30,1);
+                        line-height:2.5;
+                    }
                 }
+              
             }
         }
         .privilegeText{
@@ -324,10 +360,23 @@ export default {
                 display: flex;
                 // justify-content: space-between;
                 margin-top: 20px;
-                img{
-                    margin-right: 35px;
-                    width:60px;
-                    height: 60px;
+                .privilegeItem{
+                    display: flex;
+                    flex-direction: column;
+                    text-align: center;
+                    margin-right:35px;
+                    img{
+                        width:60px;
+                        height: 60px;
+                    }
+                    span{
+                        height:18px;
+                        font-size:13px;
+                        font-family:PingFangSC-Regular;
+                        font-weight:400;
+                        color:rgba(125,86,30,1);
+                        line-height:2.5;
+                    }
                 }
             } 
         }

@@ -7,50 +7,50 @@
         {
             "src": "./images/876.png",
             "img": "./images/876_2.png",
-            "name": "蝴蝶机"
+            "name": "蝴蝶式胸肌训练器"
         },
 
         {
             "src": "./images/423.png",
             "img": "./images/423_2.png",
-            "name": "坐式背肌"
+            "name": "坐式背肌训练器"
         },
         {
             "src": "./images/54.png",
             "img": "./images/54_2.png",
-            "name": "坐式肩膊推举"
+            "name": "坐式肩膊推举训练器"
         },
         {
             "src": "./images/6547.png",
             "img": "./images/6547_2.png",
-            "name": "高拉背"
+            "name": " 高拉背肌训练器"
         },
 
         {
             "src": "./images/757.png",
             "img": "./images/757_2.png",
-            "name": "踢腿训练"
+            "name": "踢腿训练器"
         },
         {
             "src": "./images/32.png",
             "img": "./images/32_2.png",
-            "name": "臀部训练"
+            "name": "臀部训练器"
         },
         {
             "src": "./images/213.png",
             "img": "./images/213_2.png",
-            "name": "坐式腹肌训练"
+            "name": "坐式腹肌训练器"
         },
 
         {
             "src": "./images/7567.png",
             "img": "./images/7567_2.png",
-            "name": "大腿肌训练"
+            "name": "大腿内外侧肌训练器"
         },
         {
             "src": "./images/4235.png",
             "img": "./images/4235_2.png",
-            "name": "单双杠"
+            "name": "单双杠训练器"
         },
         {
             "src": "./images/211.png",
@@ -60,13 +60,18 @@
         {
             "src": "./images/865.png",
             "img": "./images/865_2.png",
-            "name": "动感单车"
+            "name": "发电动感单车"
         },
 
         {
             "src": "./images/654.png",
             "img": "./images/654_2.png",
             "name": "椭圆机"
+        },
+        {
+            "src": "./images/110.png",
+            "img": "./images/110-2.png",
+            "name": "发电跑步机"
         }
     ]
 }

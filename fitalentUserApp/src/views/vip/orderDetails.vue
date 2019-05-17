@@ -81,7 +81,7 @@
                             <li style="width:100%">
                                 <dd>购前需知</dd>
                                 <dd style="display:flex;justify-content: space-between;" class="Agreement">
-                                    <router-link to="/privateEducationAgreement" style="color:#3A5891">同意《健康传奇开通会员协议》</router-link>
+                                    <router-link to="/vipAgreement" style="color:#3A5891">同意《健康传奇开通会员协议》</router-link>
                                     <van-checkbox v-model="checked">
                                             <img
                                                 style="width:22px;"
@@ -250,11 +250,11 @@
                     goodsNum:this.monthlyNmb,
                     amount:this.vipDetail.price,
                 }).then(res=>{
-                    console.log(res,'res')
                     this.couponCount = res.data.obj.count
-                    res.data.obj.list[0].checkStatus = true
-                    this.couponList = res.data.obj.list
-                    console.log(res)
+                    if(res.data.obj.list.length > 0){
+                        res.data.obj.list[0].checkStatus = true
+                        this.couponList = res.data.obj.list
+                    }
                 })
             },
             aaa(item){
@@ -301,10 +301,7 @@
                     this.discountValue = 0
                     this.totalPrice = this.monthlyTotalPrice - choosePopup.discountValue
                 }
-                
-               
                 console.log(choosePopup,'uid')
-            
             },
             //生成订单
             vipPayment(){
@@ -322,11 +319,11 @@
                 AddOrderMen(params).then(res => {
                     if (res.data.code == 2000) {
                         this.OrderMen = res.data.obj;
-                        this.privateOrderObj.type = 'pay';
+                        this.OrderMen.type = 'pay';
                         if (this.isAndroid) {
                             window.andriod.postMessage(JSON.stringify(this.OrderMen))
                         } else if (this.isiOS) {
-                            window.webkit.messageHandlers.OrderMen_payment.postMessage(this.OrderMen)
+                            window.webkit.messageHandlers.Training_payment.postMessage(this.OrderMen)
                         }
                     }
                 }).catch(err => {

@@ -171,6 +171,10 @@ ul {
     text-overflow: ellipsis;
 }
 
+.van-dialog__confirm, .van-dialog__confirm:active {
+    color: #1DCE74 !important;
+}
+
 .multiple_rows {
     overflow: hidden;
     text-overflow: ellipisis;

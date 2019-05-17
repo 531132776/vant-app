@@ -106,7 +106,7 @@ export default new Router({
             path: '/trainingCamp',
             name: 'trainingCamp',
             meta: {
-                title: '训练营详情',            
+                title: '训练营详情',
             },
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Training_camp/detail.vue')
@@ -228,6 +228,14 @@ export default new Router({
                 title: '购买会员'
             }
         },
-
+        {
+            path: '/vipAgreement',
+            name: 'vipAgreement',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/vip/vipAgreement.vue'),
+            meta: {
+                title: '会员协议'
+            }
+        },
     ]
 })

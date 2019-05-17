@@ -5,12 +5,16 @@
         },
         {
             "src": "./images/865.png",
-            "name": "动感单车"
+            "name": "发电动感单车"
         },
 
         {
             "src": "./images/654.png",
             "name": "椭圆机"
+        },
+        {
+            "src": "./images/110.png",
+            "name": "发电跑步机"
         }
 
     ]

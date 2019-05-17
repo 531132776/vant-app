@@ -54,12 +54,13 @@
                                             <img :src="getTime" alt="">
                                         </span>
                                         <span>{{item.courseTime}}</span>
+                                        <span class="coachTime">{{item.priceAndCourse}}</span>
                                     </dt>
                                     <dt>
                                         <span class="head_people">
                                             <img :src="fullStarffed" alt="">
                                         </span>
-                                        <span>已约 {{item.reservationAndTotal}}</span>
+                                        <span>已报名 {{item.reservationAndTotal}}</span>
                                     </dt>
                                 </li>
                                 <div class="appointment" v-if="item.status == 7">可购买</div>

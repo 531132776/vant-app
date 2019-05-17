@@ -510,25 +510,25 @@ export default {
                             const anaerobicDeviceList = this.totalFitnessData.anaerobicDeviceList;
                             console.log('有氧1',aerobicDeviceList)
                             // console.log('有氧2',aerobic)
-                            var newList = aerobicDeviceList.map((value, index) => {
-                                if (value.name !==null ? value.name.includes("跑步机") : '') {
-                                    value.name = "跑步机";
-                                }
-                                if (value.name !==null ? value.name.includes("动感单车") : '') {
-                                    value.name = "动感单车";
-                                }
+                            // var newList = aerobicDeviceList.map((value, index) => {
+                            //     if (value.name !==null ? value.name.includes("跑步机") : '') {
+                            //         value.name = "跑步机";
+                            //     }
+                            //     if (value.name !==null ? value.name.includes("动感单车") : '') {
+                            //         value.name = "动感单车";
+                            //     }
                                 
-                                console.log("value:" + value.name);
-                                return value;
-                                });
-                                console.log("还是", newList);
-                            for(var n in newList){
-                                if(newList[n].name == aerobic[n].name){
-                                    arr.push({"src":aerobic[n].src,"name":aerobic[n].name,"time":newList[n].time})
+                            //     console.log("value:" + value.name);
+                            //     return value;
+                            //     });
+                                // console.log("还是", newList);
+                            for(var n in aerobicDeviceList){
+                                if(aerobicDeviceList[n].name == aerobic[n].name){
+                                    arr.push({"src":aerobic[n].src,"name":aerobic[n].name,"time":aerobicDeviceList[n].time})
                                 }else {
                                     for(var j in aerobic){
-                                        if(aerobic[j].name == newList[n].name){
-                                            arr.push({"src":aerobic[j].src,"name":aerobic[j].name,"time":newList[n].time})
+                                        if(aerobic[j].name == aerobicDeviceList[n].name){
+                                            arr.push({"src":aerobic[j].src,"name":aerobic[j].name,"time":aerobicDeviceList[n].time})
                                         }
                                     }
                                 }

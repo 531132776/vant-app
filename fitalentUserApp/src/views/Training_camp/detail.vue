@@ -35,7 +35,7 @@
                     <span style="font-size:30px">{{trainingCampList.price}}</span>
                 </li>
                <li>
-                   <span>/ {{trainingCampList.classHour}}课时</span>
+                   <span style="color:rgba(147,153,165,1);">/ {{trainingCampList.classHour}}课时</span>
                </li>
             </ul>
             <ul>
@@ -46,8 +46,8 @@
             </ul>
             <ul>
                 <li>上课时间</li>
-                <li>
-                    <span>{{trainingCampList.classDay}}</span>
+                <li style="width:70%">
+                    <span>{{trainingCampList.classStartTime}}</span>
                 </li>
             </ul>
             <ul>
@@ -122,7 +122,7 @@ export default {
                 url:"http://192.168.10.15/fitalentUserApp/#/orderDetails",
             },
             immageDto:[],
-            tellNumber:1322312322,
+            tellNumber:'0755-26400830',
             oneImg:require("../../assets/images/1.jpg"),
             twoImg:require('../../assets/images/2.jpg'),
             swiperImgs:[

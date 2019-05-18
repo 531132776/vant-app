@@ -3,15 +3,19 @@
         <div class="Fitness_data_info" v-show="show4">
             <ul>
                 <li>
-                    <dt>{{Fitnessdata.totalExerciseTime}}</dt>
+                    <dt v-if="Fitnessdata.totalExerciseTime/60>10000">{{Math.round(Fitnessdata.totalExerciseTime/600000)}}<em >万</em></dt>
+                   <dt v-if="Fitnessdata.totalExerciseTime/60<10000">{{Math.round(Fitnessdata.totalExerciseTime/60)}}</dt>
                     <dt>总运动时间/<em>分钟</em></dt>
                 </li>
+                
                 <li>
-                    <dt>{{Fitnessdata.consume}}</dt>
+                    <dt v-if="Fitnessdata.consume/1000<10000">{{(Fitnessdata.consume/1000).toFixed(1)}}</dt>
+                    <dt v-if="Fitnessdata.consume/1000>10000">{{(Fitnessdata.consume/10000000).toFixed(1)}}<em>万</em></dt>
                     <dt>总消耗/<em>大卡</em></dt>
                 </li>
                 <li>
-                    <dt>{{Fitnessdata.powerGeneration}}</dt>
+                    <dt v-if="Fitnessdata.powerGeneration<10000">{{Fitnessdata.powerGeneration}}</dt>
+                    <dt v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000}}<em>万</em></dt>
                     <dt>总发电量/<em>千焦</em></dt>
                 </li>
             </ul>
@@ -66,11 +70,12 @@
                         <div class="Fitness_data2">
                                         <ul v-if="show && totalFitnessData.totalExerciseTim!==0">
                                             <li>
-                                                <dt>{{totalFitnessData.totalExerciseTime}}</dt>
-                                                <dt>运动时间/分钟</dt>
+                                                <dt>{{headCreateTime(totalFitnessData.totalExerciseTime)}}</dt>
+                                                <!-- <dt>运动时间/分钟</dt> -->
+                                                <dt>运动时间</dt>
                                             </li>
                                             <li>
-                                                <dt>{{totalFitnessData.consume}}</dt>
+                                                <dt>{{(totalFitnessData.consume/1000).toFixed(1)}}</dt>
                                                 <dt>消耗/大卡</dt>
                                             </li>
                                             <li>
@@ -84,9 +89,10 @@
                                 </van-tab>
                             </van-tabs>
                         </li>
+                            
                         
                     </ul>
-                    <span class="before" v-if="totalFitnessData.totalExerciseTime==null"></span>
+                    <span class="before" v-if="totalFitnessData.totalExerciseTime!==0"></span>
                     <div class="ridate" @click="calendar">
                             <img :src="show3?img3:img" alt="">
                         </div>
@@ -104,8 +110,9 @@
                             <img :src="item.src" alt="">
                             <dl>
                                 <dt>{{item.name}}</dt>
-                                <dt v-if="item.time<3600">{{item.time}}分钟</dt>
-                                <dt v-if="item.time>3600">{{item.time}}小时</dt>
+                                <!-- <dt v-if="item.time<3600">{{item.time}}分钟</dt> -->
+                                <!-- <dt v-if="item.time>3600">{{item.time}}小时</dt> -->
+                                <dt>{{headCreateTime(item.time)}}</dt>
                             </dl>
                         </li>
                     </ul>
@@ -117,8 +124,9 @@
                             <img :src="item.src" alt="">
                             <dl>
                                 <dt>{{item.name}}</dt>
-                                <dt v-if="item.time<3600">{{item.time}}分钟</dt>
-                                <dt v-if="item.time>3600">{{item.time}}小时</dt>
+                                <!-- <dt v-if="item.time<3600">{{item.time}}分钟</dt> -->
+                                <!-- <dt v-if="item.time>3600">{{item.time}}小时</dt> -->
+                                <dt>{{headCreateTime(item.time)}}</dt>
                             </dl>
                         </li>
                     </ul>
@@ -417,6 +425,32 @@ export default {
 
                 setDate(new Date());
             },
+            headCreateTime(time){
+            var hh;
+            var mm;
+            var ss;
+           //传入的时间为空或小于0
+            if(time==null||time<0){
+                return;
+            }
+            //得到小时
+            hh=time/3600|0;
+            time=parseInt(time)-hh*3600;
+            if(parseInt(hh)<10){
+                  hh="0"+hh;
+            }
+            //得到分
+            mm=time/60|0;
+            //得到秒
+            ss=parseInt(time)-mm*60;
+            if(parseInt(mm)<10){
+                 mm="0"+mm;    
+            }
+            if(ss<10){
+                ss="0"+ss;      
+            }
+            return hh+":"+mm+":"+ss;
+        },
             //时间戳转换日期
             formatDate(now) { 
                 // console.log(now)

@@ -54,7 +54,7 @@
                                             <img :src="getTime" alt="">
                                         </span>
                                         <span>{{item.courseTime}}</span>
-                                        <span class="coachTime">{{item.priceAndCourse}}</span>
+                                        <span class="coachTime">{{item.priceAndCourse}}/课时</span>
                                     </dt>
                                     <dt>
                                         <span class="head_people">

@@ -169,7 +169,7 @@ export default {
                     // 'https://img.yzcdn.cn/public_files/2017/09/05/c0dab461920687911536621b345a0bc9.jpg',
                
             ],
-            tell2:'18926484971',
+            tell2:'0755-26400830',
             SportsContent:this.$route.query.status,//塑形杠铃雕塑状态
             privateEducationId:this.$route.query.privateCourseId,//私教课Id
             privateCourse:{},//私教课obj

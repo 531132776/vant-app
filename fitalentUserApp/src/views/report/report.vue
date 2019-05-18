@@ -1,6 +1,25 @@
 <template>
   <div>
     <div class="page-content">
+       <div class="chart" style="">
+        <div class="chartTime">{{obj.createTime}}</div>
+        <healthyIndex v-if="showChart" :data="data"/>
+        <div class="healtyConent">
+            <div class="comentText">
+              <span>健康得分:</span>
+              <span style="font-size:20px">{{obj.healthScore}}</span>
+              <span>分</span>
+            </div>
+            <div>
+              <span>(满分100分)</span>
+            </div>
+            <div>
+              <p class="text">
+                {{obj.healthComment}}
+              </p>
+            </div>
+          </div>
+      </div>
       <div class="base">
         <div class="baseRep">
           <div class="height">
@@ -37,11 +56,16 @@
               <img style="width:18px;margin-right:5px;" src="../../assets/images/血压 copy@2x.png" alt="">
               <span>血压</span>
             </p>
-            <p>
-              <span>{{obj.lowPressure}}</span>
-              <span>{{obj.highPressure}}</span>
-            </p>
-            <p>MMHG</p>
+            <div>
+              <!-- <span>{{obj.lowPressure}}</span>
+              <span>{{obj.highPressure}}</span> -->
+              <p>33</p>
+              <p>
+                <span>111</span>
+                <span>MMHG</span>
+              </p>
+            </div>
+            <p></p>
           </div>
           <div class="heart">
             <p style="display:flex;align-items: center;">
@@ -87,24 +111,7 @@
           <img src="../../assets/images/分组 5 copy 3@2x.png" alt="">
         </div> -->
       </div>
-      <div class="chart" style="">
-        <healthyIndex v-if="showChart" :data="data"/>
-        <div class="healtyConent">
-            <div class="comentText">
-              <span>健康得分:</span>
-              <span style="font-size:20px">{{obj.healthScore}}</span>
-              <span>分</span>
-            </div>
-            <div>
-              <span>(满分100分)</span>
-            </div>
-            <div>
-              <p class="text">
-                {{obj.healthComment}}
-              </p>
-            </div>
-          </div>
-      </div>
+     
       <div class="suggest">
         <div style="display:flex">
           <div class="imgWrap">
@@ -477,6 +484,14 @@ export default {
 .page-content{
   padding-bottom: 20px;
   text-align: center;
+  .chartTime{
+    height:16px;
+    font-size:13px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(147,153,165,1);
+    padding-top: 14px;
+  }
   .ECG{
     padding: 15px;
     text-align: left;
@@ -596,10 +611,12 @@ export default {
       font-weight:400;
       color:rgba(81,90,107,1);
       line-height:20px;
+      padding-bottom: 10px;
     }
   }
   .base{
      padding: 15px;
+     padding-top: 0px;
     .baseRep{
     display: flex;
     justify-content: space-between;
@@ -609,51 +626,69 @@ export default {
     margin-top: 8px;
     .height{
       width:111px;
-      height:77px;
+      height:57px;
       background:linear-gradient(90deg,rgba(27,129,244,1) 0%,rgba(84,188,240,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .weight{
       width:111px;
-      height:77px;
+      height:57px;
       background:linear-gradient(90deg,rgba(0,177,103,1) 0%,rgba(135,237,77,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .BMI{
       width:111px;
-      height:77px;
+      height:57px;
       background:linear-gradient(90deg,rgba(229,147,0,1) 0%,rgba(242,196,23,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .blood{
-       width:111px;
-      height:77px;
+      width:111px;
+      height:57px;
       background:linear-gradient(90deg,rgba(100,48,192,1) 0%,rgba(132,85,234,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .heart{
      width:111px;
-      height:77px;
+      height:57px;
       background:linear-gradient(90deg,rgba(229,58,82,1) 0%,rgba(243,85,107,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     .oxygen{
      width:111px;
-      height:77px;
+      height:57px;
       background:linear-gradient(90deg,rgba(175,216,68,1) 0%,rgba(237,245,54,1) 100%);
       border-radius:1px;
       padding: 12px;
       text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
     }
     }
     }

@@ -1,7 +1,7 @@
 <template>
   <div class="echarts_info">
     <div>
-      <van-tabs v-model="active" :swipe-threshold="4" v-if="aggregate.length>0">
+      <van-tabs v-model="active" :swipe-threshold="2" v-if="aggregate.length>0">
         <van-tab v-for="(item,i) in aggregate" :title="'选项 ' + item.type + item.id" :key="i">
           <div slot="title" class="slot_content pt15" @click="onTabClick(item,i)">
             <span class="slot_span_img">
@@ -43,6 +43,36 @@
                         </dt>
                         <dt>{{motionDataObj.meanHeartRateStrength}}次/分钟</dt>
                       </dl>
+                      <!-- <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x.png" alt>
+                        </dt>
+                        <dt style="color:#9399A5">--次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_1.png" alt>
+                        </dt>
+                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x_3.png" alt>
+                        </dt>
+                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                        <dt>
+                          <img src="../../assets/images/分组6@2x1.png" alt>
+                        </dt>
+                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_2.png" alt>
+                        </dt>
+                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl> -->
                     </li>
                     <li>
                       <dl>
@@ -100,7 +130,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.motionTime}}</em>分钟
+                          <em>{{headCreateTime(powerMotionData.motionTime)}}</em>
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -109,23 +139,47 @@
                           <img src="../../assets/images/时长copy@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.distance/(powerMotionData.motionTime/60)}}</em>公里/小时
+                          <em>{{avgspeed}}</em>公里/小时
                         </dt>
                         <dt>平均速度</dt>
                       </dl>
                     </li>
                     <li>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>0">
+                      <!-- <dl class="Heart_rate_animation" v-if="powerMotionData.heart>0">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
                         <dt>{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart==0">
+                      </dl> -->
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
                         <dt style="color:#9399A5">--次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_1.png" alt>
+                        </dt>
+                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x_3.png" alt>
+                        </dt>
+                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                        <dt>
+                          <img src="../../assets/images/分组6@2x1.png" alt>
+                        </dt>
+                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_2.png" alt>
+                        </dt>
+                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                     </li>
                     <li>
@@ -143,7 +197,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.distance}}</em>公里
+                          <em>{{(powerMotionData.distance/1000).toFixed(1)}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -162,13 +216,9 @@
                       :key="i"
                     >
                       <td>{{item.speed}}公里/小时</td>
-                      <td>{{item.time}}分钟</td>
+                      <td>{{headCreateTime(item.time)}}</td>
                     </tr>
-                    <!-- 
-                          <tr>
-                              <td>广泛的</td>
-                              <td>广泛的</td>
-                    </tr>-->
+                   
                   </tbody>
                 </table>
               </div>
@@ -184,7 +234,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.motionTime}}</em>分钟
+                          <em>{{headCreateTime(powerMotionData.motionTime)}}</em>
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -199,7 +249,7 @@
                       </dl>
                     </li>
                     <li>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>0">
+                      <!-- <dl class="Heart_rate_animation" v-if="powerMotionData.heart>0">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
@@ -210,6 +260,36 @@
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
                         <dt style="color:#9399A5">--次/分钟</dt>
+                      </dl> -->
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x.png" alt>
+                        </dt>
+                        <dt style="color:#9399A5">--次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_1.png" alt>
+                        </dt>
+                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x_3.png" alt>
+                        </dt>
+                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                        <dt>
+                          <img src="../../assets/images/分组6@2x1.png" alt>
+                        </dt>
+                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                        <dt>
+                          <img src="../../assets/images/分组 6@2x_2.png" alt>
+                        </dt>
+                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                     </li>
                     <li>
@@ -407,6 +487,7 @@ import F2 from "@antv/f2";
 export default {
   data() {
     return {
+      avgspeed:'',
       active: "0",
       active1: "0",
       data: [
@@ -591,6 +672,17 @@ export default {
               this.powerMotionData = res.data.obj.powerMotionData || {};
               this.stopTime = this.powerMotionData.stopTime.split(" ")[1];
               this.startTime = this.powerMotionData.startTime.substr(0, 16);
+              // this.avgspeed = this.powerMotionData.dataDetails
+                //将array的长度赋给len
+                var len = this.powerMotionData.dataDetails.length;
+                var sum = 0;
+                //利用for循环遍历数组的内容，利用sum累加求和
+                for(var i = 0; i < len ; i++){
+                    sum += parseFloat(this.powerMotionData.dataDetails[i].speed);
+                }
+        //        返回数组的和与长度求平均值
+                this.avgspeed = sum/len;
+            console.log(this.avgspeed,'平均值')
             }
           }
         })
@@ -752,7 +844,36 @@ export default {
       // + " "  + date.getHours()  + seperator2  + date.getMinutes()
       // + seperator2 + date.getSeconds();
       return currentdate;
-    }
+    },
+    //时间戳转换日期格式
+     
+        headCreateTime(time){
+            var hh;
+            var mm;
+            var ss;
+           //传入的时间为空或小于0
+            if(time==null||time<0){
+                return;
+            }
+            //得到小时
+            hh=time/3600|0;
+            time=parseInt(time)-hh*3600;
+            if(parseInt(hh)<10){
+                  hh="0"+hh;
+            }
+            //得到分
+            mm=time/60|0;
+            //得到秒
+            ss=parseInt(time)-mm*60;
+            if(parseInt(mm)<10){
+                 mm="0"+mm;    
+            }
+            if(ss<10){
+                ss="0"+ss;      
+            }
+            return hh+":"+mm+":"+ss;
+        }
+    
   }
 };
 </script>

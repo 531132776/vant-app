@@ -150,7 +150,7 @@ export default {
     },
     watch: {
         '$route' (to, from) {
-            alert(1)
+            // alert(1)
             console.log('$route',to,from)
         if (to.name === 'Privatedetails') {//跳转的的页面的名称是"NewRecruit",这里就相当于我们listview页面，或者原始页面
             let recruitScrollY = this.$store.state.recruitScrollY

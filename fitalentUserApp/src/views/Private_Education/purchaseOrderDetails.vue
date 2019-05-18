@@ -402,26 +402,35 @@ export default {
         res.data.obj.list.length > 0
           ? (res.data.obj.list[0].checkStatus = true)
           : "";
-        // console.log(this.couponList[0].uid,'22')
+        // console.log(res.data.obj.list[0].checkStatus,'初始勾选')
         if(this.couponList.length>0){
         
             this.$set(this,'couponId',this.couponList[0].uid);
-            console.log(this.couponId,'333')
+            
             if(this.couponList[0].couponType == 0){
-                alert('代金券')
-                
+                // alert('代金券')
+                console.log(this.couponId,'333')
                 if(this.status == 2){
                     //私教课
+                    // alert('私教课');
                 this.$set(this,'afterCoupon',this.couponList[0].discountValue);
-                this.totalPrice = (this.privateCourse.onePrice * this.privateCourse.lowestSection)-this.afterCoupon;
+                if(this.contrastStatus == 0){
+                    this.totalPrice = amount-this.afterCoupon;
+                }else if(this.contrastStatus == 1){
+                    // alert(1111)
+                    this.totalPrice = amount-this.afterCoupon;
+                }
+                
                 }
                 if(this.status == 0){
                     //私教体验课
+                    // alert('私教体验课');
                     this.$set(this,'afterCoupon',this.couponList[0].discountValue);
                     this.experiencePrice = this.educationexperie.price - this.afterCoupon
                 }
                 if(this.status == 1){
                     //包月私教
+                    // alert('包月');
                     this.$set(this,'afterCoupon',this.couponList[0].discountValue);
                     this.monthlyTotalPrice = this.educationsectorDetails.price - this.afterCoupon
                 }
@@ -429,19 +438,25 @@ export default {
                 
 
             }else if(this.couponList[0].couponType == 1){
-                alert('免费券')
+                // alert('免费券')
                 console.log(this.couponId,'333')
                 if(this.status == 2){
+                    // alert('私教课');
                     this.afterCoupon = this.privateCourse.onePrice * this.privateCourse.lowestSection;
-                    this.totalPrice = (this.privateCourse.onePrice * this.privateCourse.lowestSection)-this.afterCoupon
+                    if(this.contrastStatus == 0){
+                        this.totalPrice = (this.privateCourse.onePrice * this.privateCourse.lowestSection)-this.afterCoupon
+                    }else if(this.contrastStatus == 1){
+                        this.totalPrice = (this.privateCourse.twoPrice * this.privateCourse.lowestSection)-this.afterCoupon
+                    }
+                    
                 }
                 if(this.status == 0){
-                    alert('私教体验课');
+                    // alert('私教体验课');
                     this.afterCoupon = this.educationexperie.price;
                     this.experiencePrice = this.educationexperie.price - this.afterCoupon
                 }
                 if(this.status == 1){
-                    alert('包月');
+                    // alert('包月');
                     this.afterCoupon = this.educationsectorDetails.price;
                     this.monthlyTotalPrice = this.educationsectorDetails.price - this.afterCoupon
                 }
@@ -452,6 +467,7 @@ export default {
     },
     aaa(item) {
         let _this = this;
+        console.log(item.checkStatus,'选项')
       if (!item.checkStatus) {
         this.couponList.map(function(res) {
           if (res.uid != item.uid) {
@@ -462,51 +478,83 @@ export default {
           _this.$set(_this,'couponId',res.uid)
           console.log(_this.couponId,'444')
           if(res.couponType == 0){
-              
+            //   alert('代金券')
               if(_this.status == 2){
                   //私教课
-                  alert('私教')
-              _this.$set(_this,'afterCoupon',res.discountValue);
-              _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-_this.afterCoupon;
+                //   alert('私教')
+                  _this.nmb = _this.privateCourse.lowestSection;
+                  _this.$set(_this,'afterCoupon',res.discountValue);
+                  if(_this.contrastStatus == 0){
+                      _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-_this.afterCoupon;
+                  }else if(_this.contrastStatus == 1){
+                    //   alert('true')
+                      _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection)-_this.afterCoupon;
+                  }
+                  
               }
               if(_this.status == 0){
               //私教体验课
-              alert('私教体验课');
+            //   alert('私教体验课');
               _this.$set(_this,'afterCoupon',_this.couponList[0].discountValue);
               _this.experiencePrice = _this.educationexperie.price - _this.afterCoupon
               }
               if(_this.status == 1){
                   //包月私教
-                  alert('包月')
+                //   alert('包月')
                 _this.$set(_this,'afterCoupon',_this.couponList[0].discountValue);
                 _this.monthlyTotalPrice = _this.educationsectorDetails.price - _this.afterCoupon
               }
               
 
           }else if(res.couponType == 1){
+            //   alert('免费券')
               console.log(_this.couponId,'444')
-              
               
               if(_this.status == 2){
                   //私教课
-                  alert('私教')
+                //   alert('私教课')
                     _this.afterCoupon = _this.privateCourse.onePrice * _this.privateCourse.lowestSection;
-                    _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-this.afterCoupon
+                    if(_this.contrastStatus == 0){
+                        _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-_this.afterCoupon
+                    }else if(_this.contrastStatus == 1){
+                        _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection)-_this.afterCoupon
+                    }
+                    
                 }
                 if(_this.status == 0){
                     //私教体验课
-                    alert('私教体验课');
+                    // alert('私教体验课');
                     _this.afterCoupon = _this.educationexperie.price;
                     _this.experiencePrice = _this.educationexperie.price - _this.afterCoupon
                 }
                 if(_this.status == 1){
                     //包月私教
-                    alert('包月')
+                    // alert('包月')
                     _this.afterCoupon = _this.educationsectorDetails.price;
                     _this.monthlyTotalPrice = _this.educationsectorDetails.price - _this.afterCoupon
                 }
           }
         });
+      }else if(item.checkStatus){
+          _this.afterCoupon = 0;
+          _this.couponId = '';
+          if(_this.status == 2){
+              if(_this.contrastStatus == 0){
+                  _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection) - _this.afterCoupon;
+              }
+              else if(_this.contrastStatus == 1){
+                  alert('false')
+                  _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection) - _this.afterCoupon;
+              }
+              
+          }
+           if(_this.status == 0){
+               _this.experiencePrice = _this.educationexperie.price - _this.afterCoupon;
+           }
+           if(_this.status == 1){
+               _this.monthlyTotalPrice = _this.educationsectorDetails.price - _this.afterCoupon
+           }
+           
       }
     },
     popup() {
@@ -534,9 +582,11 @@ export default {
           this.totalPrice
         );
       } else if (index == 1) {
+        //   alert(2)
         this.$set(this, "contrastStatus", 1);
         this.totalPrice =
           this.privateCourse.twoPrice * this.privateCourse.lowestSection;
+          alert(this.totalPrice)
         this.nmb = this.privateCourse.lowestSection;
         this.courseItem = 2;
         this.GetCouponList(
@@ -557,7 +607,7 @@ export default {
       }
 
       if (this.nmb <= this.privateCourse.lowestSection) {
-        // this.nmb = this.privateCourse.lowestSection;
+        this.nmb = this.privateCourse.lowestSection;
         if (this.contrastStatus == 0) {
             this.$set(this,'totalPrice',(this.privateCourse.onePrice * this.privateCourse.lowestSection)-this.afterCoupon)
         //   this.totalPrice = (this.privateCourse.onePrice * this.privateCourse.lowestSection)-this.afterCoupon;
@@ -566,12 +616,7 @@ export default {
           this.totalPrice =
             (this.privateCourse.twoPrice * this.privateCourse.lowestSection)-this.afterCoupon;
         }
-        // Dialog.alert({
-        //     message: '最低'+this.nmb+'节起售'
-        // }).then(() => {
-        //     // on close
-        //     // alert(1)
-        // });
+       
       }
 
       //去指定课程(比如：塑形杠铃雕塑)去支付
@@ -632,6 +677,7 @@ export default {
             this.privateOrderObj = res.data.obj;
             this.privateOrderObj.type = "pay";
             if (this.totalPrice == 0) {
+                alert(111)
               Dialog.confirm({
                         title: '下单成功',
                         cancelButtonText:'首页',
@@ -659,13 +705,14 @@ export default {
                                 })
                             }
                     });
+                    return
             } else {
               // alert(2)
-              // if (this.isAndroid) {
-              //     window.andriod.postMessage(JSON.stringify(this.privateOrderObj))
-              // } else if (this.isiOS) {
-              //     window.webkit.messageHandlers.Course_payment.postMessage(this.privateOrderObj)
-              // }
+              if (this.isAndroid) {
+                  window.andriod.postMessage(JSON.stringify(this.privateOrderObj))
+              } else if (this.isiOS) {
+                  window.webkit.messageHandlers.Course_payment.postMessage(this.privateOrderObj)
+              }
             }
           }
         })

@@ -66,6 +66,14 @@ export function GetTrainingCamp(p) {
     })
 }
 
+//判断状态
+export function GetTrainingCampStatus(p){
+    return request({
+        url:'/gymCoach/gymAndClubManager/appTrainingCamp/selectWhetherToBuy',
+        method: 'get',
+        params:p
+    })
+}
 //生成训练营订单
 export function AddOrder(p) {
     return request({

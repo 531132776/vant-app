@@ -11,11 +11,11 @@
                 <li>
                     <dt v-if="Fitnessdata.consume/1000<10000">{{(Fitnessdata.consume/1000).toFixed(1)}}</dt>
                     <dt v-if="Fitnessdata.consume/1000>10000">{{(Fitnessdata.consume/10000000).toFixed(1)}}<em>万</em></dt>
-                    <dt>总消耗/<em>大卡</em></dt>
+                    <dt>总消耗/<em>千卡</em></dt>
                 </li>
                 <li>
-                    <dt v-if="Fitnessdata.powerGeneration<10000">{{Fitnessdata.powerGeneration}}</dt>
-                    <dt v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000}}<em>万</em></dt>
+                    <dt v-if="Fitnessdata.powerGeneration<10000">{{(Fitnessdata.powerGeneration/1000).toFixed(1)}}</dt>
+                    <dt v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000000}}<em>万</em></dt>
                     <dt>总发电量/<em>千焦</em></dt>
                 </li>
             </ul>
@@ -76,10 +76,10 @@
                                             </li>
                                             <li>
                                                 <dt>{{(totalFitnessData.consume/1000).toFixed(1)}}</dt>
-                                                <dt>消耗/大卡</dt>
+                                                <dt>消耗/千卡</dt>
                                             </li>
                                             <li>
-                                                <dt>{{totalFitnessData.powerGeneration}}</dt>
+                                                <dt>{{totalFitnessData.powerGeneration || 0}}</dt>
                                                 <dt>发电量/千焦</dt>
                                             </li>
                                         </ul>
@@ -175,7 +175,8 @@ export default {
             disabledTab:false,
             // userId:'1128609374529040385',
             userId:this.$route.query.userId,
-            dayTime:''
+            dayTime:'',
+            subscribeDate:''
         }
     },
     components:{
@@ -253,7 +254,8 @@ export default {
                  newDate = year+"-"+m+"-"+d;
                 console.log('当天日期',newDate)
                 this.$set(this,'dayTime',newDate)
-                this.initComprehensiveData(newDate)
+                this.$set(this,'subscribeDate',newDate)
+                this.initComprehensiveData(this.subscribeDate)
     },
     methods:{
          getAngle(angx, angy) {
@@ -302,7 +304,8 @@ export default {
             }   
             
             console.log('lolo ',date)
-            this.initComprehensiveData(date)
+            this.initComprehensiveData(date);
+            this.$set(this,'subscribeDate',date)
         },
         clickDay(data) {
       console.log(data); //选中某天
@@ -320,7 +323,8 @@ export default {
     //   console.log(data)
       var datatime = data[0]+ '-' +month+ '-'+day
       console.log('最终时间',datatime)
-      this.initComprehensiveData(datatime)
+      this.initComprehensiveData(datatime);
+      this.$set(this,'subscribeDate',datatime)
     },
     changeDate(data){
         console.log(data);
@@ -338,7 +342,8 @@ export default {
     //   console.log(data)
       var datatime = data[0]+ '-' +month+ '-'+day
       console.log('最终时间',datatime)
-      this.initComprehensiveData(datatime)
+      this.initComprehensiveData(datatime);
+      this.$set(this,'subscribeDate',datatime)
     },
         initTime() {
                 let params = {
@@ -590,10 +595,12 @@ export default {
                 })
             },
         echartsSurface(){
+            console.log(this.subscribeDate,'传值当前时间')
             this.$router.push({
                 path:'/echartsInfo',
                 query:{
                     userId: this.userId,
+                    subscribeDate:this.subscribeDate
                 }
                 
             })

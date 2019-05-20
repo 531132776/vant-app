@@ -98,7 +98,9 @@
                 <img src="../../assets/images/电话 2@2x.png" alt="">
                 <span>联系客服</span>
             </div>
-            <van-button class="appointment_btn"  @click="toPay()" type="primary">¥{{trainingCampList.price}} 购买</van-button>
+            <van-button class="appointment_btn" v-if="status == 7"  @click="toPay()" type="primary">立即购买</van-button>
+            <van-button class="gray" v-if="status == 6" type="primary">已满员</van-button>
+            <van-button class="gray" v-if="status == 8" type="primary">已购买</van-button>
         </div>
     </div>
 </template>
@@ -106,12 +108,13 @@
 <script>
 import Swiper from 'swiper';
 import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,Dialog,ImagePreview } from 'vant';
-import { GetTrainingCamp } from '@/request/api-liu'
+import { GetTrainingCamp,GetTrainingCampStatus } from '@/request/api-liu'
 export default {
     data(){
         return{
             swiper:4,
             active:0,
+            status:'',
             trainingCampList:{},
             coachList:{},
             userId:'',
@@ -176,7 +179,12 @@ export default {
                 this.immageDto = res.data.obj.immageDto
                 this.goodCourse = res.data.obj.coach.goodCourse.split("、")
                 this.swiperImgs = this.immageDto.spreadUrl
-                console.log(this.onlyPeopele)
+            })
+            GetTrainingCampStatus({
+                courseId:this.courseId,
+                userId:this.userId,
+            }).then(res=>{
+                this.status = res.data.obj.status
             })
         },
         tell(){
@@ -227,17 +235,6 @@ export default {
              this.$router.push({
                   path:'/Privatedetails?coachId='+this.coachList.coachId+'&userId='+this.userId,
             })
-        },
-        //联系客服
-        callService(){
-            Dialog.confirm({
-                    message: '0755-20885568',
-                    confirmButtonText:'呼叫',
-                }).then(() => {
-                // on confirm
-                }).catch(() => {
-                // on cancel
-            });
         },
         // swiper
         _initSwiper(){
@@ -423,6 +420,15 @@ export default {
                 border-radius:23px;
                 font-size: 17px;
                 margin-right: 15px;
+            }
+            .gray {
+                width: 273px;
+                height: 45px;
+                background: rgb(172, 175, 174);
+                border-radius: 23px;
+                font-size: 17px;
+                margin-right: 15px;
+                border: 0.02667rem solid #acafae;
             }
         }
         .img_view{

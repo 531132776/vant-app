@@ -237,5 +237,23 @@ export default new Router({
                 title: '会员协议'
             }
         },
+        {
+            path: '/couponDetails',
+            name: 'couponDetails',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/vip/couponDetails.vue'),
+            meta: {
+                title: '优惠券说明'
+            }
+        },
+        {
+            path: '/privilegeDetails',
+            name: 'privilegeDetails',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/vip/privilegeDetails.vue'),
+            meta: {
+                title: '特权说明'
+            }
+        },
     ]
 })

@@ -41,16 +41,26 @@
                 </div>
             </div>
             <div class="courseMsg">
-                 <span class="title_text">上课信息</span>
-                 <div class="start_time">
+                <div style="position:relative;line-height: 2.5;">
+                    <span class="title_text">上课信息</span>
+                    <span class="before"></span>
+                </div>
+                <div class="adress_time">
+                     <span>上课地点</span>
+                     <span>{{meTrainingCampList.clubAddr}}</span>
+                     <span class="before"></span>
+                 </div>
+                <div class="start_time">
                      <span>开始时间</span>
                      <span>{{meTrainingCampList.courseStartTime}}</span>
+                     <span class="before"></span>
                  </div>
                  <div class="course_time">
                      <p>上课时间</p>
-                     <p>{{meTrainingCampList.courseTime}}</p>
+                     <p style="width:48%">{{meTrainingCampList.courseTime}}</p>
+                     <!-- <p style="width:48%">星期六 18:00~19:00/星期六 18:00~19:00/星期六 18:00~19:00星期六 18:00~19:00</p> -->
+                     <span class="before"></span>
                  </div>
-                 <span class="before"></span>
             </div>
             <div class="CurriculumHistory pr_pl15">
                 <span class="title_text" style="margin-top:20px;">上课历史</span>
@@ -279,23 +289,35 @@ export default {
                 }
             }
         }
-        .courseMsg{
+         .courseMsg{
             padding:15px;
             font-size:17px;
             font-weight:400;
             color:rgba(16,29,55,1);
              position: relative;
+             .adress_time{
+                display: flex;
+                justify-content: space-between;
+                line-height: 2;
+                padding: 10px 0;
+                position: relative
+             }
             .start_time{
                 display: flex;
                 justify-content: space-between;
-                line-height: 60px;
+                line-height: 2;
                 padding: 10px 0;
+                position: relative
             }
             .course_time{
-                line-height: 30px;
+                display: flex;
+                justify-content: space-between;
+                line-height: 2;
                 padding: 10px 0;
+                position: relative
             }
         }
+
 
         .CurriculumHistory{
             margin-top: 20px;

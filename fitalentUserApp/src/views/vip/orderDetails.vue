@@ -254,6 +254,7 @@
                     if(res.data.obj.list.length > 0){
                         res.data.obj.list[0].checkStatus = true
                         this.couponList = res.data.obj.list
+                        this.choosePopup()
                     }
                 })
             },

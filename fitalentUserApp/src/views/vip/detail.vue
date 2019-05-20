@@ -26,7 +26,7 @@
                         <img src="../../assets/images/triangle.png" alt="">
                     </div>
                     <div class="line"></div> 
-                    <van-cell is-link :border='false'>
+                    <van-cell is-link to="/privilegeDetails" :border='false'>
                         <div class="privilegeText">
                             <span style="font-size:17px;">会员尊享特权</span>
                             <span>特权说明</span>
@@ -58,7 +58,7 @@
                         <img src="../../assets/images/triangle.png" alt="">
                     </div>
                     <div class="line"></div>
-                    <van-cell is-link :border='false'>
+                    <van-cell is-link to="/privilegeDetails" :border='false'>
                         <div class="privilegeText">
                             <span style="font-size:17px;">会员尊享特权</span>
                             <span>特权说明</span>
@@ -346,7 +346,7 @@ export default {
             .triangle{
                 font-size: 0;
                 img{
-                    margin-left: 245px;
+                    margin-left: 252px;
                     width:18px;
                     height:12px;
                 }

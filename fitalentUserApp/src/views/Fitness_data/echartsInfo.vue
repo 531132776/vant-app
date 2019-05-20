@@ -22,7 +22,7 @@
                           <img src="../../assets/images/时长copy.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(motionDataObj.totalExerciseTime)}}</em>分钟
+                          <em>{{headCreateTime(motionDataObj.totalExerciseTime)}}</em>
                         </dt>
                         <dt>总时间</dt>
                       </dl>
@@ -31,48 +31,48 @@
                           <img src="../../assets/images/发电量.png" alt>
                         </dt>
                         <dt>
-                          <em>{{motionDataObj.powerGeneration}}</em>千焦
+                          <em>{{(motionDataObj.powerGeneration/1000).toFixed(1)}}</em>千焦
                         </dt>
                         <dt>发电量</dt>
                       </dl>
                     </li>
                     <li>
-                      <dl class="Heart_rate_animation">
+                      <!-- <dl class="Heart_rate_animation">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
                         <dt>{{motionDataObj.meanHeartRateStrength}}次/分钟</dt>
-                      </dl>
-                      <!-- <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
+                      </dl> -->
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength<=59 || motionDataObj.meanHeartRateStrength == 0">
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">--次/分钟</dt>
+                        <dt style="color:#9399A5">{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=60 && motionDataObj.meanHeartRateStrength<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
-                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt style="color:#3FA6F2">{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=70 && motionDataObj.meanHeartRateStrength<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
-                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt style="color:#14D36B">{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=80 && motionDataObj.meanHeartRateStrength<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
-                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt style="color:#FFCB14">{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
-                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
-                      </dl> -->
+                        <dt style="color:#F85842">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                      </dl>
                     </li>
                     <li>
                       <dl>
@@ -80,7 +80,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{motionDataObj.consume}}</em>大卡
+                          <em>{{(motionDataObj.consume/1000).toFixed(1)}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -89,7 +89,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{distance}}</em>公里
+                          <em>{{(distance/1000).toFixed(2)}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -151,31 +151,31 @@
                         </dt>
                         <dt>{{powerMotionData.heart}}次/分钟</dt>
                       </dl> -->
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate<=59 || powerMotionData.avgHartRate == 0">
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">--次/分钟</dt>
+                        <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
                         <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
                         <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
                         <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
@@ -188,7 +188,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.calorie}}</em>大卡
+                          <em>{{(powerMotionData.calorie/1000).toFixed(1)}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -197,7 +197,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.distance/1000).toFixed(1)}}</em>公里
+                          <em>{{(powerMotionData.distance/1000).toFixed(2)}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -261,31 +261,31 @@
                         </dt>
                         <dt style="color:#9399A5">--次/分钟</dt>
                       </dl> -->
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart<=59 || powerMotionData.heart == 0">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate<=59 || powerMotionData.avgHartRate == 0">
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">--次/分钟</dt>
+                        <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=60 && powerMotionData.heart<=69">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
                         <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=70 && powerMotionData.heart<=79">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
                         <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=80 && powerMotionData.heart<=89">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
                         <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart>=90">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
@@ -298,7 +298,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{powerMotionData.calorie}}</em>大卡
+                          <em>{{(powerMotionData.calorie/1000).toFixed(1)}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -367,7 +367,7 @@
                           <dt>
                             <img src="../../assets/images/脂肪@2x.png" alt>
                           </dt>
-                          <dt><em>644</em>大卡</dt>
+                          <dt><em>644</em>千卡</dt>
                           <dt>卡路里</dt>
                         </dl>
                         <dl>
@@ -436,7 +436,7 @@
                           <dt>
                             <img src="../../assets/images/脂肪@2x.png" alt>
                           </dt>
-                          <dt><em>44</em>大卡</dt>
+                          <dt><em>44</em>千卡</dt>
                           <dt>卡路里</dt>
                         </dl>
                         <dl>
@@ -519,6 +519,7 @@ export default {
       ],
       
       userId: this.$route.query.userId,
+      subscribeDate: this.$route.query.subscribeDate,
       tabLists: [],
       aggregate: houseAimg3.images,
       powerMotionData: {},
@@ -553,13 +554,14 @@ export default {
       var id = item.id;
       console.log("type", type);
       console.log("id", id);
+      // this.heartRate = [];
       this.initTypeDetail(type, id);
     },
     init() {
       // const userId = "1128609374529040385";
       const userId = this.userId;
-      const subscribeDate = this.getNowFormatDate();
-      // const subscribeDate = "2019-05-05";
+      // const subscribeDate = this.getNowFormatDate();
+      const subscribeDate = this.subscribeDate;
       console.log(subscribeDate);
       siveDataDetails(userId, subscribeDate)
         .then(res => {
@@ -633,40 +635,72 @@ export default {
         userId: this.userId,
         motionId: id
       };
+      let _this = this;
       typeDetails(params)
         .then(res => {
           console.log("心率数据", res);
           if (res.data.code == 2000) {
             if (type == 0 || type == 1) {
-              this.heartRate = res.data.obj.motionData.heartRate || [];
-              this.motionDataObj = res.data.obj.motionData || {};
-              this.distance = this.motionDataObj.distance.toFixed(2);
-              this.endTime = this.motionDataObj.endTime.split(" ")[1];
-              this.startTime = this.motionDataObj.startTime.substr(0, 16);
-              this.$set(
-                this.data[0],
-                "percent",
-                this.motionDataObj.maximalExercise
-              );
-              this.$set(
-                this.data[1],
-                "percent",
-                this.motionDataObj.anaerobicExercise
-              );
-              this.$set(
-                this.data[2],
-                "percent",
-                this.motionDataObj.aerobicExercise
-              );
-              this.$set(
-                this.data[3],
-                "percent",
-                this.motionDataObj.fatMovement
-              );
-              this.$set(this.data[4], "percent", this.motionDataObj.warmUp);
+              // this.data = [];
+              // _this.heartRate = res.data.obj.motionData.heartRate || [];
+              _this.$set(_this,'heartRate',res.data.obj.motionData.heartRate || [])
               // debugger
-              this.initPiechart();
-              this.intipriec();
+              _this.motionDataObj = res.data.obj.motionData || {};
+              _this.distance = _this.motionDataObj.distance.toFixed(2);
+              _this.endTime = _this.motionDataObj.endTime.split(" ")[1];
+              _this.startTime = _this.motionDataObj.startTime.substr(0, 16);
+              // this.$set(
+              //   this.data[0],
+              //   "percent",
+              //   this.motionDataObj.maximalExercise
+              // );
+              // this.$set(
+              //   this.data[1],
+              //   "percent",
+              //   this.motionDataObj.anaerobicExercise
+              // );
+              // this.$set(
+              //   this.data[2],
+              //   "percent",
+              //   this.motionDataObj.aerobicExercise
+              // );
+              // this.$set(
+              //   this.data[3],
+              //   "percent",
+              //   this.motionDataObj.fatMovement
+              // );
+              // this.$set(this.data[4], "percent", this.motionDataObj.warmUp);
+              _this.data =[
+        {
+          name: "极限",
+          percent: _this.motionDataObj.maximalExercise,
+          a: "1"
+        },
+        {
+          name: "无氧运动",
+          percent: _this.motionDataObj.anaerobicExercise,
+          a: "1"
+        },
+        {
+          name: "有氧运动",
+          percent: _this.motionDataObj.aerobicExercise,
+          a: "1"
+        },
+        {
+          name: "燃脂运动",
+          percent: _this.motionDataObj.fatMovement,
+          a: "1"
+        },
+        {
+          name: "热身",
+          percent: _this.motionDataObj.warmUp,
+          a: "1"
+        }
+      ];
+              console.log('图饼数据',_this.data)
+              // debugger
+              _this.initPiechart(_this.data);
+              _this.intipriec(_this.heartRate);
               // this.initHistogram()
             } else if (type == 2 || type == 3) {
               this.powerMotionData = res.data.obj.powerMotionData || {};
@@ -691,12 +725,12 @@ export default {
         });
     },
   
-    initPiechart() {
+    initPiechart(data) {
       var motionPoint = new Number(
         this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
       );
       var map = {};
-      this.data.map(function(obj) {
+      data.map(function(obj) {
         map[obj.name] = obj.percent + "分钟";
       });
 
@@ -707,19 +741,23 @@ export default {
         pixelRatio: window.devicePixelRatio,
         padding: [20, "auto"]
       });
-      chart.source(this.data, {
+      chart.legend('percent', {
+        triggerOn: 'click'
+      });
+      chart.source(data, {
         percent: {
           formatter: function formatter(val) {
             return val + "分钟";
           }
         }
       });
-      chart.tooltip(false);
+      // chart.interaction(false);
+      // chart.clearInteraction();
       chart.legend({
         position: "right",
-        itemFormatter: function itemFormatter(val) {
-          return val + "    " + map[val];
-        }
+        // itemFormatter: function itemFormatter(val) {
+        //   return val + "    " + map[val];
+        // }
       });
       chart.coord("polar", {
         transposed: true,
@@ -727,7 +765,7 @@ export default {
         radius: 0.85
       });
       chart.axis(false);
-
+      chart.tooltip(false);
       chart
         .interval()
         .position("a*percent")
@@ -746,63 +784,64 @@ export default {
       });
       chart.render();
     },
-    intipriec(){
-     var item = this.heartRate.map((v,i) => {
+    intipriec(heartRate){
+// debugger
+    // heartArr = [];
+     var item = heartRate.map((v,i) => {
        console.log('股份',v,i)
        
           if(v>=0 && v<=59){
             // alert(1)
-              this.heartArr.push({
+            return {
                 color:'4',
                 year: i+1,
                 sales: v
-              })
+              }
           }
           else if(v>59 && v<=69){
             // alert(1)
-              this.heartArr.push({
+            return {
                 color:'1',
                 year: i+1,
                 sales: v
-              })
+              }
           }
           else if(v>69 && v<=79){
-            
-              this.heartArr.push({
+            return {
                 color:'2',
                 year: i+1,
                 sales: v
-              })
+              }
           }
           else if(v>79 && v<=89){
             // alert(1)
-              this.heartArr.push({
+            return {
                 color:'3',
                 year: i+1,
                 sales: v
-              })
+              }
           }
           else if(v>=90){
-              this.heartArr.push({
+            return {
                 color:'0',
                 year: i+1,
                 sales: v
-              })
+              }
           }
-          console.log(this.heartArr)
+          // console.log(this.heartArr)
      })
       var num = 4;
-      if(this.heartArr.length<=3){
+      if(item.length<=3){
         num = 2
         console.log(num)
       }
-      
-          var chart = new F2.Chart({
+      var chart = new F2.Chart({
         id: 'histogramList',
         pixelRatio: window.devicePixelRatio
       });
       chart.legend(false);
-      chart.source(this.heartArr, {
+      chart.tooltip(false);
+      chart.source(item, {
         year: {
           tickCount: num,
           // min:0,
@@ -825,7 +864,7 @@ export default {
       
       chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
       chart.render();
-      
+
       },
     //时间戳转换日期
 

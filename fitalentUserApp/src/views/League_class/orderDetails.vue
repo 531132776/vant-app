@@ -119,7 +119,7 @@
         </div>
           <!-- 预约 -->
         <div class="appointment pr_pl15">
-            <div class="appointment_icon" @click="callService()"> 
+            <div class="appointment_icon"> 
                 <span>共计：¥{{total}}</span>
             </div>
             <van-button class="appointment_btn"  @click="trainingMayment()" type="primary">确认订单</van-button>
@@ -216,7 +216,7 @@ export default {
                 this.coachList = res.data.obj.coach
                 this.immageDto = res.data.obj.immageDto
                 this.goodCourse = res.data.obj.classStartTime.split("/ ")
-                this.total = this.trainingCampList.price*this.trainingCampList.classHour
+                this.total = this.trainingCampList.price
                 this.coverImg = this.immageDto.coverUrl.url
                 // this.goodCourse = res.data.obj.coach.goodCourse.split("、")
                 // this.onlyPeopele = (res.data.obj.startClassNum - res.data.obj.peopleNum)
@@ -237,6 +237,7 @@ export default {
                 if(res.data.obj.list.length>0){
                     res.data.obj.list[0].checkStatus = true
                     this.couponList = res.data.obj.list
+                    this.choosePopup()
                 }
                 //this.couponCount = 2
                 //this.couponCount[0].checkStatus = true
@@ -267,24 +268,24 @@ export default {
             var choosePopup = this.couponList.find((item)=>{
                 if(item.checkStatus == true){
                     return item
-                }else{
-                    return item
                 }
             })
+            console.log(choosePopup.checkStatus)
             if(choosePopup.checkStatus){
                 this.couponId = choosePopup.uid
                 if(choosePopup.couponType == 1){
                     this.afterCoupon = this.trainingCampList.price
+                    this.total = 0
                 }else if(choosePopup.couponType == 0){
-                    this.afterCoupon = this.trainingCampList.price*this.trainingCampList.classHour - choosePopup.discountValue
+                    this.afterCoupon = choosePopup.discountValue
                     if(this.afterCoupon < 0){
                         this.afterCoupon = this.trainingCampList.price
                     }
-                    this.total = this.afterCoupon
+                    this.total = this.trainingCampList.price - this.afterCoupon
                 }
             }else{
                 this.afterCoupon = 0
-                this.total = this.trainingCampList.price*this.trainingCampList.classHour
+                this.total = this.trainingCampList.price
             }
         },
          trainingMayment(){
@@ -298,7 +299,7 @@ export default {
             }
             const params = 
                 {   
-                    amount: this.trainingCampList.classHour,
+                    amount: 1,
                     couponId:this.couponId,
                     productId: this.trainingCampList.trainingCampBusinessId,
                     productType: this.trainingCampList.courseType,

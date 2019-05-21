@@ -268,9 +268,11 @@
         },
         mounted() {
             this.getAweek(); //获取7天日期
+            window.oc_to_js = this.oc_to_js;
             
         },
         created() {
+            sessionStorage.setItem('dayTime',Date.parse(new Date()))
             this.lat2 = this.$route.query.lat;
             this.lng2 = this.$route.query.lng;
             this.clubId = this.$route.query.clubId;
@@ -278,11 +280,10 @@
             this.getClubDetail(this.clubId);
             this.countPeopleByClub(this.clubId);
             this.getH5Config();
-            this.initTime();
+            this.initTime(sessionStorage.getItem('dayTime'));
             this.getCoach() //获取教练list
             this.getTrainingList();
             this.$store.commit('getUserId', this.userId)
-            
         },
         methods: {
             moreVue() {
@@ -296,9 +297,22 @@
                     window.webkit.messageHandlers.moreList.postMessage(params)
                 }
             },
-            initTime() {
+            oc_to_js(){
+                this.lat2 = this.$route.query.lat;
+                this.lng2 = this.$route.query.lng;
+                this.clubId = this.$route.query.clubId;
+                this.userId = this.$route.query.userId;
+                this.getClubDetail(this.clubId);
+                this.countPeopleByClub(this.clubId);
+                this.getH5Config();
+                this.initTime(sessionStorage.getItem('dayTime'));
+                this.getCoach() //获取教练list
+                this.getTrainingList();
+                this.$store.commit('getUserId', this.userId)
+            },
+            initTime(dayTime) {
                 let params = {
-                    createTime: Date.parse(new Date()),
+                    createTime: dayTime,
                     classRoomId: 1,
                 }
                 SearchforAweek(params).then(res => {
@@ -529,6 +543,7 @@
             onClick(index, title) {
                 console.log(this.timeList[index]);
                 this.getTeamClass(this.timeList[index]);
+                // sessionStorage.setItem('dayTime',this.timeList[index])
             },
             //拨号
             tell() {

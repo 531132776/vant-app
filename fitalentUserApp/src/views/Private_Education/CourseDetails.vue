@@ -277,9 +277,11 @@ export default {
                 path:'/purchaseOrderDetails',
                 query:{
                     status: this.$route.query.status,
-                    obj:this.privateCourse,
-                    privateOne:this.$route.query,
-                    userId:this.userId
+                    // obj:this.privateCourse,
+                    // privateOne:this.$route.query,
+                    userId:this.userId,
+                    courseType:this.$route.query.courseType,
+                    privateCourseId:this.$route.query.privateCourseId,
                 }
             })
         },
@@ -289,9 +291,11 @@ export default {
                 path:'/purchaseOrderDetails',
                 query:{
                     status: this.$route.query.status,
-                    obj:this.educationexperie,
-                    privateTwo:this.$route.query,
-                    userId:this.userId
+                    // obj:this.educationexperie,
+                    // privateTwo:this.$route.query,
+                    userId:this.userId,
+                    courseType:this.$route.query.courseType,
+                    privateTasteCourseId:this.$route.query.educationexperienceId
                 }
             })
         }

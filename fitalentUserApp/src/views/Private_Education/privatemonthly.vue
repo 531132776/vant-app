@@ -135,8 +135,9 @@ export default {
                 path:'/purchaseOrderDetails',
                 query:{
                     status: this.$route.query.status,
-                    obj:this.educationsectorDetails,
-                    privateThree:this.$route.query,
+                    // obj:this.educationsectorDetails,
+                    courseType:this.$route.query.courseType,
+                    privateMonthCourseId:this.$route.query.educationsectorId,
                     userId:this.userId
                 }
             })

@@ -1,9 +1,9 @@
 <template>
   <div class="echarts_info">
     <div>
-      <van-tabs v-model="active" :swipe-threshold="2" v-if="aggregate.length>0">
+      <van-tabs v-model="active" :swipe-threshold="2" v-if="aggregate.length>0" @change="onTabClick">
         <van-tab v-for="(item,i) in aggregate" :title="'选项 ' + item.type + item.id" :key="i">
-          <div slot="title" class="slot_content pt15" @click="onTabClick(item,i)">
+          <div slot="title" class="slot_content pt15" >
             <span class="slot_span_img">
               <img :src="active1==i?item.img:item.src" alt>
             </span>
@@ -99,20 +99,14 @@
               </div>
               <!-- 饼图 -->
               <div class="pr_pl15 Pie_chart mt15">
-                <div>
-                  <canvas id="mountNodeList"></canvas>
-                </div>
-
-                <!-- <echartsInfoPir></echartsInfoPir> -->
-                <!-- <span>4324</span> -->
+                  <!-- <canvas id="mountNodeList" width="100%" heihgt:="260px"></canvas> -->
+                  <div id="echartspie" style="width: 375px; height: 260px;"></div> 
               </div>
               <!-- 柱状图 -->
               <div class="Histogram_info pr_pl15">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
-                  <!-- <span>4354</span> -->
-                  <canvas id="histogramList"></canvas>
-                  <!-- <echartsInfobar></echartsInfobar> -->
+                  <canvas id="histogramList" width="100%" heihgt:="260px"></canvas>
                 </div>
               </div>
             </div>
@@ -249,18 +243,7 @@
                       </dl>
                     </li>
                     <li>
-                      <!-- <dl class="Heart_rate_animation" v-if="powerMotionData.heart>0">
-                        <dt>
-                          <img src="../../assets/images/分组6@2x1.png" alt>
-                        </dt>
-                        <dt>25次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.heart==0">
-                        <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
-                        </dt>
-                        <dt style="color:#9399A5">--次/分钟</dt>
-                      </dl> -->
+                      
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate<=59 || powerMotionData.avgHartRate == 0">
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
@@ -327,151 +310,10 @@
                     <td>{{item.heavy}}公斤</td>
                     <td>{{item.times}}次</td>
                   </tr>
-                  <!-- </tbody> -->
                 </table>
               </div>
             </div>
-            <!-- <div v-if="i==3">
-                  <div class="p15 Treadmill Butterfly_machine">
-                      <div class="text_title">
-                          2019-04-29 15:00~16:00
-                      </div>
-                      <div class="pt10 heart_rate">
-                      <ul>
-                      <li>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/9.png" alt>
-                          </dt>
-                          <dt><em>15</em>分钟</dt>
-                          <dt>总时间</dt>
-                        </dl>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/10.png" alt>
-                          </dt>
-                          <dt><em>700</em>千焦</dt>
-                          <dt>方式</dt>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl class="Heart_rate_animation">
-                          <dt>
-                            <img src="../../assets/images/5.jpg" alt>
-                          </dt>
-                          <dt>85次/分钟</dt>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/脂肪@2x.png" alt>
-                          </dt>
-                          <dt><em>644</em>千卡</dt>
-                          <dt>卡路里</dt>
-                        </dl>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/12.png" alt>
-                          </dt>
-                          <dt><em>150</em>公里</dt>
-                          <dt>距离</dt>
-                        </dl>
-                      </li>
-                    </ul>
-                    </div>
-                      <table border="1" cellpadding=“10” cellspacing="0">
-                          <div>
-                              过大
-                          </div>
-                          <tr>
-                              <td>重量</td>
-                              <td>次数</td>
-                          </tr>
-                          <tr>
-                              <td>60kg</td>
-                              <td>10次</td>
-                          </tr>
-                          <tr>
-                              <td>30kg</td>
-                              <td>10次</td>
-                          </tr>
-                      </table>
-                  </div>
-                  
-            </div>-->
-            <!-- <div v-if="i==4">
-                  <div class="p15 Treadmill Butterfly_machine">
-                      <div class="text_title">
-                          2019-04-29 15:00~16:00
-                      </div>
-                      <div class="pt10 heart_rate">
-                      <ul>
-                      <li>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/9.png" alt>
-                          </dt>
-                          <dt><em>15</em>分钟</dt>
-                          <dt>总时间</dt>
-                        </dl>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/10.png" alt>
-                          </dt>
-                          <dt><em>500</em>千焦</dt>
-                          <dt>发电量</dt>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl class="Heart_rate_animation">
-                          <dt>
-                            <img src="../../assets/images/5.jpg" alt>
-                          </dt>
-                          <dt>15次/分钟</dt>
-                        </dl>
-                      </li>
-                      <li>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/脂肪@2x.png" alt>
-                          </dt>
-                          <dt><em>44</em>千卡</dt>
-                          <dt>卡路里</dt>
-                        </dl>
-                        <dl>
-                          <dt>
-                            <img src="../../assets/images/12.png" alt>
-                          </dt>
-                          <dt><em>50</em>公里</dt>
-                          <dt>距离</dt>
-                        </dl>
-                      </li>
-                    </ul>
-                    </div>
-                      <table border="1" cellpadding=“10” cellspacing="0">
-                          <div>
-                              发生的
-                          </div>
-                          <tr>
-                              <td>重量</td>
-                              <td>次数</td>
-                          </tr>
-                          <tr>
-                              <td>20kg</td>
-                              <td>10次</td>
-                          </tr>
-                          <tr>
-                              <td>30kg</td>
-                              <td>10次</td>
-                          </tr>
-                      </table>
-                  </div>
-                  
-            </div>-->
           </div>
-          <!-- <div v-if="i==5">哑铃</div> -->
-          <!-- <div v-if="i==6">尼玛</div> -->
         </van-tab>
       </van-tabs>
     </div>
@@ -482,6 +324,7 @@ import { Tab, Tabs, version } from "vant";
 import { siveDataDetails, typeDetails } from "@/request/api";
 import houseAimg3 from "../../../public/aggregate.json";
 import F2 from "@antv/f2";
+// import echarts from 'echarts'
 // import echartsInfoPir from '../../components/chart/echartsinfo_pir'
 // import echartsInfobar from '../../components/chart/echartsinfo_bar'
 export default {
@@ -529,7 +372,8 @@ export default {
       endTime: "",
       distance: "",
       heartRate: [],
-      heartArr: []
+      heartArr: [],
+      myChart:''
     };
   },
   components: {
@@ -540,25 +384,47 @@ export default {
   },
   mounted() {
     this.init();
+    
+    
   },
   updated() {},
   created() {
     // this.initHistogram()
     // this.intipriec();
+    this.$nextTick(() =>{
+     
+    })
   },
   methods: {
-    onTabClick(item, title) {
-      this.active1 = title;
-      console.log("当前item", item, title);
-      var type = item.type;
-      var id = item.id;
-      console.log("type", type);
-      console.log("id", id);
-      // this.heartRate = [];
-      this.initTypeDetail(type, id);
+      drawLine(){
+
+        
+        // 基于准备好的dom，初始化echarts实例
+        let myChart = this.$echarts.init(document.getElementById('echartspie'))
+        // 绘制图表
+        myChart.setOption({
+            title: { text: '在Vue中使用echarts' },
+            tooltip: {},
+            xAxis: {
+                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+            },
+            yAxis: {},
+            series: [{
+                name: '销量',
+                type: 'pie',
+                data: [5, 20, 36, 10, 10, 20]
+            }]
+        });
+        window.onresize = myChart.resize;
+    },
+
+    onTabClick(index, title) {
+      this.active1 = index;
+      let findVal = this.aggregate.find((item,i)=> {return i==index});
+      console.log(findVal,'当前值')
+      this.initTypeDetail(findVal.type, findVal.id);
     },
     init() {
-      // const userId = "1128609374529040385";
       const userId = this.userId;
       // const subscribeDate = this.getNowFormatDate();
       const subscribeDate = this.subscribeDate;
@@ -568,25 +434,13 @@ export default {
           console.log("初始化数据", res);
           if (res.data.code == 2000) {
             this.tabLists = res.data.obj || [];
-            // var newList = this.tabLists.map((value, index) => {
-            //   if (value.name !==null ? value.name.includes("跑步机") : '') {
-            //     value.name = "跑步机";
-            //   }
-            //   if (value.name !==null ? value.name.includes("动感单车") : '') {
-            //     value.name = "动感单车";
-            //   }
-              
-            //   console.log("value:" + value.name);
-            //   return value;
-            // });
-            // console.log("还是", newList);
+            
             const aggregate = this.aggregate;
             console.log('josn',aggregate)
             const arr = [];
             if (this.tabLists.length > 0) {
               for (var n in this.tabLists) {
-                if(this.tabLists[n].name !==null){
-
+                // if(this.tabLists[n].name !==null){
                 
                 if (this.tabLists[n].name === aggregate[n].name) {
                   arr.push({
@@ -611,7 +465,7 @@ export default {
                     }
                   }
                 }
-                }
+                // }
               }
             }
             if (this.tabLists.length > 0) {
@@ -628,6 +482,138 @@ export default {
           console.log("请求错误！", err);
         });
     },
+    //  initPiechart(data) {
+    //   // alert(1)
+    //   var motionPoint = new Number(
+    //     this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
+    //   );
+    //   var map = {};
+    //   data.map(function(obj) {
+    //     console.log(obj,'dfsdfsd')
+    //     map[obj.name] = obj.percent + "分钟";
+    //   });
+
+    //   var chart = new F2.Chart({
+    //     el:document.getElementById('mountNodeList'),
+    //     pixelRatio: window.devicePixelRatio,
+    //     padding: [20, "auto"]
+    //   });
+      
+    //   chart.source(data, {
+    //     percent: {
+    //       formatter: function formatter(val) {
+    //         alert(2)
+    //         console.log(val,'饼图')
+    //         return val + "分钟";
+    //       }
+    //     }
+    //   });
+    //   chart.legend({
+    //     position: "right",
+    //     triggerOn: 'click',
+    //     clickable: false
+    //   });
+    //   chart.coord("polar", {
+    //     transposed: true,
+    //     innerRadius: 0.7,
+    //     radius: 0.85
+    //   });
+    //   chart.axis(false);
+    //   chart.tooltip(false);
+    //   chart
+    //     .interval()
+    //     .position("a*percent")
+    //     .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"])
+    //     .adjust("stack");
+
+    //   chart.guide().html({
+    //     position: ["50%", "45%"],
+    //     html:
+    //       '<div style="width: 250px;height: 40px;text-align: center;">' +
+    //       '<div class="text_name">' +
+    //       motionPoint +
+    //       "</div>" +
+    //       '<div class="text_price">运动点数?</div>' +
+    //       "</div>"
+    //   });
+    //   chart.render();
+    // },
+    // intipriec(heartRate){
+    //  var item = heartRate.map((v,i) => {
+       
+    //       if(v>=0 && v<=59){
+    //         // alert(1)
+    //         return {
+    //             color:'4',
+    //             year: i+1,
+    //             sales: v
+    //           }
+    //       }
+    //       else if(v>59 && v<=69){
+    //         return {
+    //             color:'1',
+    //             year: i+1,
+    //             sales: v
+    //           }
+    //       }
+    //       else if(v>69 && v<=79){
+    //         return {
+    //             color:'2',
+    //             year: i+1,
+    //             sales: v
+    //           }
+    //       }
+    //       else if(v>79 && v<=89){
+    //         return {
+    //             color:'3',
+    //             year: i+1,
+    //             sales: v
+    //           }
+    //       }
+    //       else if(v>=90){
+    //         return {
+    //             color:'0',
+    //             year: i+1,
+    //             sales: v
+    //           }
+    //       }
+    //  })
+    //   var num = 4;
+    //   if(item.length<=3){
+    //     num = 2
+    //     console.log(num)
+    //   }
+    //   var chart = new F2.Chart({
+    //     id: 'histogramList',
+    //     pixelRatio: window.devicePixelRatio
+    //   });
+    //   chart.clear();
+    //   chart.legend(false);
+    //   chart.tooltip(false);
+
+    //   chart.source(item, {
+    //     year: {
+    //       tickCount: num,
+    //       formatter: function formatter(val,i) {
+    //         // console.log('year',val,i)
+    //         return val.toFixed(0)+'min'
+    //       }
+    //     },
+    //     sales:{
+    //       // tickCount: 4,
+    //       // min:0,
+    //       // max:100,
+    //       formatter: function formatter(val) {
+    //         // console.log(val)
+    //         return (val * 1).toFixed(0)+'%';
+           
+    //       }
+    //     }
+    //   });
+      
+    //   chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
+    //   chart.render();
+    //   },
     initTypeDetail(type, id) {
       let params = {
         type: type,
@@ -635,7 +621,7 @@ export default {
         userId: this.userId,
         motionId: id
       };
-      let _this = this;
+      // let _this = this;
       typeDetails(params)
         .then(res => {
           console.log("心率数据", res);
@@ -643,64 +629,38 @@ export default {
             if (type == 0 || type == 1) {
               // this.data = [];
               // _this.heartRate = res.data.obj.motionData.heartRate || [];
-              _this.$set(_this,'heartRate',res.data.obj.motionData.heartRate || [])
+              this.$set(this,'heartRate',res.data.obj.motionData.heartRate || [])
               // debugger
-              _this.motionDataObj = res.data.obj.motionData || {};
-              _this.distance = _this.motionDataObj.distance.toFixed(2);
-              _this.endTime = _this.motionDataObj.endTime.split(" ")[1];
-              _this.startTime = _this.motionDataObj.startTime.substr(0, 16);
-              // this.$set(
-              //   this.data[0],
-              //   "percent",
-              //   this.motionDataObj.maximalExercise
-              // );
-              // this.$set(
-              //   this.data[1],
-              //   "percent",
-              //   this.motionDataObj.anaerobicExercise
-              // );
-              // this.$set(
-              //   this.data[2],
-              //   "percent",
-              //   this.motionDataObj.aerobicExercise
-              // );
-              // this.$set(
-              //   this.data[3],
-              //   "percent",
-              //   this.motionDataObj.fatMovement
-              // );
-              // this.$set(this.data[4], "percent", this.motionDataObj.warmUp);
-              _this.data =[
-        {
-          name: "极限",
-          percent: _this.motionDataObj.maximalExercise,
-          a: "1"
-        },
-        {
-          name: "无氧运动",
-          percent: _this.motionDataObj.anaerobicExercise,
-          a: "1"
-        },
-        {
-          name: "有氧运动",
-          percent: _this.motionDataObj.aerobicExercise,
-          a: "1"
-        },
-        {
-          name: "燃脂运动",
-          percent: _this.motionDataObj.fatMovement,
-          a: "1"
-        },
-        {
-          name: "热身",
-          percent: _this.motionDataObj.warmUp,
-          a: "1"
-        }
-      ];
-              console.log('图饼数据',_this.data)
+              this.motionDataObj = res.data.obj.motionData || {};
+              this.distance = this.motionDataObj.distance.toFixed(2);
+              this.endTime = this.motionDataObj.endTime.split(" ")[1];
+              this.startTime = this.motionDataObj.startTime.substr(0, 16);
+              this.$set(
+                this.data[0],
+                "percent",
+                this.motionDataObj.maximalExercise
+              );
+              this.$set(
+                this.data[1],
+                "percent",
+                this.motionDataObj.anaerobicExercise
+              );
+              this.$set(
+                this.data[2],
+                "percent",
+                this.motionDataObj.aerobicExercise
+              );
+              this.$set(
+                this.data[3],
+                "percent",
+                this.motionDataObj.fatMovement
+              );
+              this.$set(this.data[4], "percent", this.motionDataObj.warmUp);
+             
+              console.log('图饼数据',this.data)
               // debugger
-              _this.initPiechart(_this.data);
-              _this.intipriec(_this.heartRate);
+              // this.initPiechart(this.data);
+              // this.intipriec(this.heartRate);
               // this.initHistogram()
             } else if (type == 2 || type == 3) {
               this.powerMotionData = res.data.obj.powerMotionData || {};
@@ -725,147 +685,7 @@ export default {
         });
     },
   
-    initPiechart(data) {
-      var motionPoint = new Number(
-        this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
-      );
-      var map = {};
-      data.map(function(obj) {
-        map[obj.name] = obj.percent + "分钟";
-      });
-
-      const chart = new F2.Chart({
-        id: "mountNodeList",
-        // width: 320,
-        // height: 250,
-        pixelRatio: window.devicePixelRatio,
-        padding: [20, "auto"]
-      });
-      chart.legend('percent', {
-        triggerOn: 'click'
-      });
-      chart.source(data, {
-        percent: {
-          formatter: function formatter(val) {
-            return val + "分钟";
-          }
-        }
-      });
-      // chart.interaction(false);
-      // chart.clearInteraction();
-      chart.legend({
-        position: "right",
-        // itemFormatter: function itemFormatter(val) {
-        //   return val + "    " + map[val];
-        // }
-      });
-      chart.coord("polar", {
-        transposed: true,
-        innerRadius: 0.7,
-        radius: 0.85
-      });
-      chart.axis(false);
-      chart.tooltip(false);
-      chart
-        .interval()
-        .position("a*percent")
-        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"])
-        .adjust("stack");
-
-      chart.guide().html({
-        position: ["50%", "45%"],
-        html:
-          '<div style="width: 250px;height: 40px;text-align: center;">' +
-          '<div class="text_name">' +
-          motionPoint +
-          "</div>" +
-          '<div class="text_price">运动点数?</div>' +
-          "</div>"
-      });
-      chart.render();
-    },
-    intipriec(heartRate){
-// debugger
-    // heartArr = [];
-     var item = heartRate.map((v,i) => {
-       console.log('股份',v,i)
-       
-          if(v>=0 && v<=59){
-            // alert(1)
-            return {
-                color:'4',
-                year: i+1,
-                sales: v
-              }
-          }
-          else if(v>59 && v<=69){
-            // alert(1)
-            return {
-                color:'1',
-                year: i+1,
-                sales: v
-              }
-          }
-          else if(v>69 && v<=79){
-            return {
-                color:'2',
-                year: i+1,
-                sales: v
-              }
-          }
-          else if(v>79 && v<=89){
-            // alert(1)
-            return {
-                color:'3',
-                year: i+1,
-                sales: v
-              }
-          }
-          else if(v>=90){
-            return {
-                color:'0',
-                year: i+1,
-                sales: v
-              }
-          }
-          // console.log(this.heartArr)
-     })
-      var num = 4;
-      if(item.length<=3){
-        num = 2
-        console.log(num)
-      }
-      var chart = new F2.Chart({
-        id: 'histogramList',
-        pixelRatio: window.devicePixelRatio
-      });
-      chart.legend(false);
-      chart.tooltip(false);
-      chart.source(item, {
-        year: {
-          tickCount: num,
-          // min:0,
-          formatter: function formatter(val,i) {
-            console.log('year',val,i)
-            return val.toFixed(0)+'min'
-          }
-        },
-        sales:{
-          // tickCount: 4,
-          // min:0,
-          // max:100,
-          formatter: function formatter(val) {
-            console.log(val)
-            return (val * 1).toFixed(0)+'%';
-           
-          }
-        }
-      });
-      
-      chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
-      chart.render();
-
-      },
+   
     //时间戳转换日期
 
     getNowFormatDate() {

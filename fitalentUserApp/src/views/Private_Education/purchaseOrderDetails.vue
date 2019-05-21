@@ -259,7 +259,7 @@ import {
   Radio,
   Icon
 } from "vant";
-import { generateOrder, getMonthCoachNumb } from "@/request/api";
+import { generateOrder, getMonthCoachNumb,privateMonthCourse,privateTasteCourse,detailSprivatLessons } from "@/request/api";
 import { GetCouponRecordList } from "@/request/api-liu";
 import { constants } from "crypto";
 export default {
@@ -342,12 +342,27 @@ export default {
     console.log(this.status);
     if (this.status == 2) {
       //私教课详情
-      this.privateCourse = this.$route.query.obj;
-      console.log("私教课", this.privateCourse);
-      this.nmb = this.privateCourse.lowestSection;
-      this.privateOne = this.$route.query.privateOne;
-      this.immageDto = this.privateCourse.immageDto;
-      console.log("私教课", this.privateOne);
+      let params = {
+                privateCourseId:this.$route.query.privateCourseId,
+                courseType:this.$route.query.courseType
+            }
+            console.log(params)
+            detailSprivatLessons(params).then(res =>{
+                console.log('私教课详情',res)
+                if(res.data.code == 2000){
+                    this.educationexperie = res.data.obj;
+                    this.privateCourse = res.data.obj;
+                    this.immageDto = res.data.obj.immageDto;
+                    // alert(this.$route.query.userId)
+      this.nmb = this.educationexperie.lowestSection;
+      this.privateOne = {
+          courseType:this.$route.query.courseType,
+          userId:this.$route.query.userId,
+          privateCourseId:this.$route.query.privateCourseId,
+          status:this.$route.query.status
+      };
+    //   this.immageDto = this.educationexperie.immageDto;
+    //   console.log("私教课", this.privateOne);
       // if(){
 
       // }
@@ -356,21 +371,42 @@ export default {
       if(this.contrastStatus == 0){
           var total = this.nmb * this.privateCourse.onePrice;
       }else if(this.contrastStatus == 1){
-          alert(2)
+          // alert(2)
           var total = this.nmb * this.privateCourse.twoPrice;
       }
       
       this.GetCouponList(
-        this.privateOne.courseType,
-        this.privateOne.userId,
+        this.$route.query.courseType,
+        this.userId,
         this.nmb,
         total
       );
+                }
+                
+            }).catch(err=>{
+                console.log(err)
+            })
+      
     } else if (this.status == 0) {
       //私教体验课详情
-      this.educationexperie = this.$route.query.obj;
+      let params = {
+                privateTasteCourseId:this.$route.query.privateTasteCourseId,
+                courseType:this.$route.query.courseType
+            }
+            privateTasteCourse(params).then(res =>{
+                console.log('私教体验课详情',res)
+                if(res.data.code == 2000){
+                    this.educationexperie = res.data.obj;
+                    this.immageDto = res.data.obj.immageDto;
+                    
+
       console.log("私教体验课", this.educationexperie);
-      this.privateTwo = this.$route.query.privateTwo;
+      this.privateTwo = {
+          courseType:this.$route.query.courseType,
+          userId:this.$route.query.userId,
+          privateTasteCourseId:this.$route.query.privateTasteCourseId,
+          status:this.$route.query.status
+      }
       this.immageDto = this.educationexperie.immageDto;
       this.experiencePrice = this.educationexperie.price;
       this.experienceTotalPrice = this.educationexperie.price
@@ -381,34 +417,51 @@ export default {
         this.classHour,
         this.experiencePrice
       );
+                }
+                
+            }).catch(err=>{
+                console.log(err)
+            })
+      
     } else if (this.status == 1) {
       //包月课详情
-      this.educationsectorDetails = this.$route.query.obj;
-      this.privateThree = this.$route.query.privateThree;
-      this.immageDto = this.educationsectorDetails.immageDto;
-      this.monthlyTotalPrice = this.educationsectorDetails.price;
-      this.MonthTotalPrice = this.educationsectorDetails.price;
-      console.log("包月课详情", this.educationsectorDetails);
-      // initgetMonthCoachNumb(){
-      // let params = {
-      //     privateMonthCourseId:this.educationsectorDetails.privateMonthCourseId,
-      //     userId:this.privateThree.userId,
-      //     clubId:this.educationsectorDetails.clubId
-      // }
-      // getMonthCoachNumb(params).then(res =>{
-      //     console.log('查询包月私教的数量',res)
-      // }).catch(err =>{
-      //     console.log('请求错误！',err)
-      // })
-      // }
-
-      var total = this.monthlyNmb * this.monthlyTotalPrice;
-      this.GetCouponList(
-        this.privateThree.courseType,
-        this.privateThree.userId,
-        this.monthlyNmb,
-        total
-      );
+      //获取包月私教详情
+        
+            let params = {
+                privateMonthCourseId:this.$route.query.privateMonthCourseId,
+                courseType:this.$route.query.courseType
+            }
+            privateMonthCourse(params).then(res=>{
+                console.log('包月私教详情',res)
+                if(res.data.code == 2000){
+                    this.educationsectorDetails = res.data.obj;
+                    // this.immageDto = res.data.obj.immageDto;
+                    // this.privateThree = this.$route.query.privateThree;
+                    this.privateThree = {
+                      userId:this.$route.query.userId,
+                      privateMonthCourseId:this.$route.query.privateMonthCourseId,
+                      courseType:this.$route.query.courseType,
+                      status:this.$route.query.status
+                    }
+                    this.immageDto = this.educationsectorDetails.immageDto;
+                    this.monthlyTotalPrice = this.educationsectorDetails.price;
+                    this.MonthTotalPrice = this.educationsectorDetails.price;
+                    console.log("包月课详情", this.educationsectorDetails);
+                    // console.log()
+                    var total = this.monthlyNmb * this.monthlyTotalPrice;
+                    this.GetCouponList(
+                        this.$route.query.courseType,
+                        this.userId,
+                        this.monthlyNmb,
+                        total
+                    );
+                }
+                
+            }).catch(err =>{
+                console.log(err)
+            })
+      
+      
     }
 
     this.totalPrice =
@@ -620,6 +673,7 @@ export default {
           this.totalPrice
         );
       } else if (index == 1) {
+        console.log(this.privateOne)
         //   alert(2)
         this.$set(this, "contrastStatus", 1);
         this.nmb = this.privateCourse.lowestSection;
@@ -776,7 +830,7 @@ export default {
       }
       // console.log('包月支付:'+this.monthlyTotalPrice)
       let params = {
-        productId: this.privateThree.educationsectorId,
+        productId: this.privateThree.privateMonthCourseId,
         userId: this.userId,
         // userId:10000,
         amount: this.monthlyNmb,
@@ -791,7 +845,7 @@ export default {
             this.monthOrderObj3.type = "pay";
             console.log(this.monthOrderObj3);
             if(this.monthlyTotalPrice == 0){
-                alert(111)
+                // alert(111)
                 Dialog.confirm({
                         title: '下单成功',
                         cancelButtonText:'首页',
@@ -843,7 +897,7 @@ export default {
       }
       console.log("私教体验课支付:" + this.educationexperie);
       let params = {
-        productId: this.privateTwo.educationexperienceId,
+        productId: this.privateTwo.privateTasteCourseId,
         userId: this.userId,
         // userId:10000,
         amount: 1,

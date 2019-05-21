@@ -13,6 +13,10 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)
 
+import echarts from 'echarts'
+
+Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 
@@ -31,21 +35,21 @@ router.afterEach((to, from, next) => {
 })
 
 router.beforeEach((to, from, next) => {
-    console.log(to, from)
-        /* 路由发生变化修改页面title */
-    // if (to.meta.title) {
-        
-    // }
-    if(to.query.leagueStatus){
-        document.title = '团课详情';
-    }else{
-        document.title = to.meta.title
-    }
-    next()
-})
-// router.afterEach(route => {
-//     document.title = route.meta.title
-// })
+        console.log(to, from)
+            /* 路由发生变化修改页面title */
+            // if (to.meta.title) {
+
+        // }
+        if (to.query.leagueStatus) {
+            document.title = '团课详情';
+        } else {
+            document.title = to.meta.title
+        }
+        next()
+    })
+    // router.afterEach(route => {
+    //     document.title = route.meta.title
+    // })
 new Vue({
     router,
     store,

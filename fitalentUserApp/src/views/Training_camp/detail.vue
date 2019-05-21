@@ -34,8 +34,9 @@
                     <span>¥</span>
                     <span style="font-size:30px">{{trainingCampList.price}}</span>
                 </li>
+                 <span style="color:rgba(147,153,165,1);font-size: 13px;">/ {{trainingCampList.classHour}}课时</span>
                <li>
-                   <span style="color:rgba(147,153,165,1);">/ {{trainingCampList.classHour}}课时</span>
+                   
                </li>
             </ul>
             <ul>
@@ -325,14 +326,14 @@ export default {
                 align-items: center;
                 li:nth-child(1){
                     align-self: flex-start;
-                    width:100px;
+                    margin-right: 7px;
                 }
                 li:nth-child(2){
                     display: flex;
                     flex-flow: column wrap;
                     justify-content: flex-start;
                     align-content: space-between;
-                    font-size: 12px;
+                    font-size: 13px;
                     span:nth-child(2){
                         font-size: 10px;
                         text-align: left

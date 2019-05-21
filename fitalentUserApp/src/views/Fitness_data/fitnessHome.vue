@@ -3,20 +3,20 @@
         <div class="Fitness_data_info" v-show="show4">
             <ul>
                 <li>
-                    <dt v-if="Fitnessdata.totalExerciseTime/60>10000">{{Math.round(Fitnessdata.totalExerciseTime/600000)}}<em >万</em></dt>
-                   <dt v-if="Fitnessdata.totalExerciseTime/60<10000">{{Math.round(Fitnessdata.totalExerciseTime/60)}}</dt>
-                    <dt>总运动时间/<em>分钟</em></dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60>10000">{{Math.round(Fitnessdata.totalExerciseTime/600000)}}<em >万</em></dt>
+                   <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60<10000">{{Math.round(Fitnessdata.totalExerciseTime/60)}}</dt>
+                    <dt class="dtNth2">总运动时间/<em>分钟</em></dt>
                 </li>
                 
                 <li>
-                    <dt v-if="Fitnessdata.consume/1000<10000">{{(Fitnessdata.consume/1000).toFixed(1)}}</dt>
-                    <dt v-if="Fitnessdata.consume/1000>10000">{{(Fitnessdata.consume/10000000).toFixed(1)}}<em>万</em></dt>
-                    <dt>总消耗/<em>千卡</em></dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.consume/1000<10000">{{(Fitnessdata.consume/1000).toFixed(1)}}</dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.consume/1000>10000">{{(Fitnessdata.consume/10000000).toFixed(1)}}<em>万</em></dt>
+                    <dt class="dtNth2">总消耗/<em>千卡</em></dt>
                 </li>
                 <li>
-                    <dt v-if="Fitnessdata.powerGeneration<10000">{{(Fitnessdata.powerGeneration/1000).toFixed(1)}}</dt>
-                    <dt v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000000}}<em>万</em></dt>
-                    <dt>总发电量/<em>千焦</em></dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration<10000">{{(Fitnessdata.powerGeneration/1000).toFixed(1)}}</dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000000}}<em>万</em></dt>
+                    <dt class="dtNth2">总发电量/<em>千焦</em></dt>
                 </li>
             </ul>
         </div>

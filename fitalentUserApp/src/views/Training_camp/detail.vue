@@ -178,7 +178,7 @@ export default {
                 this.trainingCampList = res.data.obj
                 this.coachList = res.data.obj.coach
                 this.immageDto = res.data.obj.immageDto
-                this.goodCourse = res.data.obj.coach.goodCourse.split("、")
+                this.goodCourse = res.data.obj.coach.goodCourse.split(",")
                 this.swiperImgs = this.immageDto.spreadUrl
             })
             GetTrainingCampStatus({

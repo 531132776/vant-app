@@ -13,7 +13,7 @@
                         <li>
                             <dt>{{vipDetail.name}}</dt>
                             <dt>
-                                ￥{{vipDetail.price}}/{{vipDetail.validity}}天
+                                ¥{{vipDetail.price}}/{{vipDetail.validity}}天
                             </dt>
                         </li>
                     </ul>
@@ -62,7 +62,7 @@
                 <van-cell >
                     <div class="flex_between">
                         <span>商品价格</span>
-                        <span style="color: #1DCE74;">￥{{monthlyTotalPrice}}</span>
+                        <span style="color: #1DCE74;">¥{{monthlyTotalPrice}}</span>
                     </div>
                 </van-cell>
                 <van-cell>
@@ -279,11 +279,9 @@
                 var choosePopup = this.couponList.find((item)=>{
                     if(item.checkStatus == true){
                         return item
-                    }else{
-                        return item
                     }
                 })
-                if(choosePopup.checkStatus){
+                if(choosePopup){
                     this.couponId = choosePopup.uid
                     if(choosePopup.couponType == 1){
                         this.couponValue = this.vipDetail.price
@@ -292,7 +290,7 @@
                     }else if(choosePopup.couponType == 0){
                         this.couponValue = choosePopup.discountValue
                         this.afterCoupon = this.vipDetail.price - choosePopup.discountValue
-                        this.totalPrice = this.monthlyTotalPrice - choosePopup.discountValue
+                        this.totalPrice = (this.monthlyTotalPrice - choosePopup.discountValue).toFixed(2)
                         if(this.afterCoupon < 0){
                             this.afterCoupon = this.vipDetail.price
                         }
@@ -300,7 +298,7 @@
                     }
                 }else{
                     this.discountValue = 0
-                    this.totalPrice = this.monthlyTotalPrice - choosePopup.discountValue
+                    this.totalPrice = (this.monthlyTotalPrice - choosePopup.discountValue).toFixed(2)
                 }
                 console.log(choosePopup,'uid')
             },
@@ -334,11 +332,11 @@
             monthlyReduce() {
                 this.monthlyNmb -= 1;
                 this.monthlyTotalPrice -= Number(this.vipDetail.price);
-                this.totalPrice = this.monthlyTotalPrice - this.couponValue
+                this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
                 if (this.monthlyNmb <= 1) {
                     this.monthlyNmb = 1;
                     this.monthlyTotalPrice = Number(this.vipDetail.price)
-                    this.totalPrice = this.monthlyTotalPrice - this.couponValue
+                    this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
                     //this.monthlyTotalPrice = this.educationsectorDetails.price;
                 }
                 
@@ -348,8 +346,7 @@
             monthlyIncrease() {
                 this.monthlyNmb += 1;
                 this.monthlyTotalPrice = (this.monthlyNmb * Number(this.vipDetail.price)).toFixed(2)
-                this.totalPrice = this.monthlyTotalPrice - this.couponValue
-                console.log(this.monthlyTotalPrice)
+                this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
             },
         }
     }

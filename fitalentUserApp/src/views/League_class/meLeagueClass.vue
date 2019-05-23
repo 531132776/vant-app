@@ -4,16 +4,16 @@
             <div class="Class_status p15">
                 <ul>
                     <li v-if="meTrainingCampList.status == 0">
-                        课程: 上课中
+                        课程上课中
                     </li>
                     <li v-if="meTrainingCampList.status == 1">
-                        课程: 已完成
+                        课程已完成
                     </li>
                     <li v-if="meTrainingCampList.status == 2">
-                        课程: 待上课
+                        课程待上课
                     </li>
                      <li v-if="meTrainingCampList.status == 4">
-                        课程: 旷课
+                        课程旷课
                     </li>
                     <!-- <li>
                         <span>{{meTrainingCampList.schedule}}</span>

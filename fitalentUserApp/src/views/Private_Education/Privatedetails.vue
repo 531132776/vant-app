@@ -95,7 +95,7 @@
                         </div>
                         <div class="deatils_price">
                             <span>
-                                <em>￥</em>
+                                <em>¥</em>
                                 <em>{{item.coursePrice}}</em>
                                 <em>/节</em>
                             </span>
@@ -202,7 +202,7 @@ export default {
                 console.log('教练详情',res);
                 if(res.data.code == 2000){
                     this.coachInfo = res.data.obj;
-                    let goodCourse = res.data.obj.goodCourse ? res.data.obj.goodCourse.split('、') : '';
+                    let goodCourse = res.data.obj.goodCourse ? res.data.obj.goodCourse.split(',') : '';
                     // console.log('w完成',this.coachInfo)
                     this.swiperImgs = res.data.obj.immageDto.lifeUrl;
                     this.seniorityUrl = res.data.obj.immageDto.seniorityUrl;

@@ -153,8 +153,8 @@ export default {
             endAngle: 2.5*Math.PI,
           });
           chart.axis(false);
-          chart.interval().position('const*expect').shape('polar-tick').size(10).color('rgba(209, 210, 215, 1)').animate(false); // 背景条
-          chart.interval().position('const*actual').shape('polar-tick').size(15).color('l(360) 0:#00B167 1:#87ED4D').animate(false); // 实际进度
+          chart.interval().position('const*expect').shape('polar-tick').size(8).color('rgba(209, 210, 215, 1)').animate(false); // 背景条
+          chart.interval().position('const*actual').shape('polar-tick').size(16).color('l(360) 0:#00B167 1:#87ED4D').animate(false); // 实际进度
           chart.render();
     },
   }

@@ -133,7 +133,7 @@
                                         <span>{{item.coachName}}</span>
                                     </li>
                                     <li>
-                                        <span>￥{{item.coursePrice}}/节</span>
+                                        <span>¥{{item.coursePrice}}/节</span>
                                     </li>
                                     <li>
                                         <span>累计上课{{item.reservationNum}}节</span>

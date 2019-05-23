@@ -35,9 +35,9 @@
                 </div>
                 <van-tabs v-model="active" class="tabs_group" :swipe-threshold="8" :swipeable="false"  @click="onClick">
                     <!--<span id="time">2.19</span>-->
-                    <van-tab v-cloak v-for="(item,i) in timeList" :key="i" :title="i==0 ? '今天' : getWeek(item)" class="var_tab">
+                    <van-tab v-for="(item,i) in timeList" :key="i" :title="i==0 ? '今天' : getWeek(item)" class="var_tab">
                         <div class="Course_list">
-                            <ul v-cloak v-if="teamClassList.length > 0" v-show="jumpAvailable" @click="toLeagueClass(item)" v-for="item in teamClassList" >
+                            <ul v-if="teamClassList.length > 0" v-show="jumpAvailable" @click="toLeagueClass(item)" v-for="item in teamClassList" >
                                 <li>
                                     <img :src="item.coverUrl" alt="">
                                 </li>
@@ -104,7 +104,7 @@
                                         <span>{{item.coachName}}</span>
                                     </li>
                                     <li>
-                                        <span>￥{{item.coursePrice}}/节</span>
+                                        <span>¥{{item.coursePrice}}/节</span>
                                     </li>
                                     <li>
                                         <span>累计上课{{item.reservationNum}}节</span>
@@ -264,15 +264,14 @@
         beforeRouteEnter(to, from, next) {
             next(vm => {
                 document.body.scrollTop = vm.scrollTop
-            })
+            });
         },
         mounted() {
+            console.log(this.active)
             this.getAweek(); //获取7天日期
             window.oc_to_js = this.oc_to_js;
-            
         },
         created() {
-            sessionStorage.setItem('dayTime',Date.parse(new Date()))
             this.lat2 = this.$route.query.lat;
             this.lng2 = this.$route.query.lng;
             this.clubId = this.$route.query.clubId;
@@ -280,7 +279,12 @@
             this.getClubDetail(this.clubId);
             this.countPeopleByClub(this.clubId);
             this.getH5Config();
-            this.initTime(sessionStorage.getItem('dayTime'));
+            if(this.active==0){
+                this.initTime(Date.parse(new Date()));
+            }else{
+                this.initTime(sessionStorage.getItem('dayTime'));
+            }
+            
             this.getCoach() //获取教练list
             this.getTrainingList();
             this.$store.commit('getUserId', this.userId)
@@ -306,21 +310,23 @@
                 this.countPeopleByClub(this.clubId);
                 this.getH5Config();
                 this.initTime(sessionStorage.getItem('dayTime'));
+                // this.$set(this,'active',0)
                 this.getCoach() //获取教练list
                 this.getTrainingList();
                 this.$store.commit('getUserId', this.userId)
             },
             initTime(dayTime) {
                 let params = {
-                    createTime: dayTime,
+                    createTime: Date.parse(new Date()),
                     classRoomId: 1,
                 }
                 SearchforAweek(params).then(res => {
                     console.log('时间', res);
                     if (res.data.obj != undefined)
                         this.timeList = res.data.obj.timeList
-                    this.getTeamClass(this.timeList[0])
+                    this.getTeamClass(dayTime)
                     console.log('时间', this.timeList)
+                    
                 }).catch(err => {
                     console.log(err)
                 })
@@ -543,7 +549,7 @@
             onClick(index, title) {
                 console.log(this.timeList[index]);
                 this.getTeamClass(this.timeList[index]);
-                // sessionStorage.setItem('dayTime',this.timeList[index])
+                sessionStorage.setItem('dayTime',this.timeList[index])
             },
             //拨号
             tell() {

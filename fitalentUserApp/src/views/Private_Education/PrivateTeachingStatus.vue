@@ -6,7 +6,7 @@
                     <!-- <li v-if="lessonTwo==totalNumber">
                         课程已完成
                     </li> -->
-                    <li v-if="courseInfo.status == 0">课程未完成</li>
+                    <li v-if="courseInfo.status == 0">课程进行中</li>
                     <li v-if="courseInfo.status == 1">课程已完成</li>
                     <li>
                         <!-- <span>{{lessonTwo}}</span><span> /{{totalNumber}}节</span> -->
@@ -91,7 +91,7 @@ export default {
             peopleHead:require('../../assets/images/10.png'),
             phomeIcon:require("../../assets/images/电话@2x.png"),
             // oneImg:require('../../assets/images/4.jpg'),
-            tell2:'18664989013',
+            tell2:'0755-26400830',
             lessonTwo:'',//当前正在进行的第5节课
             totalNumber:'',//当前课程总数是12节课
             Classtimeanddate:[],
@@ -212,7 +212,7 @@ export default {
                 }
                 postPrivateEducation(para).then(res =>{
                     console.log('私教课签到',res);
-                    if(res.obj == 1){
+                    if(res.data.obj == 1){
                         this.disabled = true;
                     }
                     
@@ -262,7 +262,7 @@ export default {
                 }
                 postPrivateEducationexPerience(para).then(res =>{
                     console.log('私教体验课签到',res)
-                    if(res.obj == 1){
+                    if(res.data.obj == 1){
                         this.disabled = true;
                     }
                     

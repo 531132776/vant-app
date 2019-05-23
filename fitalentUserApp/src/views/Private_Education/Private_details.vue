@@ -100,7 +100,7 @@
                         </div>
                         <div class="deatils_price">
                             <span>
-                                <em>￥</em>
+                                <em>¥</em>
                                 <em>240</em>
                                 <em>/节</em>
                             </span>
@@ -119,7 +119,7 @@
                         </div>
                         <div class="deatils_price">
                             <span>
-                                <em>￥</em>
+                                <em>¥</em>
                                 <em>2000</em>
                                 <em>/30天</em>
                             </span>
@@ -138,7 +138,7 @@
                         </div>
                         <div class="deatils_price">
                             <span>
-                                <em>￥</em>
+                                <em>¥</em>
                                 <em>240</em>
                                 <em>/节</em>
                             </span>
@@ -157,7 +157,7 @@
                         </div>
                         <div class="deatils_price">
                             <span>
-                                <em>￥</em>
+                                <em>¥</em>
                                 <em>240</em>
                                 <em>/节</em>
                             </span>

@@ -7,10 +7,10 @@
         <div class="healtyConent">
             <div class="comentText">
               <span>健康得分:</span>
-              <span style="font-size:20px">{{obj.healthScore}}</span>
+              <span style="font-size:25px"> {{obj.healthScore}}</span>
               <span>分</span>
             </div>
-            <div>
+            <div style="font-weight:400;color:rgba(147,153,165,1);line-height:2;fonst-size:13px">
               <span>(满分100分)</span>
             </div>
             <div>
@@ -28,7 +28,7 @@
               <span>身高</span>
             </p>
             <p style="line-height: 2;">
-              <span>{{obj.height}}CM</span>
+              <span>{{obj.height}} CM</span>
             </p>
           </div>
           <div class="weight">
@@ -37,7 +37,7 @@
               <span>体重</span>
             </p>
             <p style="line-height: 2;">
-              <span>{{obj.weight}}KG</span>
+              <span>{{obj.weight}} KG</span>
             </p>
           </div>
           <div class="BMI">
@@ -59,10 +59,10 @@
             <div>
               <!-- <span>{{obj.lowPressure}}</span>
               <span>{{obj.highPressure}}</span> -->
-              <p>33</p>
+              <p>{{obj.lowPressure}}</p>
               <p>
-                <span>111</span>
-                <span>MMHG</span>
+                <span>{{obj.highPressure}}</span>
+                <span> MMHG</span>
               </p>
             </div>
             <p></p>
@@ -73,7 +73,7 @@
               <span>心率</span>
             </p>
             <p style="line-height: 2;">
-              <span>{{obj.heartRate}}BPM</span>
+              <span>{{obj.heartRate}} BPM</span>
             </p>
           </div>
           <div class="oxygen">
@@ -127,8 +127,8 @@
                <img v-if="obj.shapeImage == '9'" src="../../assets/images/type9.png" alt="">
             </p>
             <p>
-              <span class="muscle">肌肉</span>
-              <span class="fat" style="margin-left:5px;">脂肪</span>
+              <span class="muscle" style="color:#9399A5"> 肌肉</span>
+              <span class="fat" style="margin-left:5px;color:#9399A5;padding-left: 3px;"> 脂肪</span>
             </p>
           </div>
           <div>
@@ -153,7 +153,7 @@
           </div>
            <div class="cell1">
             <span class="wd_70 border_right">蛋白质</span>
-            <span class="wd_70 background_color border_right">{{obj.protein}}kg</span>
+            <span class="wd_70 background_color border_right">{{obj.protein}}%</span>
             <span class="wd_70 border_right" style="flex:1;">肌肉量</span>
             <span class="wd_70 background_color border_right" ></span>
             <span style="border-top:none" class="background_color wd_70">{{obj.weight}}kg</span>
@@ -166,7 +166,7 @@
             <span style="border-top:none;" class="wd_70 background_color"></span>
           </div>
           <div class="cell1">
-            <span class="wd_70 background_color border_right">{{obj.skeletalMuscleRate}}kg</span>
+            <span class="wd_70 background_color border_right">{{obj.skeletalMuscleWeight}}kg</span>
             <span class="wd_70 background_color border_right">{{obj.moisture}}kg</span>
             <span class="wd_70 background_color border_right" style="margin-top: -20px;border-top: none;flex:1">{{obj.muscle}}kg</span>
             <span class="wd_70 background_color border_right" style="border-top:none"></span>
@@ -182,7 +182,7 @@
             <span> 身体质量指数</span>
           </div>
           <div>
-            <div>{{obj.bmi}}%</div>
+            <div>{{obj.bmi}}</div>
             <div class="color" style="display:flex;margin-bottom:12px;">
               <span class="bmiDot"></span>
               <span class="blue"></span>
@@ -190,7 +190,9 @@
               <span class="red"></span>
             </div>
           </div>
-          <div class="standard">标准</div>
+          <div class="standard green" v-if="obj.bmiType == 1">标准</div>
+          <div class="standard blue" v-if="obj.bmiType == 0">偏低</div>
+          <div class="standard red" v-if="obj.bmiType == 2">偏高</div>
         </div>
          <div style="display:flex;justify-content: space-between;align-items: center;margin-top:20px;">
           <div  class="top">
@@ -206,7 +208,9 @@
               <span class="red"></span>
             </div>
           </div>
-          <div class="standard">标准</div>
+          <div class="standard green" v-if="obj.bodyFatType == 1">标准</div>
+          <div class="standard blue" v-if="obj.bodyFatType == 0">偏低</div>
+          <div class="standard red" v-if="obj.bodyFatType == 2">偏高</div>
         </div>
       </div>
       <div class="obesity">
@@ -225,7 +229,9 @@
               <span class="red"></span>
             </div>
           </div>
-          <div class="standard">标准</div>
+          <div class="standard green" v-if="obj.bmiType == 1">标准</div>
+          <div class="standard blue" v-if="obj.bmiType == 0">偏低</div>
+          <div class="standard red" v-if="obj.bmiType == 2">偏高</div>
         </div>
          <div style="display:flex;justify-content: space-between;align-items: center;margin-top:20px;">
           <div class="top1">
@@ -241,7 +247,9 @@
               <span class="red"></span>
             </div>
           </div>
-          <div class="standard">标准</div>
+          <div class="standard green" v-if="obj.bodyFatType == 1">标准</div>
+          <div class="standard blue" v-if="obj.bodyFatType == 0">偏低</div>
+          <div class="standard red" v-if="obj.bodyFatType == 2">偏高</div>
         </div>
          <div style="display:flex;justify-content: space-between;align-items: center;margin-top:20px;">
           <div class="top1">
@@ -249,7 +257,7 @@
             <span> 骨骼肌</span>
           </div>
           <div>
-            <div>{{obj.skeletalMuscleRate}}kg</div>
+            <div>{{obj.skeletalMuscleRate}}%</div>
             <div class="skeletalMuscleColor" style="display:flex;margin-bottom:10px;">
               <span class="skeletalMuscleDot"></span>
               <span class="blue"></span>
@@ -257,7 +265,9 @@
               <span class="red"></span>
             </div>
           </div>
-          <div class="standard">标准</div>
+          <div class="standard green" v-if="obj.skeletalMuscleType == 1">标准</div>
+          <div class="standard blue" v-if="obj.skeletalMuscleType == 0">偏低</div>
+          <div class="standard red" v-if="obj.skeletalMuscleType == 2">偏高</div>
         </div>
       </div>
       <div class="section">
@@ -265,14 +275,14 @@
         <div>
           <div class="sectionTitle">
             <div style="flex:1"></div>
-            <div style="flex:2">肌肉量(kg)</div>
+            <div style="flex:2;border-left: 1px solid #E8E8E8;border-right: 1px solid #E8E8E8;">肌肉量(kg)</div>
             <div style="flex:2">脂肪量(%)</div>
           </div>
         </div>
         <div v-for="item in sectionList" :key="item.type">
            <div class="sectionTitle">
               <div style="flex:1">{{item.type}}</div>
-              <div style="flex:2;background-color: rgba(240,240,240,1);">{{item.muscle}}KG</div>
+              <div style="flex:2;background-color: rgba(240,240,240,1);border-left: 1px solid #E8E8E8;border-right: 1px solid #E8E8E8;">{{item.muscle}}KG</div>
               <div style="flex:2;background-color: rgba(240,240,240,1);">{{item.fatRate}}%</div>
             </div>
         </div>
@@ -382,29 +392,30 @@ export default {
                 this.sectionList = res.data.obj.segmentVos
                 //质量指数的计算
                 const bmi = res.data.obj.bmi
-                const bilv = (bmi/31.5)*44*3
+                const bmiType = res.data.obj.bmiType
+                const bmiPicPercent = res.data.obj.bmiPicPercent
+                const bilv = (bmiType)*44 + (bmiPicPercent/100)*44
                 const bmiDot = document.querySelectorAll('.bmiDot')
                 bmiDot[0].setAttribute('style','left:'+bilv+'px;')
                 //体质百分之的计算
                 const fatRate = res.data.obj.fatRate
-                const fatbilv = (fatRate/42)*44*3
+                const bodyFatType = res.data.obj.bodyFatType
+                const bodyFatPicPercent = res.data.obj.bodyFatPicPercent
+                const fatbilv = (bodyFatType)*44 + (bodyFatPicPercent/100)*44
                 const fatRateDom = document.querySelectorAll('.fatRate')
                 fatRateDom[0].setAttribute('style','left:'+fatbilv+'px;')
                 //体重百分之计算
-                const weight = res.data.obj.weight
-                const wightbilv = (weight/180)*44*3
-              
                 const wightDom = document.querySelectorAll('.wightDot')
-                wightDom[0].setAttribute('style','left:'+wightbilv+'px;')
+                wightDom[0].setAttribute('style','left:'+bilv+'px;')
                 //体脂肪的计算
                 const bodyFat = res.data.obj.bodyFat
-                const bodyFatbilv = (bodyFat/180)*44*3
-                  console.log(bodyFatbilv)
                 const bodyFatDom = document.querySelectorAll('.bodyFatDot')
-                bodyFatDom[0].setAttribute('style','left:'+bodyFatbilv+'px;')
+                bodyFatDom[0].setAttribute('style','left:'+fatbilv+'px;')
                 //骨骼肌的计算
                 const skeletalMuscle = res.data.obj.skeletalMuscleRate
-                const skeletalMuscleBilv = (skeletalMuscle/95)*44*3
+                const skeletalMuscleType = res.data.obj.skeletalMuscleType
+                const skeletalMusclePicPercent = res.data.obj.skeletalMusclePicPercent
+                const skeletalMuscleBilv = (skeletalMuscleType)*44 + (skeletalMusclePicPercent/100)*44
                 const skeletalMuscleDom = document.querySelectorAll('.skeletalMuscleDot')
                 skeletalMuscleDom[0].setAttribute('style','left:'+skeletalMuscleBilv+'px;')
                 this.data = [
@@ -548,10 +559,10 @@ export default {
     // margin:40px auto 0px auto;
     padding:20px 0px;
     .suggestContent{
-      height:122px;
       font-size:13px;
+      font-family:PingFangSC-Regular;
       font-weight:400;
-      color:rgba(81,90,107,1);
+      color:rgba(16,29,55,1);
       line-height:18px;
       text-align: left;
     }
@@ -564,7 +575,7 @@ export default {
       text-align: left;
     }
     .imgWrap{
-      width:520px;
+      width:231px;
       .img{
         // display: inline-block;
         // .w(130px);
@@ -609,9 +620,10 @@ export default {
       height:42px;
       font-size:14px;
       font-weight:400;
-      color:rgba(81,90,107,1);
+      color:#101D37;
       line-height:20px;
       padding-bottom: 10px;
+      margin-top: 5px;
     }
   }
   .base{
@@ -645,6 +657,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      margin: 0 7px;
     }
     .BMI{
       width:111px;
@@ -678,6 +691,7 @@ export default {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      margin: 0 7px;
     }
     .oxygen{
      width:111px;
@@ -850,7 +864,6 @@ export default {
       .standard{
         width:60px;
         height:30px;
-        background:rgba(29,206,116,1);
         border-radius:30px;
         text-align: center;
         line-height: 30px;

@@ -181,3 +181,11 @@ export function getMonthCoachNumb(p) {
         params: p
     })
 }
+
+//查询个人某月中运动的天数list
+export function getSameMonthList(n, p) {
+    return request({
+        url: 'gymApi/gymApi/motionData/motionDayByMonth/' + n + '/' + p,
+        method: 'get',
+    })
+}

@@ -6,6 +6,11 @@
             </div>
             <div class="order_text">
                 <span>{{trainingCampList.courseName}}</span>
+                <span style="height: 27px;">
+                    <em style="font-weight: 600;">¥</em>
+                    <em style="color:#101D37;font-weight: 600;font-size: 17px;">{{trainingCampList.price}}</em>
+                    <em style="color:#9399A5">/1课时</em>
+                </span>
                 <span>
                     <img style="width: 12px;height: 12px;" src="../../assets/images/10.png" alt="">
                     <span>{{coachList.userName}}</span>
@@ -35,12 +40,6 @@
                     </div>
                 </van-cell>
                 <div class="grapLine"></div>
-                <van-cell>
-                    <div class="flex_between">
-                        <span>课时数</span>
-                        <span>{{trainingCampList.classHour}}节</span>
-                    </div>
-                </van-cell>
                 <van-cell @click="popup" is-link>
                     <div class="flex_between">
                         <span>选择优惠券</span>
@@ -122,7 +121,7 @@
             <div class="appointment_icon"> 
                 <span>共计：¥{{total}}</span>
             </div>
-            <van-button class="appointment_btn"  @click="trainingMayment()" type="primary">确认订单</van-button>
+            <van-button class="appointment_btn"  @click="trainingMayment()" type="primary">去支付</van-button>
         </div>
     </div>
 </template>
@@ -172,7 +171,22 @@ export default {
                     thresholdValue:"0.01",
                     uid:"1129297205593272321",
                     userId:"1129297203911352321",
-                }
+                },
+                {
+                    activeAble:0,
+                    checkStatus:false,
+                    couponName:"代金券",
+                    couponType:0,
+                    discountType:0,
+                    discountValue:"0.0007",
+                    effectiveTime:"2019-05-17",
+                    expireTime:"2019-06-16",
+                    remark:"仅限训练营使用",
+                    thresholdType:0,
+                    thresholdValue:"0.01",
+                    uid:"1129297205593233",
+                    userId:"1129297203911352327",
+                },
             ],
             icon: {
             normal:require("../../assets/images/勾 2@2x.png"),
@@ -270,8 +284,7 @@ export default {
                     return item
                 }
             })
-            console.log(choosePopup.checkStatus)
-            if(choosePopup.checkStatus){
+            if(choosePopup){
                 this.couponId = choosePopup.uid
                 if(choosePopup.couponType == 1){
                     this.afterCoupon = this.trainingCampList.price
@@ -281,7 +294,7 @@ export default {
                     if(this.afterCoupon < 0){
                         this.afterCoupon = this.trainingCampList.price
                     }
-                    this.total = this.trainingCampList.price - this.afterCoupon
+                    this.total = (this.trainingCampList.price - this.afterCoupon).toFixed(2)
                 }
             }else{
                 this.afterCoupon = 0
@@ -490,20 +503,23 @@ export default {
             margin-left: 10px;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            // justify-content: space-between;
+            // p{
+            //     margin-top: 10px;
+            // }
             span:first-child{
                     font-size: 20px;
                     color:#101D37;
                     font-weight: 600;
                     display: inline-block;
-                    margin-bottom: 20px;
+                    margin-bottom: 30px;
              }
-             span:last-child{
-                    font-size:12px;
-                    font-weight:400;
-                    color:rgba(147,153,165,1);
-                    line-height:17px;
-             }
+            //  span:last-child{
+            //         font-size:12px;
+            //         font-weight:400;
+            //         color:rgba(147,153,165,1);
+            //         line-height:17px;
+            //  }
         }
         .appointment{
             display: flex;

@@ -66,6 +66,7 @@
                         v-on:choseDay="clickDay"
                         v-on:changeMonth="changeDate"
                         v-show="show2"
+                        :markDateMore="defaultArr" 
                         ></Calendar>
                         <div class="Fitness_data2">
                                         <ul v-if="show && totalFitnessData.totalExerciseTim!==0">
@@ -149,7 +150,7 @@
 </template>
 <script>
 import { Button,Tab, Tabs } from 'vant';
-import {headFitnessData, ComprehensiveData} from '@/request/api'
+import {headFitnessData, ComprehensiveData, getSameMonthList} from '@/request/api'
 import houseAimg from '../../../public/aerobic.json'
 import houseAimg2 from '../../../public/anaerobic.json'
 import Calendar from 'vue-calendar-component'
@@ -159,6 +160,7 @@ import {
 export default {
     data(){
         return {
+            defaultArr:[],
             img:require('../../assets/images/历史记录@2x.png'),
             img3:require('../../assets/images/日历@2x.png'),
             img2:require('../../assets/images/没有健身数据@2x.png'),
@@ -176,7 +178,13 @@ export default {
             // userId:'1128609374529040385',
             userId:this.$route.query.userId,
             dayTime:'',
-            subscribeDate:''
+            subscribeDate:'',
+            sameMath:'',
+            list: [
+                20,
+                21,
+                22
+            ]
         }
     },
     components:{
@@ -187,6 +195,7 @@ export default {
     },
     
     mounted(){
+        
         var that = this;
         // this.initTime();
         // this.getAweek();
@@ -202,7 +211,7 @@ export default {
                 starty = e.touches[0].pageY;
             }, false);
             document.addEventListener("touchend", function(e) {
-                console.log(e)
+                // console.log(e)
                 var endx, endy;
                 endx = e.changedTouches[0].pageX;
                 endy = e.changedTouches[0].pageY;
@@ -234,7 +243,7 @@ export default {
         })
     },
     created(){
-        let newDate;
+        let newDate, newDate2;
         var now = new Date();
         var year=now.getFullYear(); 
                 var month=now.getMonth()+1; 
@@ -252,12 +261,34 @@ export default {
                     }
                     // return m + d ;
                  newDate = year+"-"+m+"-"+d;
-                console.log('当天日期',newDate)
+                 newDate2 = year+"-"+m;
+                console.log('当天日期',newDate2)
                 this.$set(this,'dayTime',newDate)
                 this.$set(this,'subscribeDate',newDate)
+                this.$set(this,'sameMath',newDate2)
                 this.initComprehensiveData(this.subscribeDate)
+                this.getSameMonth(newDate2)
+
+                
     },
     methods:{
+
+        async getSameMonth(newDate2){
+           let respon =await getSameMonthList(newDate2,this.userId);
+           console.log('--------->',respon)
+           if(respon.data.obj.list != undefined || respon.data.obj.list.length>0){
+               var list = respon.data.obj.list || [];
+                   list.map(v =>{
+                    return this.defaultArr.push({
+                        date:newDate2+'-'+v,
+                        className:'mark1'
+                    })
+                })
+                console.log(this.defaultArr,'------->>>当月天数List')
+           }
+
+        
+        },
          getAngle(angx, angy) {
             return Math.atan2(angy, angx) * 180 / Math.PI;
         },
@@ -327,7 +358,7 @@ export default {
       this.$set(this,'subscribeDate',datatime)
     },
     changeDate(data){
-        console.log(data);
+        console.log(data,'----->切换月份');
         var data = data.split('/');
       if(data[1]<10){
           var month = '0'+data[1]
@@ -340,10 +371,12 @@ export default {
     //   console.log(month)
     //   console.log(day)
     //   console.log(data)
-      var datatime = data[0]+ '-' +month+ '-'+day
+      var datatime = data[0]+ '-' +month+ '-'+day;
+      var datatime2 = data[0]+ '-' +month;
       console.log('最终时间',datatime)
       this.initComprehensiveData(datatime);
       this.$set(this,'subscribeDate',datatime)
+      this.getSameMonth(datatime2);
     },
         initTime() {
                 let params = {

@@ -99,14 +99,15 @@
               </div>
               <!-- 饼图 -->
               <div class="pr_pl15 Pie_chart mt15">
-                  <!-- <canvas id="mountNodeList" width="100%" heihgt:="260px"></canvas> -->
-                  <div id="echartspie" style="width: 375px; height: 260px;"></div> 
+                  <canvas :id="'mountNodeList'+i" width="100%" heihgt:="260px"></canvas>
+                  <!-- <div id="echartspie" style="width: 375px; height: 260px;"></div>  -->
+                  <!-- <HelloWorld :source="maximalExercise" :numO="anaerobicExercise" :numT="aerobicExercise" :numH="fatMovement" :numF="warmUp"/> -->
               </div>
               <!-- 柱状图 -->
               <div class="Histogram_info pr_pl15">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
-                  <canvas id="histogramList" width="100%" heihgt:="260px"></canvas>
+                  <canvas :id="'histogramList'+i" width="100%" heihgt:="260px"></canvas>
                 </div>
               </div>
             </div>
@@ -320,6 +321,7 @@
   </div>
 </template>
 <script>
+import HelloWorld from '@/components/HelloWorld'
 import { Tab, Tabs, version } from "vant";
 import { siveDataDetails, typeDetails } from "@/request/api";
 import houseAimg3 from "../../../public/aggregate.json";
@@ -373,12 +375,18 @@ export default {
       distance: "",
       heartRate: [],
       heartArr: [],
-      myChart:''
+      myChart:'',
+      maximalExercise:'',
+      anaerobicExercise:'',
+      aerobicExercise:'',
+      fatMovement:'',
+      warmUp:'',
     };
   },
   components: {
     [Tab.name]: Tab,
-    [Tabs.name]: Tabs
+    [Tabs.name]: Tabs,
+    HelloWorld
     // echartsInfoPir,
     // echartsInfobar
   },
@@ -389,51 +397,26 @@ export default {
   },
   updated() {},
   created() {
-    // this.initHistogram()
-    // this.intipriec();
-    this.$nextTick(() =>{
-     
-    })
+    
   },
   methods: {
-      drawLine(){
-
-        
-        // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('echartspie'))
-        // 绘制图表
-        myChart.setOption({
-            title: { text: '在Vue中使用echarts' },
-            tooltip: {},
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'pie',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        });
-        window.onresize = myChart.resize;
-    },
 
     onTabClick(index, title) {
       this.active1 = index;
       let findVal = this.aggregate.find((item,i)=> {return i==index});
       console.log(findVal,'当前值')
-      this.initTypeDetail(findVal.type, findVal.id);
+      this.initTypeDetail(findVal.type, findVal.id,index);
     },
-    init() {
+   async init() {
       const userId = this.userId;
       // const subscribeDate = this.getNowFormatDate();
       const subscribeDate = this.subscribeDate;
       console.log(subscribeDate);
-      siveDataDetails(userId, subscribeDate)
-        .then(res => {
-          console.log("初始化数据", res);
-          if (res.data.code == 2000) {
-            this.tabLists = res.data.obj || [];
+      let respon = await siveDataDetails(userId, subscribeDate);
+        // .then(res => {
+          console.log("初始化数据", respon);
+          if (respon.data.code == 2000) {
+            this.tabLists = respon.data.obj || [];
             
             const aggregate = this.aggregate;
             console.log('josn',aggregate)
@@ -467,154 +450,22 @@ export default {
                 }
                 // }
               }
-            }
-            if (this.tabLists.length > 0) {
               this.$set(this, "aggregate", [...arr]);
-            } else {
+            }
+            else {
               this.$set(this, "aggregate", []);
             }
 
             console.log("对比2", this.aggregate);
             this.initTypeDetail(this.aggregate[0].type, this.aggregate[0].id);
           }
-        })
-        .catch(err => {
-          console.log("请求错误！", err);
-        });
+        // })
+        // .catch(err => {
+        //   console.log("请求错误！", err);
+        // });
     },
-    //  initPiechart(data) {
-    //   // alert(1)
-    //   var motionPoint = new Number(
-    //     this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
-    //   );
-    //   var map = {};
-    //   data.map(function(obj) {
-    //     console.log(obj,'dfsdfsd')
-    //     map[obj.name] = obj.percent + "分钟";
-    //   });
 
-    //   var chart = new F2.Chart({
-    //     el:document.getElementById('mountNodeList'),
-    //     pixelRatio: window.devicePixelRatio,
-    //     padding: [20, "auto"]
-    //   });
-      
-    //   chart.source(data, {
-    //     percent: {
-    //       formatter: function formatter(val) {
-    //         alert(2)
-    //         console.log(val,'饼图')
-    //         return val + "分钟";
-    //       }
-    //     }
-    //   });
-    //   chart.legend({
-    //     position: "right",
-    //     triggerOn: 'click',
-    //     clickable: false
-    //   });
-    //   chart.coord("polar", {
-    //     transposed: true,
-    //     innerRadius: 0.7,
-    //     radius: 0.85
-    //   });
-    //   chart.axis(false);
-    //   chart.tooltip(false);
-    //   chart
-    //     .interval()
-    //     .position("a*percent")
-    //     .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"])
-    //     .adjust("stack");
-
-    //   chart.guide().html({
-    //     position: ["50%", "45%"],
-    //     html:
-    //       '<div style="width: 250px;height: 40px;text-align: center;">' +
-    //       '<div class="text_name">' +
-    //       motionPoint +
-    //       "</div>" +
-    //       '<div class="text_price">运动点数?</div>' +
-    //       "</div>"
-    //   });
-    //   chart.render();
-    // },
-    // intipriec(heartRate){
-    //  var item = heartRate.map((v,i) => {
-       
-    //       if(v>=0 && v<=59){
-    //         // alert(1)
-    //         return {
-    //             color:'4',
-    //             year: i+1,
-    //             sales: v
-    //           }
-    //       }
-    //       else if(v>59 && v<=69){
-    //         return {
-    //             color:'1',
-    //             year: i+1,
-    //             sales: v
-    //           }
-    //       }
-    //       else if(v>69 && v<=79){
-    //         return {
-    //             color:'2',
-    //             year: i+1,
-    //             sales: v
-    //           }
-    //       }
-    //       else if(v>79 && v<=89){
-    //         return {
-    //             color:'3',
-    //             year: i+1,
-    //             sales: v
-    //           }
-    //       }
-    //       else if(v>=90){
-    //         return {
-    //             color:'0',
-    //             year: i+1,
-    //             sales: v
-    //           }
-    //       }
-    //  })
-    //   var num = 4;
-    //   if(item.length<=3){
-    //     num = 2
-    //     console.log(num)
-    //   }
-    //   var chart = new F2.Chart({
-    //     id: 'histogramList',
-    //     pixelRatio: window.devicePixelRatio
-    //   });
-    //   chart.clear();
-    //   chart.legend(false);
-    //   chart.tooltip(false);
-
-    //   chart.source(item, {
-    //     year: {
-    //       tickCount: num,
-    //       formatter: function formatter(val,i) {
-    //         // console.log('year',val,i)
-    //         return val.toFixed(0)+'min'
-    //       }
-    //     },
-    //     sales:{
-    //       // tickCount: 4,
-    //       // min:0,
-    //       // max:100,
-    //       formatter: function formatter(val) {
-    //         // console.log(val)
-    //         return (val * 1).toFixed(0)+'%';
-           
-    //       }
-    //     }
-    //   });
-      
-    //   chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
-    //   chart.render();
-    //   },
-    initTypeDetail(type, id) {
+    initTypeDetail(type, id,index) {
       let params = {
         type: type,
         // userId: "1128609374529040385",
@@ -626,13 +477,15 @@ export default {
         .then(res => {
           console.log("心率数据", res);
           if (res.data.code == 2000) {
+            
             if (type == 0 || type == 1) {
-              // this.data = [];
+              // this.motionDataObj = res.data.obj.motionData || {};
+            this.$set(this,'motionDataObj',res.data.obj.motionData || {});
               // _this.heartRate = res.data.obj.motionData.heartRate || [];
               this.$set(this,'heartRate',res.data.obj.motionData.heartRate || [])
               // debugger
-              this.motionDataObj = res.data.obj.motionData || {};
-              this.distance = this.motionDataObj.distance.toFixed(2);
+              
+              this.distance = this.motionDataObj.distance;
               this.endTime = this.motionDataObj.endTime.split(" ")[1];
               this.startTime = this.motionDataObj.startTime.substr(0, 16);
               this.$set(
@@ -659,8 +512,8 @@ export default {
              
               console.log('图饼数据',this.data)
               // debugger
-              // this.initPiechart(this.data);
-              // this.intipriec(this.heartRate);
+              this.initPiechart(this.data,index);
+              this.intipriec(this.heartRate,index);
               // this.initHistogram()
             } else if (type == 2 || type == 3) {
               this.powerMotionData = res.data.obj.powerMotionData || {};
@@ -684,7 +537,143 @@ export default {
           console.log("请求错误！", err);
         });
     },
-  
+         initPiechart(data,index) {
+           var _this = this;
+      var motionPoint = new Number(
+        this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
+      );
+      var map = {};
+      data.map(function(obj) {
+        console.log(obj,'dfsdfsd')
+        map[obj.name] = _this.headCreateTime(obj.percent*60);
+      });
+
+      var chart = new F2.Chart({
+        id:'mountNodeList'+index,
+        pixelRatio: window.devicePixelRatio,
+        padding: [20, "auto"]
+      });
+      chart.clear();
+      chart.source(data, {
+        percent: {
+          formatter: function formatter(val) {
+            alert(2)
+            console.log(val,'饼图')
+            return val + "分钟";
+          }
+        }
+      });
+      chart.legend({
+        position: "right",
+        triggerOn: 'click',
+        clickable: false,
+        itemFormatter: function itemFormatter(val) {
+          return val + '    ' + map[val];
+        }
+      });
+      chart.coord("polar", {
+        transposed: true,
+        innerRadius: 0.7,
+        radius: 0.85
+      });
+      chart.axis(false);
+      chart.tooltip(false);
+      chart
+        .interval()
+        .position("a*percent")
+        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"])
+        .adjust("stack");
+
+      chart.guide().html({
+        position: ["50%", "45%"],
+        html:
+          '<div style="width: 250px;height: 40px;text-align: center;">' +
+          '<div class="text_name">' +
+          motionPoint +
+          "</div>" +
+          '<div class="text_price">运动点数?</div>' +
+          "</div>"
+      });
+      chart.render();
+    },
+    intipriec(heartRate,index){
+     var item = heartRate.map((v,i) => {
+       
+          if(v>=0 && v<=59){
+            // alert(1)
+            return {
+                color:'4',
+                year: i+1,
+                sales: v
+              }
+          }
+          else if(v>59 && v<=69){
+            return {
+                color:'1',
+                year: i+1,
+                sales: v
+              }
+          }
+          else if(v>69 && v<=79){
+            return {
+                color:'2',
+                year: i+1,
+                sales: v
+              }
+          }
+          else if(v>79 && v<=89){
+            return {
+                color:'3',
+                year: i+1,
+                sales: v
+              }
+          }
+          else if(v>=90){
+            return {
+                color:'0',
+                year: i+1,
+                sales: v
+              }
+          }
+     })
+      var num = 4;
+      if(item.length<=3){
+        num = 2
+        console.log(num)
+      }
+      var chart = new F2.Chart({
+        id: 'histogramList'+index,
+        pixelRatio: window.devicePixelRatio
+      });
+      chart.clear();
+      chart.legend(false);
+      chart.tooltip(false);
+      chart.axis('sales',{
+        labelOffset: 20
+      })
+      chart.source(item, {
+        year: {
+          tickCount: num,
+          formatter: function formatter(val,i) {
+            // console.log('year',val,i)
+            return val.toFixed(0)+'min'
+          }
+        },
+        sales:{
+          // tickCount: 4,
+          // min:0,
+          // max:100,
+          formatter: function formatter(val) {
+            // console.log(val)
+            return (val * 1).toFixed(0)+'%';
+           
+          }
+        }
+      });
+      
+      chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
+      chart.render();
+      },
    
     //时间戳转换日期
 

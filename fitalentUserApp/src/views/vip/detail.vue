@@ -12,12 +12,12 @@
                 <div class="tab_year" @click="toggleYear()"  :class="{'active':yearShow===true}">
                     <p class="title">{{yearObj[0].name}}</p>
                     <p class="day">{{yearObj[0].validity}}天</p>
-                    <p class="money">￥{{yearObj[0].price}}</p>
+                    <p class="money">¥{{yearObj[0].price}}</p>
                 </div>
                 <div class="tab_month" @click="toggleMonth()" :class="{'active':monthShow===true}">
                     <p class="title">{{monthObj[0].name}}</p>
                     <p class="day">{{monthObj[0].validity}}天</p>
-                    <p class="money">￥{{monthObj[0].price}}</p>
+                    <p class="money">¥{{monthObj[0].price}}</p>
                 </div>
             </div>
             <div class="year_content pr_pl15" v-if="yearShow">
@@ -35,19 +35,19 @@
                     <div class="privilege">
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 4@2x.png" alt="">
-                            <span>特权一</span>
+                            <span>团课随心约 </span>
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 5@2x.png" alt="">
-                            <span>特权二</span>
+                            <span>全国门店通用</span>
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 7@2x.png" alt="">
-                            <span>特权三</span>
+                            <span>器械不限用</span>
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 8@2x.png" alt="">
-                            <span>送手表</span>
+                            <span>专属智能 心率手环</span>
                         </div>
                     </div>
                 </div>
@@ -67,15 +67,15 @@
                     <div class="privilege">
                        <div class="privilegeItem">
                             <img src="../../assets/images/分组 4@2x.png" alt="">
-                            <span>特权一</span>
+                            <span>团课随心约 </span>
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 5@2x.png" alt="">
-                            <span>特权二</span>
+                            <span>全国门店通用</span>
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 7@2x.png" alt="">
-                            <span>特权三</span>
+                            <span>器械不限用</span>
                         </div>
                     </div>
                 </div>
@@ -325,7 +325,7 @@ export default {
                         font-family:PingFangSC-Regular;
                         font-weight:400;
                         color:rgba(125,86,30,1);
-                        line-height:2.5;
+                        margin-top: 5px;
                     }
                 }
               
@@ -375,7 +375,7 @@ export default {
                         font-family:PingFangSC-Regular;
                         font-weight:400;
                         color:rgba(125,86,30,1);
-                        line-height:2.5;
+                        margin-top: 5px;
                     }
                 }
             } 

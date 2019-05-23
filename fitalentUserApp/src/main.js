@@ -13,10 +13,6 @@ import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)
 
-import echarts from 'echarts'
-
-Vue.prototype.$echarts = echarts
-
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 
@@ -50,6 +46,9 @@ router.beforeEach((to, from, next) => {
     // router.afterEach(route => {
     //     document.title = route.meta.title
     // })
+    // function oc_to_js(){
+    //     alert(2)
+    // }
 new Vue({
     router,
     store,

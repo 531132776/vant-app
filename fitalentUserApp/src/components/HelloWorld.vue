@@ -1,42 +1,108 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
-  </div>
+  <!-- <div> -->
+  <!-- {{num}} -->
+  <canvas></canvas>
+  <!-- </div> -->
 </template>
 
 <script>
+import F2 from "@antv/f2";
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
+  name: "HelloWorld",
+  props: ["source","numO","numT","numH","numF"],
+  data (){
+    return {
+      source:this.$props.source
+    }
+  },
+  updated() {
+    // console.log("create-------->>>>>", this.$props.source);
+  },
+  mounted() {
+    // debugger
+    console.log("create-------->>>>>", this.$props.source);
+    console.log(this.$el);
+    this.$nextTick(() =>{
+
+    
+    var data = [
+      {
+        name: "极限",
+        percent: this.$props.source,
+        a: "1"
+      },
+      {
+        name: "无氧运动",
+        percent: this.$props.numO,
+        a: "1"
+      },
+      {
+        name: "有氧运动",
+        percent: this.$props.numT,
+        a: "1"
+      },
+      {
+        name: "燃脂运动",
+        percent: this.$props.numH,
+        a: "1"
+      },
+      {
+        name: "热身",
+        percent: this.$props.numF,
+        a: "1"
+      }
+    ];
+    var map = {};
+    data.map(function(obj) {
+      map[obj.name] = obj.percent + "%";
+    });
+    var chart = new F2.Chart({
+      el: this.$el,
+      pixelRatio: window.devicePixelRatio,
+      padding: [20, "auto"]
+    });
+    chart.source(data, {
+      percent: {
+        formatter: function formatter(val) {
+          return val + "%";
+        }
+      }
+    });
+    chart.tooltip(false);
+    chart.legend({
+      position: "right",
+      itemFormatter: function itemFormatter(val) {
+        return val + " " + map[val];
+      }
+    });
+    chart.coord("polar", {
+      transposed: true,
+      innerRadius: 0.7,
+      radius: 0.85
+    });
+    chart.axis(false);
+    chart
+      .interval()
+      .position("a*percent")
+      .color("name", ["#FE5D4D", "#3BA4FF", "#737DDE"])
+      .adjust("stack");
+    chart.guide().html({
+      position: ["50%", "45%"],
+      html:
+        '<div style="width: 250px;height: 40px;text-align: center;">' +
+        this.$props.source +
+        '<div style="font-size: 16px">运动点数?</div>' +
+        "</div>"
+    });
+    chart.render();
+    })
+  },
+  watch: {
+    source(newValue, oldValue) {
+　　　　console.log(newValue,'fuck')
+　　}
 }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

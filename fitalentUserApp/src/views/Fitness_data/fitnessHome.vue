@@ -3,8 +3,8 @@
         <div class="Fitness_data_info" v-show="show4">
             <ul>
                 <li>
-                    <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60>10000">{{Math.round(Fitnessdata.totalExerciseTime/600000)}}<em >万</em></dt>
-                   <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60<10000">{{Math.round(Fitnessdata.totalExerciseTime/60)}}</dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60>10000">{{(Fitnessdata.totalExerciseTime/600000).toFixed(1)}}<em >万</em></dt>
+                   <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60<10000">{{(Fitnessdata.totalExerciseTime/60).toFixed(1)}}</dt>
                     <dt class="dtNth2">总运动时间/<em>分钟</em></dt>
                 </li>
                 
@@ -14,8 +14,8 @@
                     <dt class="dtNth2">总消耗/<em>千卡</em></dt>
                 </li>
                 <li>
-                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration<10000">{{(Fitnessdata.powerGeneration/1000).toFixed(1)}}</dt>
-                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration>10000">{{Fitnessdata.powerGeneration/10000000}}<em>万</em></dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration/1000<10000">{{(Fitnessdata.powerGeneration/1000).toFixed(1)}}</dt>
+                    <dt class="dtNth1" v-if="Fitnessdata.powerGeneration/1000>10000">{{(Fitnessdata.powerGeneration/10000000).toFixed(1)}}<em>万</em></dt>
                     <dt class="dtNth2">总发电量/<em>千焦</em></dt>
                 </li>
             </ul>
@@ -344,6 +344,9 @@ export default {
       if(data[1]<10){
           var month = '0'+data[1]
       }
+      else{
+          var month = data[1]
+      }
       if(data[2]<10){
           var day = '0'+ data[2]
       }else {
@@ -362,6 +365,8 @@ export default {
         var data = data.split('/');
       if(data[1]<10){
           var month = '0'+data[1]
+      }else{
+          var month = data[1]
       }
       if(data[2]<10){
           var day = '0'+ data[2]

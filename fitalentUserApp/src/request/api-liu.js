@@ -133,6 +133,14 @@ export function AddOrderMen(p){
     })
 }
 
+//判断是否人脸认证
+export function HaveHeadAuth(userId){
+    return request({
+        url:'/gymApi/gymApi/customer/haveHeadAuth/'+userId,
+        method:'get',
+    })
+}
+
 
 
 

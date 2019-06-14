@@ -31,7 +31,7 @@
                           <img src="../../assets/images/发电量.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(motionDataObj.powerGeneration/1000).toFixed(1)}}</em>千焦
+                          <em>{{KeepDecima1(motionDataObj.powerGeneration/1000)}}</em>千焦
                         </dt>
                         <dt>发电量</dt>
                       </dl>
@@ -47,7 +47,8 @@
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt style="color:#9399A5" v-if="motionDataObj.avgHartRate == 0">--次/分钟</dt>
+                        <dt style="color:#9399A5" v-else>{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=60 && motionDataObj.meanHeartRateStrength<=69">
                         <dt>
@@ -80,7 +81,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(motionDataObj.consume/1000).toFixed(1)}}</em>千卡
+                          <em>{{KeepDecima1(motionDataObj.consume/1000)}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -89,7 +90,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(distance/1000).toFixed(2)}}</em>公里
+                          <em>{{fomatFloat(distance/1000)}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -150,7 +151,9 @@
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt>
+                        <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
+                        <dt style="color:#9399A5" v-if="powerMotionData.heart == 0">--次/分钟</dt>
+                        <dt style="color:#9399A5" v-else>{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
@@ -183,7 +186,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.calorie/1000).toFixed(1)}}</em>千卡
+                          <em>{{KeepDecima1(powerMotionData.calorie/1000)}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -192,7 +195,7 @@
                           <img src="../../assets/images/分组6@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.distance/1000).toFixed(2)}}</em>公里
+                          <em>{{fomatFloat(powerMotionData.distance/1000)}}</em>公里
                         </dt>
                         <dt>距离</dt>
                       </dl>
@@ -249,7 +252,9 @@
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt>
+                        <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
+                        <dt style="color:#9399A5" v-if="powerMotionData.heart == 0">--次/分钟</dt>
+                        <dt style="color:#9399A5" v-else>{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
@@ -282,7 +287,7 @@
                           <img src="../../assets/images/Shape@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{(powerMotionData.calorie/1000).toFixed(1)}}</em>千卡
+                          <em>{{KeepDecima1((powerMotionData.calorie/1000))}}</em>千卡
                         </dt>
                         <dt>卡路里</dt>
                       </dl>
@@ -400,7 +405,56 @@ export default {
     
   },
   methods: {
-
+     fomatFloat(x) {
+      // if(isNaN(num)){
+      //   return null;
+      // }
+      // point=Math.pow(10,point+1);
+      // num=num*point;
+      // if(num===+num){
+      //   return parseInt((num+5)/10)/point*10;
+      // }else{
+      //   return +num;
+      // }
+      var f = parseFloat(x); 
+   if (isNaN(f)) { 
+    return false; 
+   } 
+   var f = Math.round(x*100)/100; 
+   var s = f.toString(); 
+   var rs = s.indexOf('.'); 
+   if (rs < 0) { 
+    rs = s.length; 
+    s += '.'; 
+   } 
+   while (s.length <= rs + 2) { 
+    s += '0'; 
+   } 
+   return s; 
+    },
+    KeepDecima1(x){
+      // var result = parseFloat(num);
+      // if (isNaN(result)) {
+      // return false;
+      // }
+      // result = Math.round(num * 10) / 10;
+      // return result;
+      var f = parseFloat(x); 
+   if (isNaN(f)) { 
+    return false; 
+   } 
+   var f = Math.round(x*10)/10; 
+   var s = f.toString(); 
+   var rs = s.indexOf('.'); 
+   if (rs < 0) { 
+    rs = s.length; 
+    s += '.'; 
+   } 
+   while (s.length <= rs + 1) { 
+    s += '0'; 
+   } 
+   return s; 
+    },
     onTabClick(index, title) {
       this.active1 = index;
       let findVal = this.aggregate.find((item,i)=> {return i==index});
@@ -417,39 +471,55 @@ export default {
           console.log("初始化数据", respon);
           if (respon.data.code == 2000) {
             this.tabLists = respon.data.obj || [];
-            
+            console.log(this.tabLists,'====>>>>')
             const aggregate = this.aggregate;
             console.log('josn',aggregate)
             const arr = [];
             if (this.tabLists.length > 0) {
-              for (var n in this.tabLists) {
+              // for (var n in this.tabLists) {
+                // console.log(n,'====>')
                 // if(this.tabLists[n].name !==null){
                 
-                if (this.tabLists[n].name === aggregate[n].name) {
-                  arr.push({
-                    src: aggregate[n].src,
-                    img: aggregate[n].img,
-                    name: aggregate[n].name,
-                    time: this.tabLists[n].time,
-                    type: this.tabLists[n].type,
-                    id: this.tabLists[n].id
-                  });
-                } else {
-                  for (var j in aggregate) {
-                    if (aggregate[j].name === this.tabLists[n].name) {
-                      arr.push({
-                        src: aggregate[j].src,
-                        img: aggregate[j].img,
-                        name: aggregate[j].name,
-                        time: this.tabLists[n].time,
-                        type: this.tabLists[n].type,
-                        id: this.tabLists[n].id
-                      });
-                    }
-                  }
-                }
+                // if (this.tabLists[n].name == aggregate[n].name) {
+                //   arr.push({
+                //     src: aggregate[n].src,
+                //     img: aggregate[n].img,
+                //     name: aggregate[n].name,
+                //     time: this.tabLists[n].time,
+                //     type: this.tabLists[n].type,
+                //     id: this.tabLists[n].id
+                //   });
+                // } else {
+                //   for (var j in aggregate) {
+                //     if (aggregate[j].name == this.tabLists[n].name) {
+                //       arr.push({
+                //         src: aggregate[j].src,
+                //         img: aggregate[j].img,
+                //         name: aggregate[j].name,
+                //         time: this.tabLists[n].time,
+                //         type: this.tabLists[n].type,
+                //         id: this.tabLists[n].id
+                //       });
+                //     }
+                //   }
                 // }
-              }
+                // }
+              // }
+              this.tabLists.map((v,i) => {
+                aggregate.map((val,j) => {
+                  if(v.name == val.name){
+                    arr.push({
+                          src: aggregate[j].src,
+                          img: aggregate[j].img,
+                          name: aggregate[j].name,
+                          time: this.tabLists[i].time,
+                          type: this.tabLists[i].type,
+                          id: this.tabLists[i].id
+                        });
+                  }
+                })
+                
+              })
               this.$set(this, "aggregate", [...arr]);
             }
             else {
@@ -457,7 +527,7 @@ export default {
             }
 
             console.log("对比2", this.aggregate);
-            this.initTypeDetail(this.aggregate[0].type, this.aggregate[0].id);
+            this.initTypeDetail(this.aggregate[0].type, this.aggregate[0].id, 0);
           }
         // })
         // .catch(err => {
@@ -466,6 +536,7 @@ export default {
     },
 
     initTypeDetail(type, id,index) {
+      console.log(index,'======>>>')
       let params = {
         type: type,
         // userId: "1128609374529040385",
@@ -544,7 +615,7 @@ export default {
       );
       var map = {};
       data.map(function(obj) {
-        console.log(obj,'dfsdfsd')
+        // console.log(obj,'dfsdfsd')
         map[obj.name] = _this.headCreateTime(obj.percent*60);
       });
 
@@ -639,7 +710,7 @@ export default {
       var num = 4;
       if(item.length<=3){
         num = 2
-        console.log(num)
+        // console.log(num)
       }
       var chart = new F2.Chart({
         id: 'histogramList'+index,

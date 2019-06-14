@@ -198,7 +198,7 @@ export default new Router({
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Fitness_data/fitnessHome.vue'),
             meta: {
-                title: '健康数据'
+                title: '健身数据'
             }
         },
         {
@@ -207,7 +207,7 @@ export default new Router({
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Fitness_data/echartsInfo.vue'),
             meta: {
-                title: '健康数据'
+                title: '健身数据'
             }
         },
         {
@@ -253,6 +253,42 @@ export default new Router({
                 import ( /* webpackChunkName: "about" */ './views/vip/privilegeDetails.vue'),
             meta: {
                 title: '特权说明'
+            }
+        },
+        {
+            path: '/couponGiftBag',
+            name: 'couponGiftBag',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Private_Education/couponGiftBag.vue'),
+            meta: {
+                title: '新人大礼包'
+            }
+        },
+        {
+            path: '/yearDetail',
+            name: 'yearDetail',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Group_purchase/yearDetail.vue'),
+            meta: {
+                title: '年会员拼团'
+            }
+        },
+        {
+            path: '/groupDetail',
+            name: 'groupDetail',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Group_purchase/groupDetail.vue'),
+            meta: {
+                title: '年会员拼团'
+            }
+        },
+        {
+            path: '/groupList',
+            name: 'groupList',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Group_purchase/groupList.vue'),
+            meta: {
+                title: '拼团狂欢'
             }
         },
     ]

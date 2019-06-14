@@ -13,12 +13,16 @@
 </template>
 
 <style lang="less">
+html,body{
+    height: 100%;
+}
 #app {
   font-family: PingFangSC-Regular;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   // text-align: center;
   color: #101D37;
+  height: 100%;
 }
 #nav {
   padding: 30px;

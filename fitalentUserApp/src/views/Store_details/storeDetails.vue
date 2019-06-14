@@ -115,8 +115,8 @@
             </div>
         </div>
         <!-- 门店私教 -->
-        <div class="Private_education_stores pr_pl15">
-            <div class="title_text">门店私教</div>
+        <div class="Private_education_stores ">
+            <div class="title_text pr_pl15">门店私教</div>
             <div class="scroll_overflow">
                 <div class="coverDiv"></div>
                 <div class="swiper_list">
@@ -133,7 +133,7 @@
                                         <span>{{item.coachName}}</span>
                                     </li>
                                     <li>
-                                        <span>¥{{item.coursePrice}}/节</span>
+                                        <span>¥{{item.coursePrice}}</span>
                                     </li>
                                     <li>
                                         <span>累计上课{{item.reservationNum}}节</span>
@@ -339,7 +339,7 @@
                 SearchforAweek(params).then(res => {
                     console.log('时间', res);
                     if (res.data.obj != undefined)
-                        this.timeList = res.data.obj.timeList
+                        this.timeList = res.data.obj.timeList || []
                     this.getTeamClass(this.timeList[0])
                     console.log('时间', this.timeList)
                 }).catch(err => {
@@ -353,7 +353,7 @@
                 getTrainingCamp(para).then(res => {
                     console.log('训练营',res)
                     if (res.data.code == 2000) {
-                        this.trainingList = res.data.obj;
+                        this.trainingList = res.data.obj || [];
                     }
                 }).catch(error => {
 
@@ -368,7 +368,7 @@
                 getTeamClass(para).then(res => {
                     console.log('团课详情',res)
                     if (res.data.code == 2000) {
-                        this.teamClassList = res.data.obj;
+                        this.teamClassList = res.data.obj || [];
                     }
                 }).catch(error => {
 
@@ -525,7 +525,7 @@
                 getCoach(params).then(res => {
                     console.log('教练', res)
                     if (res.data.code == 2000) {
-                        this.coachList = res.data.obj;
+                        this.coachList = res.data.obj || [];
                     }
                 }).catch(error => {
 
@@ -649,7 +649,7 @@
         -webkit-box-orient: vertical;
     }
     .class-a {
-        color: #A1EAC5;
+        color: #1DCE74;
     }
     
     .class-b {
@@ -679,7 +679,7 @@
         overflow: hidden;
         .header_swiper {
             border-radius: 8px;
-            height: 200px;
+            height: 160px;
             // .van-swipe-item:nth-child(odd) {
             //     background-color: aqua
             // }
@@ -689,7 +689,7 @@
             img {
                 display: block;
                 width: 100%;
-                height: 100%;
+                // height: 100%;
                 /* border-radius: 8px; */
             }
         }
@@ -905,11 +905,17 @@
                                 border: 2px solid #fff;
                                 border-radius: 100%;
                                 margin: 0 auto;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                overflow: hidden;
+                                background: #fff;
                                 img {
-                                    width: 100%;
+                                    // width: 100%;
+                                    max-width: 100%;
                                     display: block;
-                                    height: 100%;
-                                    border-radius: 100%;
+                                    max-height: 100%;
+                                    // border-radius: 100%;
                                 }
                             }
                             li:nth-child(2) {
@@ -938,6 +944,9 @@
                         }
                     }
                 }
+                .swiper-slide:nth-child(1){
+                    margin-left: 15px;
+                }
                 }
             }
         }
@@ -956,10 +965,12 @@
                     height: 100px;
                     padding-right: 15px;
                     border-radius: 5px;
+                    overflow: hidden;
                     img {
                         display: block;
-                        max-width: 100%;
-                        height: 100%;
+                        width: 100%;
+                        // max-height: 100%;
+                        height: 100px;
                         border-radius: 5px;
                     }
                 }

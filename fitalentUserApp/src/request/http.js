@@ -5,48 +5,53 @@ import axios from 'axios';
 import QS from 'qs';
 import { Toast } from 'vant';
 import store from '../store.js'
+import baseUrls from './setBaseUrl'
 
-//环境的切换
-if (process.env.NODE_ENV == 'development') {
 
-    // axios.defaults.baseURL = 'http://192.168.10.203:8769/';
-    // axios.defaults.baseURL = 'http://192.168.10.121:8769/';
-    axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+console.log(baseUrls, '===>>')
+    //环境的切换
+    // if (process.env.NODE_ENV == 'development') {
 
-} else if (process.env.NODE_ENV == 'production') {
+// axios.defaults.baseURL = 'http://192.168.10.203:8769/';
+// axios.defaults.baseURL = 'http://192.168.10.121:8769/';
+// axios.defaults.baseURL = 'https://test.gateway.fitalent.com.cn/test';
 
-    // axios.defaults.baseURL = 'http://192.168.10.203:8769/';
-    // axios.defaults.baseURL = 'http://192.168.10.121:8769/';
-    axios.defaults.baseURL = 'https://gateway.fitalent.com.cn';
+// } else if (process.env.NODE_ENV == 'production') {
 
-}
+// axios.defaults.baseURL = 'http://192.168.10.203:8769/';
+// axios.defaults.baseURL = 'http://192.168.10.121:8769/';
+// axios.defaults.baseURL = 'https://test.gateway.fitalent.com.cn/pro';
 
-const service = axios.create({
-    baseURL: "https://gateway.fitalent.com.cn/", // api的base_url
-    timeout: 50000, // 请求超时时间
-})
+// }
+
+// const service = axios.create({
+//     baseURL: "https://test.gateway.fitalent.com.cn/", // api的base_url
+//     timeout: 50000, // 请求超时时间
+// })
+axios.defaults.baseURL = baseUrls;
 // 请求超时时间
-service.defaults.timeout = 10000;
+axios.defaults.withCredentials = true;
+axios.defaults.timeout = 10000;
 
 // post请求头
-service.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
+axios.defaults.headers.post['Content-Type'] = 'application/json;charset=UTF-8';
 
 // 请求拦截器
-service.interceptors.request.use(
+axios.interceptors.request.use(
     config => {
         // 每次发送请求之前判断是否存在token，如果存在，则统一在http请求的header都加上token，不用每次请求都手动添加了
         // 即使本地存在token，也有可能token是过期的，所以在响应拦截器中要对返回状态进行判断
         const token = store.state.token;
         token && (config.headers.Authorization = token);
         return config;
-        console.log(config)
+        console.log(config, '===>>>>>')
     },
     error => {
         return Promise.error(error);
     })
 
 // 响应拦截器
-service.interceptors.response.use(
+axios.interceptors.response.use(
     response => {
         if (response.data.code === 2000) {
             return Promise.resolve(response);
@@ -57,6 +62,7 @@ service.interceptors.response.use(
                 forbidClick: true
             });
         }
+        console.log(response, '>>>.')
     },
     // 服务器状态码不是200的情况    
     error => {
@@ -115,4 +121,4 @@ service.interceptors.response.use(
     }
 );
 
-export default service
+export default axios

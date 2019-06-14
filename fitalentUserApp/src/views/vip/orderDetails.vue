@@ -56,7 +56,8 @@
                 <van-cell @click="popup" is-link>
                     <div class="flex_between">
                         <span>选择优惠券</span>
-                        <span>{{couponCount}}张可用优惠券</span>
+                        <span v-if="couponListLength && couponCount != 0">{{couponName}}</span>
+                        <span v-else>{{couponCount}}张可用优惠券</span>
                     </div>
                 </van-cell>
                 <van-cell >
@@ -177,6 +178,8 @@
     export default {
         data() {
             return {
+                couponListLength:true,
+                couponName:'',
                 checked: false,
                 show:false,
                 couponId:null,
@@ -238,8 +241,6 @@
             init(){
                 GetVipDetail(this.$route.query.uid).then(res=>{
                     this.vipDetail = res.data.obj
-                    this.monthlyTotalPrice = this.vipDetail.price
-                    this.totalPrice = this.vipDetail.price
                     this.GetCouponList()
                 })
             },
@@ -250,6 +251,8 @@
                     goodsNum:this.monthlyNmb,
                     amount:this.vipDetail.price,
                 }).then(res=>{
+                    this.monthlyTotalPrice = this.vipDetail.price
+                    this.totalPrice = this.vipDetail.price
                     this.couponCount = res.data.obj.count
                     if(res.data.obj.list.length > 0){
                         res.data.obj.list[0].checkStatus = true
@@ -282,11 +285,12 @@
                     }
                 })
                 if(choosePopup){
+                    this.couponListLength = true;
+                    this.couponName = choosePopup.couponName
                     this.couponId = choosePopup.uid
                     if(choosePopup.couponType == 1){
                         this.couponValue = this.vipDetail.price
                         this.afterCoupon = this.vipDetail.price
-                   
                     }else if(choosePopup.couponType == 0){
                         this.couponValue = choosePopup.discountValue
                         this.afterCoupon = this.vipDetail.price - choosePopup.discountValue
@@ -297,8 +301,11 @@
                         this.total = this.afterCoupon
                     }
                 }else{
-                    this.discountValue = 0
-                    this.totalPrice = (this.monthlyTotalPrice - choosePopup.discountValue).toFixed(2)
+                    this.couponValue = 0
+                    console.log(this.monthlyTotalPrice)
+                    this.totalPrice = this.monthlyTotalPrice
+                    this.couponId = ''
+                    this.couponListLength = false;
                 }
                 console.log(choosePopup,'uid')
             },
@@ -331,7 +338,7 @@
             },
             monthlyReduce() {
                 this.monthlyNmb -= 1;
-                this.monthlyTotalPrice -= Number(this.vipDetail.price);
+                this.monthlyTotalPrice = (this.monthlyTotalPrice - Number(this.vipDetail.price)).toFixed(2);
                 this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
                 if (this.monthlyNmb <= 1) {
                     this.monthlyNmb = 1;

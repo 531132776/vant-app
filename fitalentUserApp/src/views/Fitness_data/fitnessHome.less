@@ -6,6 +6,7 @@
     color: #101D37;
 }
 .Fitness_data{
+    background-color: #fff;
     .installDay{
         .wh_content_all{
             background-color: #fff;
@@ -96,7 +97,7 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            padding-top: 30px;
+            // padding-top: 30px;
             li{
                 display: flex;
                 flex-flow: column nowrap;
@@ -107,7 +108,7 @@
                 .dtNth1{
                     font-size: 40px;
                     padding-bottom: 10px;
-                    font-family:BebasNeueBold;
+                    font-family:BebasNeue;
                     em{
                         font-size:10px;
                     }
@@ -140,7 +141,7 @@
                     justify-content: space-between;
                     align-content: center;
                     margin-bottom: 10px;
-                    flex: 0 1 32%;
+                    flex: 0 1 33%;
                     text-align: center;
                     img{
                         width: 40px;
@@ -167,7 +168,7 @@
                 align-content: center;
                 li{
                     margin-right: 0;
-                    flex: 0 1 25%;
+                    flex: 0 1 33%;
                     margin-bottom: 10px;
                 }
             }
@@ -213,6 +214,7 @@
                             left:0;
                             z-index: 11;
                             // background-color: #fff;
+                            color:#101D37;
                         }
                         .timeThis{
                             position: absolute;
@@ -222,6 +224,7 @@
                             z-index: 122;
                             background: #fff;
                             padding-top: 12px;
+                            color:#101D37;
                         }
                         span{
                             padding-top: 14px;
@@ -268,6 +271,7 @@
                             height: auto;
                             width: 85%;
                             .van-tabs__nav{
+                                background: none;
                                 .van-tab{
                                     .van-ellipsis{
                                         font-size: 13px;
@@ -280,7 +284,13 @@
                                     display: none;
                                 }
                                 .van-tab.van-tab--active{
-                                    color:#1DCE74 !important
+                                    .slot_content {
+                                        .timeThis, dd ,span{
+                                            color:#1DCE74 !important
+                                        }
+                                        
+                                    }
+                                    
                                 }
                                 .van-tabs__line{
                                     background-color:#1DCE74;

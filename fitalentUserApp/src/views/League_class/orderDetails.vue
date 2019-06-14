@@ -5,11 +5,11 @@
                 <img :src="coverImg" alt="">
             </div>
             <div class="order_text">
-                <span>{{trainingCampList.courseName}}</span>
+                <span class="text_ellipsis">{{trainingCampList.courseName}}</span>
                 <span style="height: 27px;">
                     <em style="font-weight: 600;">¥</em>
                     <em style="color:#101D37;font-weight: 600;font-size: 17px;">{{trainingCampList.price}}</em>
-                    <em style="color:#9399A5">/1课时</em>
+                    <em style="color:#9399A5">{{trainingCampList.unit}}</em>
                 </span>
                 <span>
                     <img style="width: 12px;height: 12px;" src="../../assets/images/10.png" alt="">
@@ -43,7 +43,9 @@
                 <van-cell @click="popup" is-link>
                     <div class="flex_between">
                         <span>选择优惠券</span>
-                        <span>{{couponCount}}张可用优惠券</span>
+                        <span v-if="couponListLength && couponCount!=0">{{couponName}}</span>
+                        <span v-else>{{couponCount}}张可用优惠券</span>
+                        <!-- <span>{{couponCount}}张可用优惠券</span> -->
                     </div>
                 </van-cell>
                 <van-cell >
@@ -77,7 +79,7 @@
             </van-cell-group>
             <div style="height:100px;"></div>
             <van-popup v-model="show" position="bottom" :overlay="true">
-                <div style="height:480px;background:rgba(242,242,242,1);">
+                <div style="background:rgba(242,242,242,1);">
                     <div class="popupTitel">
                         <span>选择优惠券</span>
                         <van-icon @click="show=false" id="close" name="cross" />
@@ -128,9 +130,12 @@
 <script>
 import { Cell, CellGroup,Checkbox,Button,Toast,Popup,Radio,Icon,Dialog} from 'vant';
 import { GetTrainingCamp,AddOrder,GetCouponRecordList} from '@/request/api-liu'
+import { constants } from 'crypto';
 export default {
        data(){
         return{
+            couponListLength:true,
+            couponName:'',
             checked: false,
             courseId:'',
             coverImg:'',
@@ -173,6 +178,21 @@ export default {
                     userId:"1129297203911352321",
                 },
                 {
+                    activeAble:0,
+                    checkStatus:false,
+                    couponName:"代金券",
+                    couponType:0,
+                    discountType:0,
+                    discountValue:"0.0007",
+                    effectiveTime:"2019-05-17",
+                    expireTime:"2019-06-16",
+                    remark:"仅限训练营使用",
+                    thresholdType:0,
+                    thresholdValue:"0.01",
+                    uid:"1129297205593233",
+                    userId:"1129297203911352327",
+                },
+                 {
                     activeAble:0,
                     checkStatus:false,
                     couponName:"代金券",
@@ -253,8 +273,8 @@ export default {
                     this.couponList = res.data.obj.list
                     this.choosePopup()
                 }
-                //this.couponCount = 2
-                //this.couponCount[0].checkStatus = true
+                // this.couponCount = 2
+                // this.couponCount[0].checkStatus = true
                 console.log(res)
             })
         },
@@ -284,7 +304,10 @@ export default {
                     return item
                 }
             })
+            console.log('----->',choosePopup)
             if(choosePopup){
+                this.couponListLength = true;
+                this.couponName = choosePopup.couponName
                 this.couponId = choosePopup.uid
                 if(choosePopup.couponType == 1){
                     this.afterCoupon = this.trainingCampList.price
@@ -299,6 +322,8 @@ export default {
             }else{
                 this.afterCoupon = 0
                 this.total = this.trainingCampList.price
+                this.couponId = ''
+                this.couponListLength = false;
             }
         },
          trainingMayment(){
@@ -310,6 +335,7 @@ export default {
                 }
                 return
             }
+            debugger
             const params = 
                 {   
                     amount: 1,
@@ -319,6 +345,8 @@ export default {
                     userId: this.$route.query.userId
                 }
             AddOrder(params).then(res=>{
+                
+                console.log(res)
                 this.obj = res.data.obj
                 this.obj.type = 'pay'
                 if(this.total == 0){
@@ -432,7 +460,10 @@ export default {
             line-height: 50px;
         }
         .popupwarp{
-             margin-top:10px; 
+            padding-top:10px;
+            height: 400px;
+            overflow-y: scroll;
+            padding-bottom: 60px; 
         }
         .popupItem{
             display: flex;
@@ -511,6 +542,7 @@ export default {
                     font-size: 20px;
                     color:#101D37;
                     font-weight: 600;
+                    width:200px;
                     display: inline-block;
                     margin-bottom: 30px;
              }

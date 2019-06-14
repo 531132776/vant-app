@@ -64,10 +64,6 @@ ul {
     font-weight: 500;
 }
 
-.pt15 {
-    padding-top: 15px;
-}
-
 .pb15 {
     padding-bottom: 15px;
 }
@@ -95,6 +91,10 @@ ul {
 
 .pt_pb15 {
     padding: 15px 0;
+}
+
+.pt15 {
+    padding-top: 15px;
 }
 
 .pb20 {
@@ -171,7 +171,8 @@ ul {
     text-overflow: ellipsis;
 }
 
-.van-dialog__confirm, .van-dialog__confirm:active {
+.van-dialog__confirm,
+.van-dialog__confirm:active {
     color: #1DCE74 !important;
 }
 

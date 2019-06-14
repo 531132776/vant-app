@@ -1,30 +1,55 @@
 <template>
     <div class="order_details">
         <div class="order_img pr_pl15">
-            <div class="vip_top">
-                <div>VIP会员</div>
-                 <div v-if="timeStr" style="font-size:13px;font-family:PingFangSC-Regular;font-weight:400;">会员特权至:{{timeStr}}</div>
-                 <div v-else style="font-size:13px;font-family:PingFangSC-Regular;font-weight:400;">开通即享受会员特权</div>
+            <van-swipe :autoplay="3000" indicator-color="white" class="header_swiper ">
+                <van-swipe-item v-for="(item,index) in swiperImgs" :key="index">
+                    <img :src="item" alt="" @click="swiperImgClick">
+                </van-swipe-item>
+            </van-swipe>
+        </div>
+        <div class="details_msg pr_pl15">
+            <div>
+                <span>年会员</span>
+                <span>已有368人拼团成功</span>
+                <span>3人团</span>
+            </div>
+            <div>
+                <span>
+                    <em style="">￥</em>
+                    <span>1000</span>
+                    <span class="day">/365天</span>
+                </span>
+                <span>¥1280/365天</span>
             </div>
         </div>
         <div class="order_cell">
-            <div class="tabs">
-                <div class="tab_year" @click="toggleYear()"  :class="{'active':yearShow===true}">
-                    <p class="title">{{yearObj[0].name}}</p>
-                    <p class="day">{{yearObj[0].validity}}天</p>
-                    <p class="money">¥{{yearObj[0].price}}</p>
-                </div>
-                <div class="tab_month" @click="toggleMonth()" :class="{'active':monthShow===true}">
-                    <p class="title">{{monthObj[0].name}}</p>
-                    <p class="day">{{monthObj[0].validity}}天</p>
-                    <p class="money">¥{{monthObj[0].price}}</p>
-                </div>
-            </div>
             <div class="year_content pr_pl15" v-if="yearShow">
                 <div>
-                    <div class="triangle">
-                        <img src="../../assets/images/triangle.png" alt="">
+                    <div class="line"></div> 
+                    <van-cell is-link to="/privilegeDetails" :border='false'>
+                        <div class="privilegeText">
+                            <span style="font-size:17px;">拼团玩法</span>
+                            <span>拼团规则</span>
+                        </div>
+                    </van-cell>
+                    <div class="privilege">
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 4@2x.png" alt="">
+                            <span>开团/参团 </span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 3@2x.png" alt="">
+                            <span>邀请好友参团</span>
+                            <span class="liter_text">享受低价</span>
+                        </div>
+                        <div class="privilegeItem">
+                            <img src="../../assets/images/分组 7@2x.png" alt="">
+                            <span>满额成团</span>
+                            <span class="liter_text">不满额自动退款</span>
+                        </div>
                     </div>
+                </div>
+                 <div>
                     <div class="line"></div> 
                     <van-cell is-link to="/privilegeDetails" :border='false'>
                         <div class="privilegeText">
@@ -32,7 +57,7 @@
                             <span>特权说明</span>
                         </div>
                     </van-cell>
-                    <div class="privilege">
+                    <div class="privilege" style="margin-bottom:100px;">
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 4@2x.png" alt="">
                             <span>团课随心约 </span>
@@ -47,7 +72,8 @@
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 8@2x.png" alt="">
-                            <span>专属智能 心率手环</span>
+                            <span>专属智能</span>
+                            <span>心率手环</span>
                         </div>
                     </div>
                 </div>
@@ -84,13 +110,32 @@
         </div>
          <!-- 预约 -->
        <div class="appointment pr_pl15">
-            <van-button class="appointment_btn"  @click="appointment()" type="primary" v-if="timeStr">立即续费</van-button>
-            <van-button class="appointment_btn"  @click="appointment()" type="primary" v-else>立即开通</van-button>
+           <div class="appointment_icon" @click="tell()"> 
+                <img src="../../assets/images/电话 2@2x.png" alt="">
+                <span>联系客服</span>
+            </div>
+            <van-button class="appointment_btn only"  @click="appointment()" type="primary">
+                <span>
+                    <em>¥</em>
+                    <span style="font-size: 17px;">1280</span>
+                </span>
+                <span>单独购买</span>
+            </van-button>
+            <van-button class="appointment_btn group"  @click="appointment()" type="primary" v-if="timeStr">立即续费</van-button>
+            <van-button class="appointment_btn group"  @click="appointment()" type="primary" v-else>
+                <span>
+                    <em>¥</em>
+                    <span style="font-size: 17px;">1000</span>
+                </span>
+                <span>去开团</span>
+            </van-button>
         </div>
     </div>
 </template>
 <script>
-import { Tab, Tabs,Radio,Cell, CellGroup,Dialog } from 'vant';
+import Swiper from 'swiper';
+import { Tab, Tabs,Radio,Cell, CellGroup,Dialog,Swipe,
+        SwipeItem,ImagePreview } from 'vant';
 import { IsVIP,GetVipList,HaveHeadAuth} from '@/request/api-liu'
 import { appendFile } from 'fs';
 export default {
@@ -100,6 +145,13 @@ export default {
             monthShow:false,
             yearObj:[],
             monthObj:{},
+            swiperImgs: [
+                'https://img.leoao.com/o_1bpj1t27i1mls139mgvv9251lkprf.png?imageslim',
+                // 'https://img.leoao.com/o_1bpj1t8q11jjb11mbn8bi3psb5rp.png?imageslim&imageView2/1/w/750/h/400',
+                // 'https://img.leoao.com/o_1bpj1t8q1sr0kdi8mbajj63cro.png?imageslim',
+                // 'https://img.leoao.com/o_1bpj1t8q125719b6grq10fgjdjrq.png?imageslim&imageView2/1/w/750/h/400',
+
+            ],
             uid:'',
             userId:'',
             timeStr:'',
@@ -132,6 +184,10 @@ export default {
                 this.uid = this.yearObj[0].uid
             })
 
+        },
+        //图片预览
+        swiperImgClick() {
+            ImagePreview(this.swiperImgs)
         },
         appointment(){
              HaveHeadAuth(this.userId).then(res=>{
@@ -184,8 +240,10 @@ export default {
         [Radio.name]:Radio,
         [Cell.name]:Cell,
         [CellGroup.name]:CellGroup,
-        [Dialog.name]:Dialog
-
+        [Dialog.name]:Dialog,
+        [Swipe.name]: Swipe,
+        [SwipeItem.name]: SwipeItem,
+        [ImagePreview.name]: ImagePreview,
     }
 }
 </script>
@@ -194,7 +252,7 @@ export default {
         background: #fff;
         .vip_top{
             width:345px;
-            height:80px;
+            height:180px;
             background:linear-gradient(270deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
             border-radius:10px;
             color:rgba(125,86,30,1);
@@ -206,6 +264,85 @@ export default {
             font-family:PingFangSC-Semibold;
             font-weight:600;
         }
+        .details_msg{
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0px;
+            div:first-child{
+                display: flex;
+                flex-direction: column;
+                span:nth-child(1){
+                    font-size:20px;
+                    font-family:PingFangSC-Semibold;
+                    font-weight:600;
+                    color:rgba(16,29,55,1);
+                    line-height:28px;
+                }
+                span:nth-child(2){
+                    width:106px;
+                    height:17px;
+                    font-size:12px;
+                    font-family:PingFangSC-Regular;
+                    font-weight:400;
+                    color:rgba(147,153,165,1);
+                    line-height:17px;
+                    margin:5px 0px;
+                }
+                span:nth-child(3){
+                    width:57px;
+                    height:20px;
+                    background:rgba(249,240,220,1);
+                    border-radius:12px;
+                    text-align: center;
+                    line-height: 20px;
+                    color:#C58831;
+                }
+            }
+            div:last-child{
+                display: flex;
+                flex-direction: column;
+                text-align: right;
+                span:first-child{
+                    em{
+                        width:9px;
+                        height:21px;
+                        font-size:15px;
+                        font-family:PingFangSC-Semibold;
+                        font-weight:600;
+                        color:rgba(125,86,30,1);
+                        line-height:21px;
+                    }
+                    span{
+                        width:52px;
+                        height:36px;
+                        font-size:30px;
+                        font-family:BebasNeue;
+                        color:rgba(125,86,30,1);
+                        line-height:36px;
+                        letter-spacing:1px;
+                    }
+                    .day{
+                        width:44px;
+                        height:17px;
+                        font-size:12px;
+                        font-family:PingFangSC-Regular;
+                        font-weight:400;
+                        color:rgba(125,86,30,1);
+                        line-height:17px;
+                        text-decoration: none;
+                    }
+                }
+                span:last-child{
+                    height:16px;
+                    font-size:11px;
+                    font-family:PingFangSC-Regular;
+                    font-weight:400;
+                    color:rgba(178,182,188,1);
+                    line-height:26px;
+                    text-decoration: line-through;
+                }
+            }
+        }
         .tip{
             text-align: center;
             padding:20px;
@@ -215,16 +352,18 @@ export default {
             font-size: 15px;
         }
         .order_img{
-            display: flex;
-            justify-content: flex-start;
+            // display: flex;
+            // justify-content: flex-start;
             padding-top: 15px;
             img{
-                width:100px;
-                height: 100px;
+                width:345px;
+                height:160px;
+                border-radius:8px;
             }
         }
         .order_cell{
             margin-top: 30px;
+            
             .tabs{
                 padding:0px 15px;
                 display: flex;
@@ -334,21 +473,28 @@ export default {
             .line{
                 width:345px;
                 height:1px;
-                background:rgba(223,184,130,1);
+                background:#E7E8EB;
             }
             .privilege{
                 display: flex;
-                // justify-content: space-between;
-                margin-top: 20px;
+                justify-content: space-between;
+                margin: 20px 0px;
                 .privilegeItem{
                     display: flex;
                     flex-direction: column;
                     text-align: center;
-                    margin-right:35px;
                     align-items: center;
                     img{
                         width:60px;
                         height: 60px;
+                    }
+                    .liter_text{
+                        height:16px;
+                        font-size:11px;
+                        font-family:PingFangSC-Regular;
+                        font-weight:400;
+                        color:rgba(197,136,49,1);
+                        line-height:16px;
                     }
                     span{
                         height:18px;
@@ -412,6 +558,9 @@ export default {
                 }
             } 
         }
+        .van-cell{
+            padding: 10px 0px;
+        }
         .appointment
         {
             display: flex;
@@ -422,24 +571,45 @@ export default {
             bottom: 0px;
             left:0px;
             width: 100%;
-            .appointment_icon{
+            background: #FFFFFF;
+             .appointment_icon{
                 display: flex;
+                flex-direction: column;
                 align-items: center;
+                font-size:12px;
                 font-weight:400;
-                color:rgba(16,29,55,1);
-                line-height:24px;
-                font-size: 17px;
+                color:#9399A5;
+                line-height:17px;
+                img{
+                    width:25px;
+                }
             }
             .appointment_btn{
-                width:273px;
-                height:45px;
-                background:linear-gradient(270deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
-                border-radius:23px;
-                font-size: 17px;
+                
+               
+                //background:linear-gradient(270deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
+                font-size: 11px;
+                display: flex;
+                flex-direction: column;
                 margin-right: 15px;
+                justify-content: center;
                 text-align: center;
-                line-height: 45px;
-                color:#fff
+
+            }
+            .only{
+                width:105px;
+                height:43px;
+                border-radius:23px;
+                border:1px solid;
+                color:#DF7930;
+                background: #fff;
+            }
+            .group{
+                height:45px;
+                width:158px;
+                border-radius:23px;
+                background:linear-gradient(90deg,rgba(252,186,102,1) 0%,rgba(247,124,68,1) 100%);
+                color: #FFFFFF;
             }
         }
     }

@@ -29,13 +29,32 @@
                                     <img :src="peopleHead" alt="">
                                 </span>
                                 <span>{{courseInfo.coachName}}</span>
+                                <span>{{courseInfo.priceType}}</span>
                             </dt>
+                            <!-- <dt>
+                                <span>{{courseInfo.clubAddr}}</span>
+                            </dt> -->
                         </li>
                     </ul>
                     <span class="before"></span>
                 </div>
             </div>
-            <div class="CurriculumHistory pr_pl15 pt20">
+            <div class="classInfo_mess pr_pl15 pt20">
+                <ul class="pb15">
+                    <span class="text-title">上课信息</span>
+                    <span class="before"></span>
+                </ul>
+                
+            </div>
+            <div class="classInfo_mess pr_pl15 pt15">
+                <ul class="pb15 addressClass">
+                    <li>上课门店</li>
+                    <li>{{courseInfo.clubAddr}}</li>
+                    <span class="before"></span>
+                </ul>
+                
+            </div>
+            <div class="CurriculumHistory pr_pl15 pt20" v-if="courseType == 1 || courseType ==2">
                 <span class="title_text">上课历史</span>
                 <div class="history_list pt20">
                     <ul class="steps_list">
@@ -71,8 +90,8 @@
                             <dt>联系教练</dt>
                         </li>
                         <!-- <li @click="signIn" v-if="conditionHide!==1"> -->
-                        <li @click="signIn" v-if="courseInfo.status == 0">
-                            <van-button type="primary" :disabled="disabled">签到</van-button>
+                        <li v-if="courseType == 1 || courseType ==2">
+                            <van-button type="primary" @click="signIn" :class="{'disabledClass':disabledClass}">签到</van-button>
                         </li>
                         <!-- <li @click="signIn" v-if="courseInfo.status == 1">
                             <van-button type="primary" :disabled="disabled">签到</van-button>
@@ -89,9 +108,9 @@ export default {
     data(){
         return{
             peopleHead:require('../../assets/images/10.png'),
-            phomeIcon:require("../../assets/images/电话@2x.png"),
+            phomeIcon:require("../../assets/images/电话 2@2x.png"),
             // oneImg:require('../../assets/images/4.jpg'),
-            tell2:'0755-26400830',
+            tell2:'400 075 5088',
             lessonTwo:'',//当前正在进行的第5节课
             totalNumber:'',//当前课程总数是12节课
             Classtimeanddate:[],
@@ -108,6 +127,7 @@ export default {
             courseType:this.$route.query.courseType,
             courseInfo:{},
             disabled:false,
+            disabledClass:false
         }
     },
     components:{
@@ -189,7 +209,8 @@ export default {
                             // alert(2)
                             return
                         }else{
-                            this.disabled = true
+                            this.disabled = true;
+                            this.disabledClass = true;
                         }
                     }
                     
@@ -214,6 +235,7 @@ export default {
                     console.log('私教课签到',res);
                     if(res.data.obj == 1){
                         this.disabled = true;
+                        this.disabledClass = true;
                     }
                     
                     Toast.success('签到成功');
@@ -242,7 +264,8 @@ export default {
                             // alert(2)
                             return
                         }else{
-                            this.disabled = true
+                            this.disabled = true;
+                            this.disabledClass = true;
                         }
                     }
             }).catch(err =>{
@@ -264,6 +287,7 @@ export default {
                     console.log('私教体验课签到',res)
                     if(res.data.obj == 1){
                         this.disabled = true;
+                        this.disabledClass = true;
                     }
                     
                     Toast.success('签到成功');
@@ -291,18 +315,31 @@ export default {
             if(this.courseType == 1){
                 console.log('私教课')
                 // this.privateEducationCheck()
-                this.getPrivateEducation()
+                if(this.disabled == true){
+                    // alert(1)
+                    Toast('您已签到！每次签到时隔1小时！')
+                }else{
+                    this.getPrivateEducation()
+                }
+                
 
             }else if(this.courseType == 2){
+                // alert(2)
                 console.log('私教体验课')
                 // this.experienceSignIn();
-                this.getExperienceSignIn()
+                // alert(this.disabled)
+                if(this.disabled == true){
+                    // alert(1)
+                    Toast('您已签到！私教体验课只有一次签到！')
+                }else{
+                    this.getExperienceSignIn()
+                }
 
             }
-            // else if(this.courseType == 3){
-            //     console.log('包月私教课')
-
-            // }
+            else if(this.courseType == 3){
+                console.log('包月私教课')
+                this.isAlign=false;
+            }
         }
     },
     watch:{
@@ -341,6 +378,34 @@ export default {
 <style lang="less" scoped>
     .Status_content{
         padding-bottom: 70px;
+        .classInfo_mess{
+            ul{
+                position: relative;
+            }
+            .addressClass{
+                display: flex;
+                justify-content:space-between;
+                flex-flow: row nowrap;
+                align-items: center;
+                li:nth-child(1){
+                    font-size: 17px;
+                    font-weight: 400;
+                }
+                li:nth-child(2){
+                    font-size: 13px;
+                    font-weight: 400;
+                    text-align: right;
+                    flex:2;
+                    width:80%;
+                }
+            }
+            .text-title{
+                font-size: 17px;
+                font-family:PingFangSC-Semibold;
+                font-weight:600;
+                color:rgba(16,29,55,1);
+            }
+        }
         .Class_status{
             position: relative;
             ul{
@@ -386,6 +451,8 @@ export default {
                     justify-content: space-between;
                     align-content: flex-start;
                     flex-flow: column nowrap;
+                    width: 50%;
+                    flex:2;
                     dt:nth-child(1){
                         font-size: 17px;
                         font-weight: 600;
@@ -404,11 +471,24 @@ export default {
                                 width: 100%;
                             }
                         }
+                        span:nth-child(2){
+                            margin-right:20px;
+                        }
+                    }
+                    dt:nth-child(3){
+                        font-size: 12px;
+                        color: #9399A5;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
             }
         }
         .CurriculumHistory{
+            .title_text{
+                font-size: 17px;
+            }
             .history_list{
                 
                     overflow: hidden;
@@ -538,6 +618,9 @@ export default {
                             font-size: 17px;
                             letter-spacing: 2px;
                             font-weight: 400;
+                        }
+                        .disabledClass{
+                            opacity: .5;
                         }
                     }
                 }

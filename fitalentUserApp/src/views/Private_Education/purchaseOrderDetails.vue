@@ -106,7 +106,8 @@
               <li>选择优惠券</li>
               <li>
                 <dt class="text_gray">
-                  <span>{{couponCount}}张可用</span>
+                  <span v-if="couponListLength && this.couponList.length>0">{{couponName}}</span>
+                  <span v-else>{{couponCount}}张可用优惠券</span>
                   <span class="head_people">
                     <img :src="rightIcon" alt>
                   </span>
@@ -124,7 +125,7 @@
               <li class="price_font" v-if="status==0">
                 <em>¥</em>
                 <!-- <em>{{educationexperie.price}}</em> -->
-                <em>{{experienceTotalPrice}}</em>
+                <em>{{Number(experienceTotalPrice).toFixed(2)}}</em>
               </li>
               <!-- 2是私教课 -->
               <li class="price_font" v-if="status==2">
@@ -187,7 +188,7 @@
         <ul>
           <li v-if="status==0">
             <dt>共计: ¥</dt>
-            <dt>{{experiencePrice}}</dt>
+            <dt>{{Number(experiencePrice).toFixed(2)}}</dt>
           </li>
           <li v-if="status==2">
             <dt>共计: ¥</dt>
@@ -198,16 +199,18 @@
             <dt>{{Number(monthlyTotalPrice).toFixed(2)}}</dt>
           </li>
           <!-- 私教课支付 -->
-          <li v-if="status==2" @click="DesignatedcoursesPayment()">
-            <span>去支付</span>
+          <li v-if="status==2" >
+            <van-button type="default" @click.stop="DesignatedcoursesPayment()" :disabled="isDisable">去支付</van-button>
           </li>
           <!-- 包月支付 -->
-          <li v-if="status==1" @click="monthlyNmbcoursesPayment()">
-            <span>去支付</span>
+          <li v-if="status==1" >
+            <!-- <span>去支付</span> -->
+            <van-button type="default" @click.stop="monthlyNmbcoursesPayment()" :disabled="isDisable">去支付</van-button>
           </li>
           <!-- 私教体验课支付 -->
-          <li v-if="status==0" @click="PrivateeducationPayment()">
-            <span>去支付</span>
+          <li v-if="status==0" >
+            <!-- <span>去支付</span> -->
+            <van-button type="default" @click.stop="PrivateeducationPayment()" :disabled="isDisable">去支付</van-button>
           </li>
         </ul>
       </div>
@@ -265,6 +268,7 @@ import { constants } from "crypto";
 export default {
   data() {
     return {
+      isDisable:false,
         popupItemOne:'popupItemOne',
         popupItemThree:'popupItemThree',
       afterCoupon: 0,
@@ -326,6 +330,8 @@ export default {
       totalTwoPrice:'',//一对二商品总价
       experienceTotalPrice:'',//私教体验课总价
       MonthTotalPrice:'',//包月总价
+      couponName:'',
+      couponListLength:true
     };
   },
   components: {
@@ -502,7 +508,7 @@ export default {
         }
         // console.log(res.data.obj.list[0].checkStatus,'初始勾选')
         if(this.couponList.length>0){
-        
+            this.couponName = this.couponList[0].couponName;
             this.$set(this,'couponId',this.couponList[0].uid);
             this.$set(this,'afterCoupon',this.couponList[0].discountValue);
             if(this.couponList[0].couponType == 0){
@@ -531,10 +537,9 @@ export default {
                     //包月私教
                     // alert('包月');
                     // this.$set(this,'afterCoupon',this.couponList[0].discountValue);
-                    this.monthlyTotalPrice = amount - this.afterCoupon
+                      this.monthlyTotalPrice = amount - this.afterCoupon
+                    
                 }
-                
-                
 
             }else if(this.couponList[0].couponType == 1){
                 // alert('免费券')
@@ -564,19 +569,45 @@ export default {
                 }
                 console.log(this.afterCoupon,'1')
             }
+          }else{
+                this.$set(this,'couponId','');
+                if(this.status == 1){
+                  // alert('包月')
+                  // alert(this.afterCoupon)
+                  this.monthlyTotalPrice = amount - this.afterCoupon;
+                }
+                if(this.status == 2){
+                  // alert('私教')
+                  if(this.contrastStatus == 0){
+                      this.totalPrice = amount;
+                  }else if(this.contrastStatus == 1){
+                      // alert(1111)
+                      this.totalPrice = amount;
+                  }
+                }
+                if(this.status == 0){
+                    //私教体验课
+                    // alert('私教体验课');
+                    // this.$set(this,'afterCoupon',this.couponList[0].discountValue);
+                    // alert(this.afterCoupon)
+                    this.experiencePrice = amount
+                }
           }
       });
     },
     aaa(item) {
         let _this = this;
-        console.log(item.checkStatus,'选项')
+        
       if (!item.checkStatus) {
+        console.log(item.checkStatus,'选项')
+        this.couponListLength = true;
         this.couponList.map(function(res) {
           if (res.uid != item.uid) {
             res.checkStatus = false;
             return res;
           }
           console.log(res, "尼玛");
+          _this.$set(_this,'couponName',res.couponName);
           _this.$set(_this,'couponId',res.uid)
           console.log(_this.couponId,'444')
           if(res.couponType == 0){
@@ -584,13 +615,14 @@ export default {
               if(_this.status == 2){
                   //私教课
                 //   alert('私教')
-                  _this.nmb = _this.privateCourse.lowestSection;
+                  // _this.nmb = _this.privateCourse.lowestSection;
+                  // alert(_this.nmb)
                   _this.$set(_this,'afterCoupon',res.discountValue);
                   if(_this.contrastStatus == 0){
-                      _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-_this.afterCoupon;
+                      _this.totalPrice = (_this.privateCourse.onePrice * _this.nmb)-_this.afterCoupon;
                   }else if(_this.contrastStatus == 1){
                     //   alert('true')
-                      _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection)-_this.afterCoupon;
+                      _this.totalPrice = (_this.privateCourse.twoPrice * _this.nmb)-_this.afterCoupon;
                   }
                   
               }
@@ -619,11 +651,11 @@ export default {
                 //   alert('私教课')
                     
                     if(_this.contrastStatus == 0){
-                        _this.afterCoupon = _this.privateCourse.onePrice * _this.privateCourse.lowestSection;
-                        _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection)-_this.afterCoupon
+                        _this.afterCoupon = _this.privateCourse.onePrice * _this.nmb;
+                        _this.totalPrice = (_this.privateCourse.onePrice * _this.nmb)-_this.afterCoupon
                     }else if(_this.contrastStatus == 1){
-                        _this.afterCoupon = _this.privateCourse.twoPrice * _this.privateCourse.lowestSection;
-                        _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection)-_this.afterCoupon
+                        _this.afterCoupon = _this.privateCourse.twoPrice * _this.nmb;
+                        _this.totalPrice = (_this.privateCourse.twoPrice * _his.nmb)-_this.afterCoupon
                     }
                     
                 }
@@ -642,17 +674,20 @@ export default {
           }
         });
       }else if(item.checkStatus){
-          // alert(item.checkStatus)
+          console.log(item.checkStatus,'------>')
+          this.couponListLength = false;
+          //  _this.$set(_this,'couponName',res.couponName);
           _this.afterCoupon = 0;
           _this.couponId = '';
           if(_this.status == 2){
             //私教课
               if(_this.contrastStatus == 0){
-                  _this.totalPrice = (_this.privateCourse.onePrice * _this.privateCourse.lowestSection) - _this.afterCoupon;
+                // alert(_this.nmb)
+                  _this.totalPrice = (_this.privateCourse.onePrice * _this.nmb) - _this.afterCoupon;
               }
               else if(_this.contrastStatus == 1){
                 //   alert('false')
-                  _this.totalPrice = (_this.privateCourse.twoPrice * _this.privateCourse.lowestSection) - _this.afterCoupon;
+                  _this.totalPrice = (_this.privateCourse.twoPrice * _this.nmb) - _this.afterCoupon;
               }
               
           }
@@ -776,7 +811,6 @@ export default {
       } else if (this.contrastStatus == 1) {
         this.totalPrice += this.privateCourse.twoPrice;
         this.totalTwoPrice = this.privateCourse.twoPrice*this.nmb;
-// alert(this.privateCourse.twoPrice)
         this.GetCouponList(
           this.privateOne.courseType,
           this.privateOne.userId,
@@ -790,32 +824,24 @@ export default {
     },
     //包月计算减
     monthlyReduce() {
-      this.monthlyNmb -= 1;
-      this.monthlyTotalPrice -= this.educationsectorDetails.price;
-      console.log(this.monthlyNmb)
-      this.MonthTotalPrice = this.educationsectorDetails.price*this.monthlyNmb;
+      if(this.monthlyNmb > 1 ){
+          this.monthlyNmb -=1;
+        this.monthlyTotalPrice -= (this.educationsectorDetails.price*this.monthlyNmb);
+        // alert(this.monthlyNmb)
+        this.MonthTotalPrice = this.educationsectorDetails.price*this.monthlyNmb;
 
-      this.GetCouponList(
-                        this.$route.query.courseType,
-                        this.userId,
-                        this.monthlyNmb,
-                        (this.MonthTotalPrice).toFixed(2)
-                    );
-      if (this.monthlyNmb <= 1) {
-        // alert(1)
-        
-      
+        this.GetCouponList(
+                          this.$route.query.courseType,
+                          this.userId,
+                          this.monthlyNmb,
+                          (this.MonthTotalPrice).toFixed(2)
+                      );
+      }
+      else {
         this.monthlyNmb = 1;
         this.monthlyTotalPrice = this.educationsectorDetails.price;
-        console.log(this.afterCoupon,'---------')
-        console.log(this.educationsectorDetails.price,'---------')
-console.log(this.monthlyTotalPrice,'=======')
         this.MonthTotalPrice = this.educationsectorDetails.price;
-        
-    
-      // if(this.monthlyNmb !== 0 && this.monthlyNmb >=1){
-        // alert((this.MonthTotalPrice).toFixed(2))
-        }
+      }
       
     },
     //包月计算加
@@ -833,6 +859,7 @@ console.log(this.monthlyTotalPrice,'=======')
     //去指定课程(比如：塑形杠铃雕塑)去支付
     DesignatedcoursesPayment() {
       console.log(this.checked);
+      // return
       if (!this.checked) {
         Toast("请勾选健康传奇私教服务协议");
         return;
@@ -852,6 +879,7 @@ console.log(this.monthlyTotalPrice,'=======')
           if (res.data.code == 2000) {
             this.privateOrderObj = res.data.obj;
             this.privateOrderObj.type = "pay";
+            // this.isDisable = true;
             if (this.totalPrice == 0) {
                 // alert(111)
               Dialog.confirm({
@@ -911,12 +939,14 @@ console.log(this.monthlyTotalPrice,'=======')
         productType: this.privateThree.courseType,
         couponId: this.couponId
       };
+      console.log(params)
       generateOrder(params)
         .then(res => {
           console.log("包月私教课订单：", res);
           if (res.data.code == 2000) {
             this.monthOrderObj3 = res.data.obj;
             this.monthOrderObj3.type = "pay";
+            // this.isDisable = true;
             console.log(this.monthOrderObj3);
             if(this.monthlyTotalPrice == 0){
                 // alert(111)
@@ -985,6 +1015,7 @@ console.log(this.monthlyTotalPrice,'=======')
           if (res.data.code == 2000) {
             this.privateOrderObj2 = res.data.obj;
             this.privateOrderObj2.type = "pay";
+            // this.isDisable = true;
             console.log("参数", this.privateOrderObj2);
             if(this.experiencePrice == 0){
                 Dialog.confirm({
@@ -1327,13 +1358,17 @@ console.log(this.monthlyTotalPrice,'=======')
       li:nth-child(2) {
         width: 60%;
         flex: 0 1 50%;
-        padding: 10px 0;
-        font-size: 17px;
-        color: #fff;
-        font-weight: 400;
-        border-radius: 23px;
-        background: rgba(29, 206, 116, 1);
-        text-align: center;
+        // padding: 10px 0;
+        .van-button{
+          // height: auto;
+          width: 100%;
+          font-size: 17px;
+          color: #fff;
+          font-weight: 400;
+          border-radius: 23px;
+          background: rgba(29, 206, 116, 1);
+          text-align: center;
+        }
       }
     }
   }

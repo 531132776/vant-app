@@ -5,7 +5,7 @@
             <div class="p15">
                 <van-swipe :autoplay="3000" indicator-color="white" class="header_swiper ">
                     <van-swipe-item v-for="(item,index) in swiperImgs" :key="index">
-                        <img :src="item" alt="" @click="swiperImgClick()">
+                        <img :src="item.url" alt="" @click="swiperImgClick()">
                     </van-swipe-item>
                 </van-swipe>
             </div>
@@ -124,7 +124,8 @@
                         搏击可以提高肌肉爆发力量，每天坚持下可以可高心肺能力 搏击可以提高肌肉爆发力量每天坚持下可以可高心肺能力搏 击可以提高肌肉爆发力量，每天坚持下可以可高心肺能力。
                     </dt> -->
                     <!-- <span class="before"></span> -->
-                    <img :src="CourseIntroduction" alt="">
+                    <!-- <img :src="CourseIntroduction" alt=""> -->
+                    <img v-for="item in immageDto.courseExplainUrl" :key="item.id" :src="item.url" alt="">
                 </div>
             </div>
             
@@ -151,13 +152,14 @@
     </div>
 </template>
 <script>
-import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,ImagePreview } from 'vant';
+import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,ImagePreview,Dialog } from 'vant';
 import {detailSprivatLessons,privateTasteCourse} from '@/request/api'
+import {HaveHeadAuth} from '@/request/api-liu'
 export default {
     data(){
         return{
             rightIcon:require("../../assets/images/14.png"),
-            phomeIcon:require("../../assets/images/13.png"),
+            phomeIcon:require("../../assets/images/电话 2@2x.png"),
             // shoppingImg:require("../../assets/images/shoping.png"),
             // signImg:require("../../assets/images/sign.png"),
             // classImg:require("../../assets/images/class.png"),
@@ -169,7 +171,7 @@ export default {
                     // 'https://img.yzcdn.cn/public_files/2017/09/05/c0dab461920687911536621b345a0bc9.jpg',
                
             ],
-            tell2:'0755-26400830',
+            tell2:'400 075 5088',
             SportsContent:this.$route.query.status,//塑形杠铃雕塑状态
             privateEducationId:this.$route.query.privateCourseId,//私教课Id
             privateCourse:{},//私教课obj
@@ -192,6 +194,7 @@ export default {
         [Tab.name]:Tab,
         [Tabs.name]:Tabs,
         [ImagePreview.name]:ImagePreview,
+        [Dialog.name]:Dialog,
     },
     mounted(){
         window.scrollTo(0,0)
@@ -220,14 +223,16 @@ export default {
                 if(res.data.code == 2000){
                     this.educationexperie = res.data.obj;
                     this.immageDto = res.data.obj.immageDto;
-                    this.immageDto.courseExplainUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    });
-                    this.immageDto.spreadUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    })
-                    this.swiperImgs.push(this.immageDto.coverUrl.url)
-                    this.swiperImgs.push(this.immageDto.reduceUrl.url)
+                    this.swiperImgs = this.immageDto.spreadUrl
+                    console.log(this.swiperImgs,'=======>')
+                    // this.immageDto.courseExplainUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // });
+                    // this.immageDto.spreadUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // })
+                    // this.swiperImgs.push(this.immageDto.coverUrl.url)
+                    // this.swiperImgs.push(this.immageDto.reduceUrl.url)
                 }
                 
             }).catch(err=>{
@@ -245,14 +250,15 @@ export default {
                 if(res.data.code == 2000){
                     this.privateCourse = res.data.obj;
                     this.immageDto = res.data.obj.immageDto;
-                    this.immageDto.courseExplainUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    });
-                    this.immageDto.spreadUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    })
-                    this.swiperImgs.push(this.immageDto.coverUrl.url)
-                    this.swiperImgs.push(this.immageDto.reduceUrl.url)
+                    this.swiperImgs = this.immageDto.spreadUrl
+                    // this.immageDto.courseExplainUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // });
+                    // this.immageDto.spreadUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // })
+                    // this.swiperImgs.push(this.immageDto.coverUrl.url)
+                    // this.swiperImgs.push(this.immageDto.reduceUrl.url)
                 }
                 
             }).catch(err=>{
@@ -261,7 +267,11 @@ export default {
         },
         //图片预览
         swiperImgClick(){
-            ImagePreview(this.swiperImgs)
+            const imgList = []
+            for(var i=0;i<this.immageDto.spreadUrl.length;i++){
+                imgList.push(this.immageDto.spreadUrl[i].url)
+            }
+            ImagePreview(imgList)
         },
         //规则说明
         RuleDescription(){
@@ -273,30 +283,102 @@ export default {
         },
         //私教课立即购买
         shopping(){
-            this.$router.push({
-                path:'/purchaseOrderDetails',
-                query:{
-                    status: this.$route.query.status,
-                    // obj:this.privateCourse,
-                    // privateOne:this.$route.query,
-                    userId:this.userId,
-                    courseType:this.$route.query.courseType,
-                    privateCourseId:this.$route.query.privateCourseId,
+            HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.privateCourse,
+                            // privateOne:this.$route.query,
+                            userId:this.userId,
+                            courseType:this.$route.query.courseType,
+                            privateCourseId:this.$route.query.privateCourseId,
+                        }
+                    })
+                }else{
+                    Dialog.confirm({
+                    title: '您还未进行人脸认证',
+                    confirmButtonText:'去认证',
+                    cancelButtonText:'继续购买'
+                    }).then(() => {
+                    // on confirm
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'takeFace'
+                            }))
+                        }else if(this.isiOS){
+                            window.webkit.messageHandlers.takeFace.postMessage({
+                                type:'takeFace'
+                            })
+                        }
+
+                    }).catch(() => {
+                    // on cancel
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.privateCourse,
+                            // privateOne:this.$route.query,
+                            userId:this.userId,
+                            courseType:this.$route.query.courseType,
+                            privateCourseId:this.$route.query.privateCourseId,
+                        }
+                    })
+                });
                 }
+            
             })
         },
         //私教体验课立即购买
         shoppingTwo(){
-            this.$router.push({
-                path:'/purchaseOrderDetails',
-                query:{
-                    status: this.$route.query.status,
-                    // obj:this.educationexperie,
-                    // privateTwo:this.$route.query,
-                    userId:this.userId,
-                    courseType:this.$route.query.courseType,
-                    privateTasteCourseId:this.$route.query.educationexperienceId
+            HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.educationexperie,
+                            // privateTwo:this.$route.query,
+                            userId:this.userId,
+                            courseType:this.$route.query.courseType,
+                            privateTasteCourseId:this.$route.query.educationexperienceId
+                        }
+                    })
+                }else{
+                    Dialog.confirm({
+                    title: '您还未进行人脸认证',
+                    confirmButtonText:'去认证',
+                    cancelButtonText:'继续购买'
+                    }).then(() => {
+                    // on confirm
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'takeFace'
+                            }))
+                        }else if(this.isiOS){
+                            window.webkit.messageHandlers.takeFace.postMessage({
+                                type:'takeFace'
+                            })
+                        }
+
+                    }).catch(() => {
+                    // on cancel
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.educationexperie,
+                            // privateTwo:this.$route.query,
+                            userId:this.userId,
+                            courseType:this.$route.query.courseType,
+                            privateTasteCourseId:this.$route.query.educationexperienceId
+                        }
+                    })
+                });
                 }
+            
             })
         }
     }

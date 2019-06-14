@@ -5,7 +5,7 @@
             <div class="p15">
                 <van-swipe :autoplay="3000" indicator-color="white" class="header_swiper ">
                     <van-swipe-item v-for="(item,index) in swiperImgs" :key="index">
-                        <img :src="item" alt="" @click="swiperImgClick()">
+                        <img :src="item.url" alt="" @click="swiperImgClick()">
                     </van-swipe-item>
                 </van-swipe>
             </div>
@@ -29,7 +29,8 @@
             <!--  -->
             <div class="Image_text">
                 <dt>
-                    <img :src="privatemonthlyIcon" alt="">
+                    <!-- <img :src="privatemonthlyIcon" alt=""> -->
+                    <img v-for="item in immageDto.courseExplainUrl" :key="item.id" :src="item.url" alt="">
                 </dt>
             </div>
         </div>
@@ -52,12 +53,13 @@
     </div>
 </template>
 <script>
-import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,ImagePreview } from 'vant';
+import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,ImagePreview,Dialog } from 'vant';
 import {privateMonthCourse} from '@/request/api'
+import {HaveHeadAuth} from '@/request/api-liu'
 export default {
     data(){
         return{
-            phomeIcon:require("../../assets/images/13.png"),
+            phomeIcon:require("../../assets/images/电话 2@2x.png"),
             privatemonthlyIcon:require("../../assets/images/u1465.png"),
             swiperImgs:[
                 // 'https://img.leoao.com/o_1bpj1t27i1mls139mgvv9251lkprf.png?imageslim',
@@ -66,7 +68,7 @@ export default {
                 // 'https://img.leoao.com/o_1bpj1t8q125719b6grq10fgjdjrq.png?imageslim&imageView2/1/w/750/h/400',
                
             ],
-            tell2:'18926484971',
+            tell2:'400 075 5088',
             educationsectorObj:{},
             educationsectorDetails:{},//详情OBJ
             immageDto:{
@@ -85,7 +87,8 @@ export default {
         [SwipeItem.name]:SwipeItem,
         [Tab.name]:Tab,
         [Tabs.name]:Tabs,
-        [Tabs.ImagePreview]:ImagePreview,
+        [ImagePreview.name]:ImagePreview,
+        [Dialog.name]:Dialog,
     },
     mounted(){
         window.scrollTo(0,0)
@@ -105,15 +108,15 @@ export default {
                 if(res.data.code == 2000){
                     this.educationsectorDetails = res.data.obj;
                     this.immageDto = res.data.obj.immageDto;
-                    
-                    this.immageDto.courseExplainUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    });
-                    this.immageDto.spreadUrl.map(v=>{
-                        return this.swiperImgs.push(v.url)
-                    })
-                    this.swiperImgs.push(this.immageDto.coverUrl.url)
-                    this.swiperImgs.push(this.immageDto.reduceUrl.url)
+                    this.swiperImgs = this.immageDto.spreadUrl;
+                    // this.immageDto.courseExplainUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // });
+                    // this.immageDto.spreadUrl.map(v=>{
+                    //     return this.swiperImgs.push(v.url)
+                    // })
+                    // this.swiperImgs.push(this.immageDto.coverUrl.url)
+                    // this.swiperImgs.push(this.immageDto.reduceUrl.url)
                     // console.log(this.swiperImgs)
                 }
                 
@@ -123,7 +126,11 @@ export default {
         },
         //图片预览
         swiperImgClick(){
-            ImagePreview(this.swiperImgs)
+            const imgList = []
+            for(var i=0;i<this.immageDto.spreadUrl.length;i++){
+                imgList.push(this.immageDto.spreadUrl[i].url)
+            }
+            ImagePreview(imgList)
         },
         //拨号
         tell(){
@@ -131,15 +138,50 @@ export default {
         },
         //订单详情
         orderDetails(){
-            this.$router.push({
-                path:'/purchaseOrderDetails',
-                query:{
-                    status: this.$route.query.status,
-                    // obj:this.educationsectorDetails,
-                    courseType:this.$route.query.courseType,
-                    privateMonthCourseId:this.$route.query.educationsectorId,
-                    userId:this.userId
+            HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.educationsectorDetails,
+                            courseType:this.$route.query.courseType,
+                            privateMonthCourseId:this.$route.query.educationsectorId,
+                            userId:this.userId
+                        }
+                    })
+                }else{
+                    Dialog.confirm({
+                    title: '您还未进行人脸认证',
+                    confirmButtonText:'去认证',
+                    cancelButtonText:'继续购买'
+                    }).then(() => {
+                    // on confirm
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'takeFace'
+                            }))
+                        }else if(this.isiOS){
+                            window.webkit.messageHandlers.takeFace.postMessage({
+                                type:'takeFace'
+                            })
+                        }
+
+                    }).catch(() => {
+                    // on cancel
+                    this.$router.push({
+                        path:'/purchaseOrderDetails',
+                        query:{
+                            status: this.$route.query.status,
+                            // obj:this.educationsectorDetails,
+                            courseType:this.$route.query.courseType,
+                            privateMonthCourseId:this.$route.query.educationsectorId,
+                            userId:this.userId
+                        }
+                    })
+                });
                 }
+            
             })
         }
     }

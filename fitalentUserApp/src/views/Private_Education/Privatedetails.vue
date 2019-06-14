@@ -84,7 +84,7 @@
         <div class="Teaching p15">
             <span class="title_text">所授课程</span>
             <div class="Teaching_info">
-                <ul>
+                <ul v-if="Coursedata.length>0">
                     <li v-for='(item,index) in Coursedata' :key="index" @click="Course_Details(item,index)">
                         <div class="details_img">
                             <img :src="item.courseImage" alt="">
@@ -97,13 +97,20 @@
                             <span>
                                 <em>¥</em>
                                 <em>{{item.coursePrice}}</em>
-                                <em>/节</em>
+                                <em v-if="item.courseType == 1 || item.courseType == 2">/节</em>
+                                <em v-if="item.courseType == 3">/{{item.courseNum}}天</em>
+                                <em v-if="item.courseType == 0 || item.courseType == 4">/{{item.courseNum}}课时</em>
                             </span>
-                            <span v-if="item.courseType == 4">预约</span>
-                            <span v-else>购买</span>
+                            <span>购买</span>
                         </div>
                     </li>
                 </ul>
+                <div class="tipsImgInfo" v-if="Coursedata.length=0">
+                    <div class="noDataImgWarp">
+                    <img src="../../assets/images/no_data.png" >
+                        <div style="color:rgba(178,182,188,1);font-size:17px;">暂时还没有所售课程哦～</div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -269,7 +276,7 @@ export default {
             }else if(item.courseType == 0){
                 //订单
                 this.$router.push({
-                    path:'/orderDetails?courseId='+item.courseId+'&userId='+this.userId,
+                    path:'/trainingCamp?courseId='+item.courseId+'&userId='+this.userId,
                     // query:{
                     //     privateCourseId:item.courseId,
                     //     courseType:item.courseType
@@ -332,11 +339,18 @@ export default {
                         height: 64px;
                         margin-right: 10px;
                         border-radius: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        overflow: hidden;
+                        background: #fff;
                         img{
                             display: block;
-                            width: 100%;
-                            height: 100%;
-                            border-radius: 100%;
+                            // width: 100%;
+                            // height: 100%;
+                            // border-radius: 100%;
+                            max-width: 100%;
+                            max-height: 100%;
                         }
                     }
                     li:nth-child(2){
@@ -472,13 +486,16 @@ export default {
                     overflow: hidden;
                     .details_img{
                         // width: 165px;
-                        height: 150px;
+                        // height: 150px;
                         border-radius: 8px;
                         padding-bottom: 10px;
+                        overflow: hidden;
                         img{
                             display: block;
-                            width: 100%;
-                            height: 100%;
+                            // width: 100%;
+                            // max-height: 100%;
+                            width: 165px;
+                            height: 165px;
                             border-radius: 8px;
                         }
                     }
@@ -526,6 +543,22 @@ export default {
                             text-align: center;
                             border-radius: 12px;
                         }
+                    }
+                }
+            }
+            .tipsImgInfo {
+                display: flex;
+                flex-flow: column nowrap;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                .noDataImgWarp {
+                    text-align: center;
+                    // width:100%;
+                    // margin: 0 auto;
+                    img {
+                        width: 128px;
+                        height: 106px;
                     }
                 }
             }

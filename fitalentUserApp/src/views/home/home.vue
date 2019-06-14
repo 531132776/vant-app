@@ -13,9 +13,13 @@
                         <img :src="clubInfo.headShotUrl" alt="">
                     </li>
                     <li>
-                        <dl>
+                        <!-- <dl>
                             <dt><span class="people_nmb">可容纳{{clubInfo.maxPeople}}人同时健身</span></dt>
                             <dt><span class="current_nmb">当前健身人数{{currentNum}}人</span></dt>
+                        </dl> -->
+                        <dl>
+                            <dd>即将开业</dd>
+                            <dd>敬请期待</dd>
                         </dl>
                         <span class="shop_detail_info" v-show="jumpAvailable" @click="toStoreShop">
                             查看详情
@@ -87,14 +91,14 @@
             </div>
         </div>
         <!-- 门店私教 -->
-        <div class="Private_education_stores pr_pl15">
-            <div class="title_text">门店私教</div>
+        <div class="Private_education_stores ">
+            <div class="title_text pr_pl15">门店私教</div>
             <div class="scroll_overflow">
                 <div class="coverDiv"></div>
                 <div class="swiper_list">
                 <!-- <div class="swiper-container"> -->
                     <!-- <div class="swiper-wrapper"> -->
-                        <div v-cloak v-if="coachList.length > 0" class="swiper-slide" v-for="(item,i) in coachList" :key="i">
+                        <div v-if="coachList.length > 0" class="swiper-slide" v-for="(item,i) in coachList" :key="i">
                             <div  class="swiper_list_dt" @click="toPrivateEducation(item)" :class="[item.coachGender=='女'? classA : classB]">
                                 <ul>
                                     <li>
@@ -104,7 +108,7 @@
                                         <span>{{item.coachName}}</span>
                                     </li>
                                     <li>
-                                        <span>¥{{item.coursePrice}}/节</span>
+                                        <span>¥{{item.coursePrice}}</span>
                                     </li>
                                     <li>
                                         <span>累计上课{{item.reservationNum}}节</span>
@@ -132,7 +136,7 @@
                 门店训练营
             </span>
             <div class="Training_camp_list">
-                <ul v-cloak if="trainingList.length > 0" v-for="item in trainingList" @click="toTrainingCamp(item)">
+                <ul if="trainingList.length > 0" v-for="item in trainingList" @click="toTrainingCamp(item)">
                     <li>
                         <img :src="item.coverUrl" alt="">
                         <span>仅剩{{item.surplusNum}}人开班</span>
@@ -301,20 +305,18 @@
                     window.webkit.messageHandlers.moreList.postMessage(params)
                 }
             },
-            oc_to_js(){
-                this.lat2 = this.$route.query.lat;
-                this.lng2 = this.$route.query.lng;
-                this.clubId = this.$route.query.clubId;
-                this.userId = this.$route.query.userId;
-                this.getClubDetail(this.clubId);
-                this.countPeopleByClub(this.clubId);
-                this.getH5Config();
-                this.initTime(sessionStorage.getItem('dayTime'));
-                // this.$set(this,'active',0)
-                this.getCoach() //获取教练list
-                this.getTrainingList();
-                this.$store.commit('getUserId', this.userId)
-            },
+            // oc_to_js(){
+            //     this.lat2 = this.$route.query.lat;
+            //     this.lng2 = this.$route.query.lng;
+            //     this.clubId = this.$route.query.clubId;
+            //     this.userId = this.$route.query.userId;
+            //     this.getClubDetail(this.clubId);
+            //     this.countPeopleByClub(this.clubId);
+            //     this.getH5Config();
+            //     this.initTime(sessionStorage.getItem('dayTime'));
+            //     this.getCoach() //获取教练list
+            //     this.getTrainingList();
+            // },
             initTime(dayTime) {
                 let params = {
                     createTime: Date.parse(new Date()),
@@ -323,7 +325,7 @@
                 SearchforAweek(params).then(res => {
                     console.log('时间', res);
                     if (res.data.obj != undefined)
-                        this.timeList = res.data.obj.timeList
+                        this.timeList = res.data.obj.timeList || []
                     this.getTeamClass(dayTime)
                     console.log('时间', this.timeList)
                     
@@ -338,7 +340,7 @@
                 getTrainingCamp(para).then(res => {
                     console.log('训练营',res)
                     if (res.data.code == 2000) {
-                        this.trainingList = res.data.obj;
+                        this.trainingList = res.data.obj || [];
                     }
                     this.$store.commit('trainingList', JSON.parse(this.teamClassList))
                 }).catch(error => {
@@ -369,7 +371,7 @@
                 getCoach(para).then(res => {
                     console.log('教练', res)
                     if (res.data.code == 2000) {
-                        this.coachList = res.data.obj;
+                        this.coachList = res.data.obj || [];
                     }
                 }).catch(error => {
 
@@ -415,6 +417,7 @@
             },
             countPeopleByClub(clubId) {
                 countPeopleByClub(clubId).then(res => {
+                    console.log(res,'00000000000')
                     if (res.data.code == 2000) {
                         this.currentNum = res.data.obj;
                     }
@@ -509,7 +512,7 @@
             toLeagueClass(item) {
                 let url = {
                     // url: this.LeagueClass.url + "?courseId=" + item.courseId + "&userId=" + this.userId
-                    url: this.TrainingCamp.url + "?courseId=" + item.courseId + "&userId=" + this.userId + '&leagueStatus=4'
+                    url: this.TrainingCamp.url + "?courseId=" + item.courseId + "&userId=" + this.userId + '&leagueStatus=4'+'&isShare=1'
                 }
                 console.log("LeagueClass jump url:" + url.url)
                 if (this.isAndroid) {

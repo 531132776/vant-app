@@ -49,7 +49,7 @@
                     <span class="before"></span>
                 </div>
                 <div class="adress_time">
-                     <span>上课地点</span>
+                     <span>上课门店</span>
                      <span>{{meTrainingCampList.clubAddr}}</span>
                      <span class="before"></span>
                  </div>
@@ -91,7 +91,7 @@ export default {
             peopleHead:require('../../assets/images/10.png'),
             phomeIcon:require("../../assets/images/13.png"),
             oneImg:require('../../assets/images/4.jpg'),
-            tell2:'0755-26400830',
+            tell2:'400 075 5088',
             meTrainingCampList:{},
             stepList:[],
             courseId:this.$route.query.courseId,
@@ -258,21 +258,42 @@ export default {
                 justify-content: space-between;
                 line-height: 2;
                 padding: 10px 0;
-                position: relative
+                position: relative;
+                span:nth-child(1){
+                    width: 130px;
+                    margin-right: 10px;
+                }
+                span:nth-child(2){
+                    font-size: 13px;
+                }
              }
             .start_time{
                 display: flex;
                 justify-content: space-between;
                 line-height: 2;
                 padding: 10px 0;
-                position: relative
+                position: relative;
+                span:nth-child(1){
+                    width: 130px;
+                    margin-right: 10px;
+                }
+                span:nth-child(2){
+                    font-size: 13px;
+                }
             }
             .course_time{
                 display: flex;
                 justify-content: space-between;
                 line-height: 2;
                 padding: 10px 0;
-                position: relative
+                position: relative;
+                span:nth-child(1){
+                    width: 130px;
+                    margin-right: 10px;
+                }
+                span:nth-child(2){
+                    font-size: 13px;
+                }
             }
         }
 

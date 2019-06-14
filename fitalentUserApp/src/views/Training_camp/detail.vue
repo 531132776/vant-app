@@ -90,7 +90,7 @@
             <div class="title_text">约课规则</div>
             <p class="text_content">你会通过拳击、踢腿动作进行锻炼，此项课程受拳击、散打 和武术的动作启发而来，是完全非接触性、简单易学的大量 运动动量训练课程。</p>
         </div> -->
-         <div class="img_view pr_pl15" style="margin-top:20px">
+         <div class="img_view " style="margin-top:20px">
             <img v-for="item in immageDto.courseExplainUrl" :key="item.id" :src="item.url" alt="">
         </div>
         <!-- 预约 -->
@@ -109,7 +109,7 @@
 <script>
 import Swiper from 'swiper';
 import { Button,Popup,Swipe, SwipeItem, Tab, Tabs,Dialog,ImagePreview } from 'vant';
-import { GetTrainingCamp,GetTrainingCampStatus } from '@/request/api-liu'
+import { GetTrainingCamp,GetTrainingCampStatus,HaveHeadAuth} from '@/request/api-liu'
 export default {
     data(){
         return{
@@ -126,7 +126,7 @@ export default {
                 url:"http://192.168.10.15/fitalentUserApp/#/orderDetails",
             },
             immageDto:[],
-            tellNumber:'0755-26400830',
+            tellNumber:'400 075 5088',
             oneImg:require("../../assets/images/1.jpg"),
             twoImg:require('../../assets/images/2.jpg'),
             swiperImgs:[
@@ -199,9 +199,38 @@ export default {
             ImagePreview(imgList)
         },
         toPay(){
-            this.$router.push({
-                path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
+            HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                    this.$router.push({
+                        path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
+                    })
+                }else{
+                    Dialog.confirm({
+                    title: '您还未进行人脸认证',
+                   // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
+                    confirmButtonText:'去认证',
+                    cancelButtonText:'继续购买'
+                    }).then(() => {
+                    // on confirm
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'takeFace'
+                            }))
+                        }else if(this.isiOS){
+                            window.webkit.messageHandlers.takeFace.postMessage({
+                                type:'takeFace'
+                            })
+                        }
+
+                    }).catch(() => {
+                    // on cancel
+                        this.$router.push({
+                            path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
+                        })
+                });
+                }
             })
+            
         },
         appointment(){
            Dialog.confirm({

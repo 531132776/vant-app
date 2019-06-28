@@ -99,17 +99,21 @@
                 </div>
               </div>
               <!-- 饼图 -->
-              <div class="pr_pl15 Pie_chart mt15">
+              <div class="pr_pl15 Pie_chart mt15" v-show="backgroundImg">
                   <canvas :id="'mountNodeList'+i" width="100%" heihgt:="260px"></canvas>
-                  <!-- <div id="echartspie" style="width: 375px; height: 260px;"></div>  -->
-                  <!-- <HelloWorld :source="maximalExercise" :numO="anaerobicExercise" :numT="aerobicExercise" :numH="fatMovement" :numF="warmUp"/> -->
+              </div>
+              <div class="p15 Pie_chart mt15" v-show="!backgroundImg">
+                  <img src="../../assets/images/pri.png" style="max-width: 100%" alt="">
               </div>
               <!-- 柱状图 -->
-              <div class="Histogram_info pr_pl15">
+              <div class="Histogram_info pr_pl15" v-show="backgroundImg">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
                   <canvas :id="'histogramList'+i" width="100%" heihgt:="260px"></canvas>
                 </div>
+              </div>
+              <div class="p15 Pie_chart mt15" v-show="!backgroundImg">
+                  <img src="../../assets/images/zhuimg.png" style="max-width: 100%" alt="">
               </div>
             </div>
             <div v-if="item.type==2">
@@ -386,6 +390,7 @@ export default {
       aerobicExercise:'',
       fatMovement:'',
       warmUp:'',
+      backgroundImg:false,
     };
   },
   components: {
@@ -584,7 +589,19 @@ export default {
               console.log('图饼数据',this.data)
               // debugger
               this.initPiechart(this.heartRate,index);
+             
               this.intipriec(this.heartRate,index);
+               console.log(this.heartRate,'....>>>>')
+               this.heartRate.map((v,i) =>{
+                 console.log(this.heartRate[i])
+                 if(this.heartRate[i] == 0){
+                   this.backgroundImg = false;
+                  //  alert(1)
+                 }else{
+                  //  alert(2)
+                   this.backgroundImg = true;
+                 }
+               })
               // this.initHistogram()
             } else if (type == 2 || type == 3) {
               this.powerMotionData = res.data.obj.powerMotionData || {};
@@ -719,6 +736,7 @@ export default {
         .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"]
         )
         .adjust("stack")
+        .size(15)
 
       chart.guide().html({
         position: ["50%", "45%"],

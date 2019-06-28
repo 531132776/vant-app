@@ -140,12 +140,15 @@
                             </dt>
                             <dt>联系客服</dt>
                         </li>
-                        <li v-if="SportsContent==2" @click="shopping">
-                            <span>立即购买</span>
-                        </li>
-                        <li v-if="SportsContent==0" @click="shoppingTwo">
-                            <span>立即购买</span>
-                        </li>
+                            <li v-if="SportsContent==2 && share != 1" @click="shopping">
+                                <span>立即购买</span>
+                            </li>
+                            <li v-if="SportsContent==0 && share != 1" @click="shoppingTwo">
+                                <span>立即购买</span>
+                            </li>
+                            <li v-if="share == 1"  @click="toApp()">
+                                <span>立即下载APP</span>
+                            </li>
                     </ul>
                 </div>
             </div>
@@ -183,7 +186,8 @@ export default {
                 reduceUrl:{},
                 spreadUrl:[]
             },
-            userId:this.$route.query.userId
+            userId:this.$route.query.userId,
+            share:'',
         }
     },
     components:{
@@ -209,9 +213,16 @@ export default {
             this.getprivateCourse();
             
         }
-        
+        this.share = this.$route.query.share;
     },
     methods:{
+        toApp(){
+            if(this.isAndroid){
+                
+            }else if (this.isiOS){
+                window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
+            }
+        },
         //获取私教体验课详情
         getprivateTasteCourse(){
             let params = {

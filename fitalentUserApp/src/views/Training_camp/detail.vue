@@ -99,9 +99,14 @@
                 <img src="../../assets/images/电话 2@2x.png" alt="">
                 <span>联系客服</span>
             </div>
-            <van-button class="appointment_btn" v-if="status == 7"  @click="toPay()" type="primary">立即购买</van-button>
-            <van-button class="gray" v-if="status == 6" type="primary">已满员</van-button>
-            <van-button class="gray" v-if="status == 8" type="primary">已购买</van-button>
+            <div v-if="!share">
+                <van-button class="appointment_btn" v-if="status == 7"  @click="toPay()" type="primary">立即购买</van-button>
+                <van-button class="gray" v-if="status == 6" type="primary">已满员</van-button>
+                <van-button class="gray" v-if="status == 8" type="primary">已购买</van-button>
+            </div>
+            <div v-if="share">
+                <van-button class="appointment_btn" v-if="share == 1"  @click="toApp()" type="primary">立即下载APP</van-button>
+            </div>
         </div>
     </div>
 </template>
@@ -116,6 +121,7 @@ export default {
             swiper:4,
             active:0,
             status:'',
+            share:'',
             trainingCampList:{},
             coachList:{},
             userId:'',
@@ -168,6 +174,7 @@ export default {
     created(){
         this.userId = this.$route.query.userId;
         this.courseId = this.$route.query.courseId;
+        this.share = this.$route.query.share
         this.init()
     },
     methods:{
@@ -231,6 +238,13 @@ export default {
                 }
             })
             
+        },
+        toApp(){
+            if(this.isAndroid){
+                
+            }else if (this.isiOS){
+                window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
+            }
         },
         appointment(){
            Dialog.confirm({

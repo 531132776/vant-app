@@ -342,11 +342,10 @@ export default {
                     couponId:this.couponId,
                     productId: this.trainingCampList.trainingCampBusinessId,
                     productType: this.trainingCampList.courseType,
-                    userId: this.$route.query.userId
+                    userId: this.$route.query.userId,
+                    orderType: 0,
                 }
             AddOrder(params).then(res=>{
-                
-                console.log(res)
                 this.obj = res.data.obj
                 this.obj.type = 'pay'
                 if(this.total == 0){

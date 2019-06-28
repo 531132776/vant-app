@@ -483,8 +483,8 @@ export default {
       
     }
 
-    this.totalPrice =
-      this.privateCourse.onePrice * this.privateCourse.lowestSection;
+    // this.totalPrice =
+    //   this.privateCourse.onePrice * this.privateCourse.lowestSection;
 
     this.$store.commit("getUserId", this.privateOne.privateCourseId);
   },
@@ -496,7 +496,7 @@ export default {
         goodsNum: goodsNum,
         amount: amount
       }).then(res => {
-        console.log(res, "res");
+        // console.log(res, "res");
         this.couponCount = res.data.obj.count;
         this.couponList = res.data.obj.list || [];
         res.data.obj.list.length > 0
@@ -751,7 +751,7 @@ export default {
     reduce() {
       this.nmb -= 1;
       if (this.contrastStatus == 0 && this.nmb >= this.privateCourse.lowestSection) {
-        this.totalPrice -= this.privateCourse.onePrice;
+        this.totalPrice = this.privateCourse.onePrice*this.nmb - this.afterCoupon;
         // alert(this.nmb)
         this.totalOnePrice = this.privateCourse.onePrice*this.nmb;
 
@@ -764,7 +764,7 @@ export default {
             );
        
       } else if (this.contrastStatus == 1 && this.nmb >= this.privateCourse.lowestSection) {
-        this.totalPrice -= this.privateCourse.twoPrice;
+        this.totalPrice = this.privateCourse.twoPrice*this.nmb - this.afterCoupon;
         
         this.totalTwoPrice = this.privateCourse.twoPrice*this.nmb;
 
@@ -799,7 +799,7 @@ export default {
     increase() {
       this.nmb += 1;
       if (this.contrastStatus == 0) {
-        this.totalPrice += this.privateCourse.onePrice;
+        this.totalPrice = this.privateCourse.onePrice*this.nmb - this.afterCoupon;
         this.totalOnePrice = this.privateCourse.onePrice*this.nmb;
 
         this.GetCouponList(
@@ -809,7 +809,7 @@ export default {
               (this.totalOnePrice).toFixed(2)
             );
       } else if (this.contrastStatus == 1) {
-        this.totalPrice += this.privateCourse.twoPrice;
+        this.totalPrice = this.privateCourse.twoPrice*this.nmb - this.afterCoupon;
         this.totalTwoPrice = this.privateCourse.twoPrice*this.nmb;
         this.GetCouponList(
           this.privateOne.courseType,
@@ -826,7 +826,7 @@ export default {
     monthlyReduce() {
       if(this.monthlyNmb > 1 ){
           this.monthlyNmb -=1;
-        this.monthlyTotalPrice -= (this.educationsectorDetails.price*this.monthlyNmb);
+        this.monthlyTotalPrice = this.educationsectorDetails.price*this.monthlyNmb - this.afterCoupon;
         // alert(this.monthlyNmb)
         this.MonthTotalPrice = this.educationsectorDetails.price*this.monthlyNmb;
 
@@ -839,15 +839,21 @@ export default {
       }
       else {
         this.monthlyNmb = 1;
-        this.monthlyTotalPrice = this.educationsectorDetails.price;
+        this.monthlyTotalPrice = this.educationsectorDetails.price - this.afterCoupon;
         this.MonthTotalPrice = this.educationsectorDetails.price;
+        // this.GetCouponList(
+        //                   this.$route.query.courseType,
+        //                   this.userId,
+        //                   this.monthlyNmb,
+        //                   (this.MonthTotalPrice).toFixed(2)
+        //               );
       }
       
     },
     //包月计算加
     monthlyIncrease() {
       this.monthlyNmb += 1;
-      this.monthlyTotalPrice += this.educationsectorDetails.price;
+      this.monthlyTotalPrice = this.educationsectorDetails.price*this.monthlyNmb - this.afterCoupon;
       this.MonthTotalPrice = this.educationsectorDetails.price*this.monthlyNmb;
       this.GetCouponList(
                         this.$route.query.courseType,
@@ -870,7 +876,8 @@ export default {
         amount: this.nmb,
         item: this.courseItem, //类型1对一 1对2
         productType: this.privateOne.courseType,
-        couponId: this.couponId
+        couponId: this.couponId,
+        orderType:0
       };
       generateOrder(params)
         .then(res => {
@@ -937,7 +944,8 @@ export default {
         // userId:10000,
         amount: this.monthlyNmb,
         productType: this.privateThree.courseType,
-        couponId: this.couponId
+        couponId: this.couponId,
+        orderType:0
       };
       console.log(params)
       generateOrder(params)
@@ -1006,7 +1014,8 @@ export default {
         // userId:10000,
         amount: 1,
         productType: this.privateTwo.courseType,
-        couponId: this.couponId
+        couponId: this.couponId,
+        orderType:0
       };
       generateOrder(params)
         .then(res => {

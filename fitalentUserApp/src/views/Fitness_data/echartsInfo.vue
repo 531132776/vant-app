@@ -47,32 +47,32 @@
                         <dt>
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
-                        <dt style="color:#9399A5" v-if="motionDataObj.avgHartRate == 0">--次/分钟</dt>
-                        <dt style="color:#9399A5" v-else>{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt v-if="motionDataObj.avgHartRate == 0">--次/分钟</dt>
+                        <dt v-else>{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=60 && motionDataObj.meanHeartRateStrength<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
-                        <dt style="color:#3FA6F2">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt >{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=70 && motionDataObj.meanHeartRateStrength<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
-                        <dt style="color:#14D36B">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt >{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=80 && motionDataObj.meanHeartRateStrength<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
-                        <dt style="color:#FFCB14">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt >{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
-                        <dt style="color:#F85842">{{motionDataObj.avgHartRate}}次/分钟</dt>
+                        <dt >{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                     </li>
                     <li>
@@ -152,32 +152,32 @@
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
                         <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
-                        <dt style="color:#9399A5" v-if="powerMotionData.heart == 0">--次/分钟</dt>
-                        <dt style="color:#9399A5" v-else>{{powerMotionData.heart}}次/分钟</dt>
+                        <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
+                        <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
-                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
-                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
-                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
-                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                     </li>
                     <li>
@@ -253,32 +253,32 @@
                           <img src="../../assets/images/分组_6@2x.png" alt>
                         </dt>
                         <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
-                        <dt style="color:#9399A5" v-if="powerMotionData.heart == 0">--次/分钟</dt>
-                        <dt style="color:#9399A5" v-else>{{powerMotionData.heart}}次/分钟</dt>
+                        <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
+                        <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_1.png" alt>
                         </dt>
-                        <dt style="color:#3FA6F2">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
                         <dt>
                           <img src="../../assets/images/分组_6@2x_3.png" alt>
                         </dt>
-                        <dt style="color:#14D36B">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
                         <dt>
                           <img src="../../assets/images/分组6@2x1.png" alt>
                         </dt>
-                        <dt style="color:#FFCB14">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
                         <dt>
                           <img src="../../assets/images/分组 6@2x_2.png" alt>
                         </dt>
-                        <dt style="color:#F85842">{{powerMotionData.heart}}次/分钟</dt>
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                     </li>
                     <li>
@@ -327,7 +327,7 @@
 </template>
 <script>
 import HelloWorld from '@/components/HelloWorld'
-import { Tab, Tabs, version } from "vant";
+import { Tab, Tabs, version,Dialog } from "vant";
 import { siveDataDetails, typeDetails } from "@/request/api";
 import houseAimg3 from "../../../public/aggregate.json";
 import F2 from "@antv/f2";
@@ -391,13 +391,13 @@ export default {
   components: {
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
-    HelloWorld
+    HelloWorld,
+    [Dialog.name]: Dialog
     // echartsInfoPir,
     // echartsInfobar
   },
   mounted() {
     this.init();
-    
     
   },
   updated() {},
@@ -583,7 +583,7 @@ export default {
              
               console.log('图饼数据',this.data)
               // debugger
-              this.initPiechart(this.data,index);
+              this.initPiechart(this.heartRate,index);
               this.intipriec(this.heartRate,index);
               // this.initHistogram()
             } else if (type == 2 || type == 3) {
@@ -614,18 +614,81 @@ export default {
         this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
       );
       var map = {};
+      var res = [];
+      var res1 = [];
+      var res2 = [];
+      var res3 = [];
+      var res4 = [];
+      
       data.map(function(obj) {
         // console.log(obj,'dfsdfsd')
-        map[obj.name] = _this.headCreateTime(obj.percent*60);
+        // map[obj.name] = _this.headCreateTime(obj.percent*60);
+        // console.log(obj)
+        if(obj>0 && obj<=59){
+             res.push({obj});
+          return res.length
+          // console.log(obj.length,'====')
+        }else if(obj>59 && obj<=69){
+            res1.push({obj});
+            return res1.length
+          //  console.log(res.length)
+        }else if(obj>69 && obj<=79){
+           res2.push({obj});
+           return res2.length
+          //  console.log(obj,'====')
+        }else if(obj>79 && obj<=89){
+           res3.push({obj});
+           return res3.length
+          //  console.log(obj,'====')
+        }else if(obj>=90){
+           res4.push({obj});
+           return res4.length
+          //  console.log(obj,'====')
+        }
       });
-
+      // console.log(res,res1,res2,res3,res4,'?????')
+      var res5 = [
+        {
+          percent:res4.length,
+          a:'1',
+          name: "极限"
+        },
+        {
+          percent:res3.length,
+          a:'1',
+          name: "无氧运动"
+        },
+        {
+          percent:res2.length,
+          a:'1',
+          name: "有氧运动"
+        },
+        {
+          percent:res1.length,
+          a:'1',
+          name: "燃脂运动"
+        },
+        {
+          percent:res.length,
+          a:'1',
+          name: "热身"
+        },
+        // {
+        //   percent:res0.length,
+        //   a:'1',
+        //   name: "休闲"
+        // }
+        ];
+      res5.map(function(obj) {
+        map[obj.name] = _this.headCreateTime(obj.percent*60);
+      })
       var chart = new F2.Chart({
         id:'mountNodeList'+index,
         pixelRatio: window.devicePixelRatio,
         padding: [20, "auto"]
       });
       chart.clear();
-      chart.source(data, {
+      chart.source(res5, {
         percent: {
           formatter: function formatter(val) {
             alert(2)
@@ -639,6 +702,7 @@ export default {
         triggerOn: 'click',
         clickable: false,
         itemFormatter: function itemFormatter(val) {
+          // console.log(val,'lllll')
           return val + '    ' + map[val];
         }
       });
@@ -652,22 +716,40 @@ export default {
       chart
         .interval()
         .position("a*percent")
-        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"])
-        .adjust("stack");
+        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"]
+        )
+        .adjust("stack")
 
       chart.guide().html({
         position: ["50%", "45%"],
         html:
-          '<div style="width: 250px;height: 40px;text-align: center;">' +
+          '<div style="width: 250px;height: 40px;text-align: center;" id="aaa">' +
           '<div class="text_name">' +
           motionPoint +
           "</div>" +
-          '<div class="text_price">运动点数?</div>' +
+          '<div class="text_price" >运动点数</div>' +
           "</div>"
       });
+      this.$nextTick(() =>{
+        let aa = document.querySelector('#aaa');
+        console.log(aa)
+        aa.onclick=function(){
+          Dialog.alert({
+            title: '运动点数',
+            message: '汇总本次运动心率的运动成绩运动点数参考MyZone的算法'
+          }).then(() => {
+            // on close
+          });
+
+        }
+      })
       chart.render();
     },
+    
     intipriec(heartRate,index){
+      // var heartRate = [
+      //   31,52,36,60,88,55,99,33,22,11,22,44,73,66
+      // ]
      var item = heartRate.map((v,i) => {
        
           if(v>=0 && v<=59){
@@ -680,7 +762,7 @@ export default {
           }
           else if(v>59 && v<=69){
             return {
-                color:'1',
+                color:'3',
                 year: i+1,
                 sales: v
               }
@@ -694,7 +776,7 @@ export default {
           }
           else if(v>79 && v<=89){
             return {
-                color:'3',
+                color:'1',
                 year: i+1,
                 sales: v
               }
@@ -742,7 +824,26 @@ export default {
         }
       });
       
-      chart.interval().position('year*sales').color('color',["#9399A5", "#3FA6F2", "#F85842","#FFCB14", "#14D36B" ]);
+      chart.interval().position('year*sales').color('color',value =>{
+        if(value == 4){
+          return "#9399A5"
+        }else if(value == 3){
+          return "#3FA6F2"
+        }else if(value == 2){
+          return "#14D36B"
+        }else if(value == 1){
+          return "#FFCB14"
+        }else if(value == 0){
+          return "#F85842"
+        }
+      }).size('year',value => {
+        if(value>=0 && value < 10 ){
+          return 20
+        }else if(value>=0 && value < 1000){
+          return 5
+        }
+        
+      })
       chart.render();
       },
    

@@ -259,7 +259,8 @@ export default {
                         status:1,
                         educationsectorId:item.courseId,
                         courseType:item.courseType,
-                        userId:this.userId
+                        userId:this.userId,
+                        share:this.$route.query.share
                     }
                 })
             }else if(item.courseType == 1){
@@ -270,13 +271,14 @@ export default {
                         status:2,
                         privateCourseId:item.courseId,
                         courseType:item.courseType,
-                        userId:this.userId
+                        userId:this.userId,
+                        share:this.$route.query.share
                     }
                 })
             }else if(item.courseType == 0){
                 //订单
                 this.$router.push({
-                    path:'/trainingCamp?courseId='+item.courseId+'&userId='+this.userId,
+                    path:'/trainingCamp/showShareBtn?courseId='+item.courseId+'&userId='+this.userId,
                     // query:{
                     //     privateCourseId:item.courseId,
                     //     courseType:item.courseType
@@ -287,7 +289,7 @@ export default {
                 //团课预约
                 this.$router.push({
                     // path:'/leagueDetails?courseId='+item.courseId+'&userId='+this.userId,
-                    path:'/trainingCamp?courseId='+item.courseId+'&userId='+this.userId,
+                    path:'/trainingCamp/showShareBtn?courseId='+item.courseId+'&userId='+this.userId,
                     // query:{
                     //     privateCourseId:item.courseId,
                     //     courseType:item.courseType

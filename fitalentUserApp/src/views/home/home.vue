@@ -234,11 +234,11 @@
                 ],
                 //门店
                 StoreShop: {
-                    url: "http://192.168.10.15/fitalentUserApp/#/storeDetails?id=xx@",
+                    url: "http://192.168.10.15/fitalentUserApp/#/storeDetails/showShareBtn?id=xx@",
                 },
                 //训练营
                 TrainingCamp: {
-                    url: "http://192.168.10.15/fitalentUserApp/#/trainingCamp",
+                    url: "http://192.168.10.15/fitalentUserApp/#/trainingCamp/showShareBtn",
                 },
                 //团课
                 LeagueClass: {
@@ -246,7 +246,7 @@
                 },
                 //私教
                 PrivateEducation: {
-                    url: "http://192.168.10.15/fitalentUserApp/#/Privatedetails",
+                    url: "http://192.168.10.15/fitalentUserApp/#/Privatedetails/showShareBtn",
                 }
             }
 

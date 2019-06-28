@@ -44,8 +44,11 @@
                             </dt>
                             <dt>联系客服</dt>
                         </li>
-                        <li>
+                        <li v-if="share != 1">
                             <span @click="orderDetails">包月 ¥{{educationsectorDetails.price}}{{educationsectorDetails.unit}}</span>
+                        </li>
+                        <li v-if="share == 1">
+                            <span @click="toApp()">立即下载APP</span>
                         </li>
                     </ul>
                 </div>
@@ -77,7 +80,8 @@ export default {
                 reduceUrl:{},
                 spreadUrl:[]
             },
-            userId:this.$route.query.userId
+            userId:this.$route.query.userId,
+            share:'',
         }
     },
     components:{
@@ -95,8 +99,16 @@ export default {
         this.educationsectorObj = this.$route.query;
         console.log(this.educationsectorObj);
         this.getMonthCourseClass();
+        this.share = this.$route.query.share
     },
     methods:{
+        toApp(){
+            if(this.isAndroid){
+                
+            }else if (this.isiOS){
+                window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
+            }
+        },
         //获取包月私教详情
         getMonthCourseClass(){
             let params = {

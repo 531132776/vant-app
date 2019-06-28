@@ -47,7 +47,7 @@
                         </div>
                         <div class="privilegeItem">
                             <img src="../../assets/images/分组 8@2x.png" alt="">
-                            <span>专属智能 心率手环</span>
+                            <span>专属智能 心率宝</span>
                         </div>
                     </div>
                 </div>
@@ -193,7 +193,7 @@ export default {
     .order_details{
         background: #fff;
         .vip_top{
-            width:345px;
+            width:100%;
             height:80px;
             background:linear-gradient(270deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
             border-radius:10px;
@@ -230,7 +230,7 @@ export default {
                 display: flex;
                 justify-content: space-between;
                 .tab_year{
-                    width:166px;
+                    width:48%;
                     height:120px;
                     background:rgba(255,255,255,0.1);
                     border-radius:8px;
@@ -263,7 +263,7 @@ export default {
                     }
                 }
                 .tab_month{
-                    width:166px;
+                    width:48%;
                     height:120px;
                     background:rgba(255,255,255,0.1);
                     border-radius:8px;

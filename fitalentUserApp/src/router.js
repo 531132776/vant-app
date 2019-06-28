@@ -21,7 +21,7 @@ export default new Router({
         },
         //门店详情
         {
-            path: '/storeDetails',
+            path: '/storeDetails/showShareBtn',
             name: 'storeDetails',
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Store_details/storeDetails.vue'),
@@ -41,7 +41,7 @@ export default new Router({
         },
         //私教详情
         {
-            path: '/Privatedetails',
+            path: '/Privatedetails/showShareBtn',
             name: 'Privatedetails',
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Private_Education/Privatedetails.vue'),
@@ -103,7 +103,7 @@ export default new Router({
             }
         },
         {
-            path: '/trainingCamp',
+            path: '/trainingCamp/showShareBtn',
             name: 'trainingCamp',
             meta: {
                 title: '训练营详情',
@@ -193,7 +193,7 @@ export default new Router({
             }
         },
         {
-            path: '/fitnessHome',
+            path: '/fitnessHome/showShareBtn',
             name: 'fitnessHome',
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Fitness_data/fitnessHome.vue'),
@@ -265,7 +265,7 @@ export default new Router({
             }
         },
         {
-            path: '/yearDetail',
+            path: '/yearDetail/showShareBtn',
             name: 'yearDetail',
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Group_purchase/yearDetail.vue'),
@@ -283,12 +283,30 @@ export default new Router({
             }
         },
         {
-            path: '/groupList',
+            path: '/groupList/showShareBtn',
             name: 'groupList',
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Group_purchase/groupList.vue'),
             meta: {
                 title: '拼团狂欢'
+            },
+        },
+        {
+            path: '/purchaseGroupVip',
+            name: 'purchaseGroupVip',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Group_purchase/groupOrderDetails.vue'),
+            meta: {
+                title: '购买会员'
+            }
+        },
+        {
+            path: '/groupRule',
+            name: 'groupRule',
+            component: () =>
+                import ( /* webpackChunkName: "about" */ './views/Group_purchase/groupRule.vue'),
+            meta: {
+                title: '拼团规则'
             }
         },
     ]

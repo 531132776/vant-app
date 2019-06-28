@@ -12,6 +12,8 @@ import 'swiper/dist/css/swiper.css'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 Vue.use(preview)
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
@@ -27,7 +29,7 @@ Vue.prototype.isiOS = isiOS;
 
 //页面跳转从顶部开始显示
 router.afterEach((to, from, next) => {
-    // window.scrollTo(0, 0)
+    window.scrollTo(0, 0)
 })
 
 router.beforeEach((to, from, next) => {

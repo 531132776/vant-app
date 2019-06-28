@@ -8,12 +8,15 @@
                         <li class="vipMesg">
 
                             <!-- <span>VIP会员</span> -->
-                             <img :src="vipDetail.thumbnailUrl!== (null && undefined) ? vipDetail.thumbnailUrl : ''" alt="">
+                            <img :src="vipDetail.thumbnailUrl!== (null && undefined) ? vipDetail.thumbnailUrl : ''" alt="">
                         </li>
                         <li>
-                            <dt>{{vipDetail.name}}</dt>
-                            <dt>
-                                ¥{{vipDetail.price}}/{{vipDetail.validity}}天
+                            <dt>{{vipDetail.goodsName}}</dt>
+                            <dt v-if="!activityId">
+                                ¥{{vipDetail.groupOwnerPrice}}/{{vipDetail.numPerUnit}}天
+                            </dt>
+                             <dt v-if="activityId">
+                                ¥{{vipDetail.groupMemberPrice}}/{{vipDetail.numPerUnit}}天
                             </dt>
                         </li>
                     </ul>
@@ -42,9 +45,9 @@
                             数量
                         </li>
                         <li>
-                            <van-button type="default" @click="monthlyReduce">-</van-button>
-                            <span class="coures_nmb">{{monthlyNmb}}</span>
-                            <van-button type="default" @click="monthlyIncrease">+</van-button>
+                            <!-- <van-button type="default" @click="monthlyReduce">-</van-button> -->
+                            <span class="coures_nmb">{{vipDetail.goodsNum}}</span>
+                            <!-- <van-button type="default" @click="monthlyIncrease">+</van-button> -->
                         </li>
                     </ul>
                 </div>
@@ -63,7 +66,8 @@
                 <van-cell >
                     <div class="flex_between">
                         <span>商品价格</span>
-                        <span style="color: #1DCE74;">¥{{monthlyTotalPrice}}</span>
+                        <span style="color: #1DCE74;" v-if="!activityId">¥{{vipDetail.groupOwnerPrice}}</span>
+                        <span style="color: #1DCE74;" v-if="activityId">¥{{vipDetail.groupMemberPrice}}</span>
                     </div>
                 </van-cell>
                 <van-cell>
@@ -171,9 +175,9 @@
         generateOrder
     } from '@/request/api'
     import {
-        GetVipDetail,
+        GroupOrderDetail,
         GetCouponRecordList,
-        AddOrderMen
+        GroupOrder
     } from '@/request/api-liu'
     export default {
         data() {
@@ -183,8 +187,8 @@
                 checked: false,
                 show:false,
                 couponId:null,
-                OrderMen:{},
                 vipDetail:'',
+                OrderMen:{},
                 afterCoupon:'',
                 couponCount:'',
                 couponValue:0,
@@ -218,6 +222,7 @@
                 privateOrderObj2: {}, //私教体验课订单
                 monthOrderObj3: {}, //包月私教订单
                 type: 'pay',
+                activityId:null,
                 userId: this.$route.query.userId
             }
         },
@@ -237,24 +242,38 @@
         },
         created(){
             this.init()
+            this.activityId = this.$route.query.activityId
         },
         methods: {
             init(){
-                GetVipDetail(this.$route.query.uid).then(res=>{
+                if(this.$route.query.activityId){
+                    var params = {
+                       "groupId":this.$route.query.groupId,
+                       "activityId":this.$route.query.activityId
+                    }
+                }else{
+                    var params = {
+                       "groupId":this.$route.query.groupId,
+                    }
+                }
+                GroupOrderDetail(params).then(res=>{
                     this.vipDetail = res.data.obj
-                    this.GetCouponList(this.$route.query.userId,this.vipDetail.type,this.monthlyNmb,this.vipDetail.price)
+                    this.GetCouponList()
                 })
             },
-            GetCouponList(userId,type,goodsNum,amount){
+            GetCouponList(){
                 GetCouponRecordList({
-                    userId: userId,
-                    type:type,
-                    goodsNum:goodsNum,
-                    amount:amount,
+                    userId: this.$route.query.userId,
+                    type:this.vipDetail.goodsType,
+                    goodsNum:this.vipDetail.goodsNum,
+                    amount:this.activityId ? this.vipDetail.groupMemberPrice:this.vipDetail.groupOwnerPrice,
                 }).then(res=>{
-                    this.monthlyTotalPrice = (this.vipDetail.price*this.monthlyNmb).toFixed(2)
-                    this.totalPrice = (this.vipDetail.price*this.monthlyNmb).toFixed(2)
                     this.couponCount = res.data.obj.count
+                    if(this.activityId){
+                        this.totalPrice = this.vipDetail.groupMemberPrice
+                    }else{
+                        this.totalPrice = this.vipDetail.groupOwnerPrice
+                    }
                     if(res.data.obj.list.length > 0){
                         res.data.obj.list[0].checkStatus = true
                         this.couponList = res.data.obj.list
@@ -279,6 +298,7 @@
                 }
             },
             choosePopup(){
+                console.log(11)
                 this.show = false
                 var choosePopup = this.couponList.find((item)=>{
                     if(item.checkStatus == true){
@@ -295,16 +315,25 @@
                     }else if(choosePopup.couponType == 0){
                         this.couponValue = choosePopup.discountValue
                         this.afterCoupon = this.vipDetail.price - choosePopup.discountValue
-                        this.totalPrice = (this.monthlyTotalPrice - choosePopup.discountValue).toFixed(2)
                         if(this.afterCoupon < 0){
                             this.afterCoupon = this.vipDetail.price
                         }
-                        this.total = this.afterCoupon
+                        if(this.activityId){
+                            this.totalPrice = (this.vipDetail.groupMemberPrice - choosePopup.discountValue).toFixed(2)
+                        }else{
+                            this.totalPrice = (this.vipDetail.groupOwnerPrice - choosePopup.discountValue).toFixed(2)
+                        }
+                        //this.total = this.afterCoupon
                     }
                 }else{
+                    console.log(111)
                     this.couponValue = 0
-                    //console.log(this.monthlyTotalPrice)
-                    this.totalPrice = (this.monthlyTotalPrice*this.monthlyNmb).toFixed(2)
+                    if(this.activityId){
+                        this.totalPrice = this.vipDetail.groupOwnerPrice
+                    }else{
+                        this.totalPrice = this.vipDetail.groupOwnerPrice
+                    }
+                    
                     this.couponId = ''
                     this.couponListLength = false;
                 }
@@ -317,57 +346,29 @@
                     return
                 }
                 let params =  {   
-                    amount: this.monthlyNmb,
+                    amount: this.vipDetail.goodsNum,
                     couponId:this.couponId?this.couponId:null,
-                    productId: this.$route.query.uid,
+                    productId: this.vipDetail.goodsId,
                     productType: this.vipDetail.type,
                     userId: this.$route.query.userId,
+                    groupRuleId: this.$route.query.groupId,
+                    groupBuyId: this.$route.query.activityId,
+                    orderType: 1,
+                    groupRoleType:this.activityId?1:0
                 }
-                AddOrderMen(params).then(res => {
-                    if (res.data.code == 2000) {
-                        this.OrderMen = res.data.obj;
-                        this.OrderMen.type = 'pay';
-                        if (this.isAndroid) {
-                            window.andriod.postMessage(JSON.stringify(this.OrderMen))
-                        } else if (this.isiOS) {
-                            window.webkit.messageHandlers.Training_payment.postMessage(this.OrderMen)
-                        }
+                GroupOrder(params).then(res => {
+                    this.OrderMen = res.data.obj;
+                    this.OrderMen.type = 'pay';
+                    if(this.isAndroid){
+                        window.andriod.postMessage(JSON.stringify(this.OrderMen))
+                    } else if (this.isiOS) {
+                        console.log(this.OrderMen)
+                        console.log(11)
+                        window.webkit.messageHandlers.Training_payment.postMessage(this.OrderMen)
                     }
                 }).catch(err => {
                     console.log(err)
                 })
-            },
-            monthlyReduce() {
-                //this.GetCouponList()
-                this.monthlyNmb -= 1;
-                this.monthlyTotalPrice = (this.monthlyTotalPrice - Number(this.vipDetail.price)).toFixed(2);
-                this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
-                if (this.monthlyNmb <= 1) {
-                    this.monthlyNmb = 1;
-                    this.monthlyTotalPrice = Number(this.vipDetail.price)
-                    this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
-                    //this.monthlyTotalPrice = this.educationsectorDetails.price;
-                }
-                this.GetCouponList(
-                    this.$route.query.userId,
-                    this.vipDetail.type,
-                    this.monthlyNmb,
-                    this.monthlyTotalPrice
-                );
-                // this.monthlyNmbcoursesPayment(this.monthlyTotalPrice)
-            },
-            //包月计算加
-            monthlyIncrease() {
-                // this.GetCouponList()
-                this.monthlyNmb += 1;
-                this.monthlyTotalPrice = (this.monthlyNmb * Number(this.vipDetail.price)).toFixed(2)
-                this.totalPrice = (this.monthlyTotalPrice - this.couponValue).toFixed(2)
-                this.GetCouponList(
-                    this.$route.query.userId,
-                    this.vipDetail.type,
-                    this.monthlyNmb,
-                    this.monthlyTotalPrice
-                );
             },
         }
     }
@@ -431,7 +432,7 @@
                     margin-right: 15px;
                     width: 100px;
                     height: 100px;
-                    // background: linear-gradient(315deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
+                    background: linear-gradient(315deg,rgba(222,183,128,1) 0%,rgba(246,226,185,1) 100%);
                     border-radius: 6px;
                     img {
                         display: block;
@@ -491,9 +492,8 @@
                         height: 26px;
                         display: inline-block;
                         line-height: 26px;
-                        text-align: center;
+                        text-align: right;
                         font-size: 13px;
-                        background-color: #ECEDF0;
                         margin: 0 2px;
                         font-weight: 600;
                     }

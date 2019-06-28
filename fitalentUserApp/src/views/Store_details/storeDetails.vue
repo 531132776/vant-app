@@ -433,7 +433,7 @@
             toLeagueClass(item) {
                 console.log(item)
                 this.$router.push({
-                        path: '/trainingCamp',
+                        path: '/trainingCamp/showShareBtn',
                         query: {
                             courseId: item.courseId,
                             userId: this.userId,
@@ -454,7 +454,7 @@
             toTrainingCamp(item) {
                 console.log(item)
                 this.$router.push({
-                        path: '/trainingCamp',
+                        path: '/trainingCamp/showShareBtn',
                         query: {
                             courseId: item.courseId,
                             userId: this.userId
@@ -474,7 +474,7 @@
             toPrivateEducation(item) {
                 console.log(item)
                 this.$router.push({
-                        path: '/Privatedetails',
+                        path: '/Privatedetails/showShareBtn',
                         query: {
                             coachId: item.coachId,
                             userId: this.userId

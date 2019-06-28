@@ -2,34 +2,30 @@
 <template>
     <div class="order_details">
         <div class="top_img">
-            <img src="../../assets/images/h5@2x.png" alt="">
-        </div>
-        <div class="order_img pr_pl15">
-            
-            <div class="vip_top">
-                    <div style="text-align: center;margin-top: -35px;">
-                        <img src="../../assets/images/拼团@2x.png" alt="">
-                    </div>
-                    <div class="header_info">
+            <img style="width:100%" src="../../assets/images/拼团活动h5效果@2x.png" alt="">
+            <div class="img_warp">
+                <div class="vip_top">
+                <div v-for="(item,index) in groupList" :key="item.id" :class="index == 0 ? 'NoMargin':'margin'">
+                    <div class="header_info" >
                         <ul>
                             <li class="vipMesg">
-                                <span>VIP会员</span>
-                                <!-- <img :src="immageDto.coverUrl!== (null && undefined) ? immageDto.coverUrl.url : ''" alt=""> -->
+                                <img :src="item.thumbnailUrl" alt="">
                             </li>
                             <li>
-                                <dt>年会员</dt>
+                                <dt>{{item.goodsName}}</dt>
                                 <dt>
                                     <em class="num" style="font-size:9px;">￥</em>
-                                    <span class="num" style="font-size:15px;">1000</span>
+                                    <span class="num" style="font-size:15px;">{{item.groupMemberPrice}}</span>
                                     <span>/365天</span>
-                                    <span style="color:rgba(178,182,188,1);"> ｜ ¥1280/365天</span>
+                                    <span> ｜ </span>
+                                    <span style="color:rgba(178,182,188,1);text-decoration: line-through;">¥{{item.goodsPrice*item.goodsNum}}/365天</span>
                                 </dt>
-                                <dt>
+                                <dt @click="toGroupDetail(item.id)">
                                    <span>去拼团</span>
                                 </dt>
                                 <dt>
                                     <span>已有</span>
-                                    <span style="color:#C58831">38</span>
+                                    <span style="color:#C58831">{{item.successNum}}</span>
                                     <span>人拼团成功</span>
                                 </dt>
                             </li>
@@ -37,12 +33,13 @@
                     </div>
                 </div>
             </div>
-         <!-- 预约 -->
+            </div>
+        </div>
     </div>
 </template>
 <script>
 import { Tab, Tabs,Radio,Cell, CellGroup,Dialog,Button } from 'vant';
-import { IsVIP,GetVipList,HaveHeadAuth} from '@/request/api-liu'
+import { HaveHeadAuth,GroupList} from '@/request/api-liu'
 import { appendFile } from 'fs';
 export default {
        data(){
@@ -51,6 +48,7 @@ export default {
             monthShow:false,
             yearObj:[],
             monthObj:{},
+            groupList:[],
             uid:'',
             day:'',
             hour:'',
@@ -60,12 +58,14 @@ export default {
             userId:'',
             timeStr:'',
             vipList:[],
+            share:null,
         }
     },
     created(){
         this.userId = this.$route.query.userId
+        this.share = this.$route.query.share
         this.init()
-         var that = this;
+        var that = this;
         that.countTime()
     },
     methods:{
@@ -100,26 +100,22 @@ export default {
             
             },
         init(){
-            IsVIP(this.userId).then(res=>{
-                if(res.data.obj){
-                    this.timeStr = res.data.obj
-                }
-                
+            GroupList().then(res=>{
+                this.groupList = res.data.obj
+                console.log(this.groupList)
+                console.log(res)
             })
-            GetVipList().then(res=>{
-                this.yearObj = res.data.obj.filter((item=>{
-                    if(item.type == 1000){
-                        return item.uid
-                    }
-                }))
-                this.monthObj = res.data.obj.filter((item=>{
-                    if(item.type == 1001){
-                        return item.uid
-                    }
-                }))
-                this.uid = this.yearObj[0].uid
-            })
-
+        },
+        toGroupDetail(id){
+            if(this.share){
+                 this.$router.push({
+                    path:'/yearDetail/showShareBtn?groupId='+id+'&userId='+this.userId+'&share=1',
+                })
+            }else{
+                 this.$router.push({
+                    path:'/yearDetail/showShareBtn?groupId='+id+'&userId='+this.userId+'&group=1',
+                })   
+            }
         },
         appointment(){
              HaveHeadAuth(this.userId).then(res=>{
@@ -182,36 +178,40 @@ export default {
     .order_details{
         background: #FFC476;
         position: relative;
-        height: 100%;
-        overflow: hidden;
         .top_img{
             // background-image: url("../../assets/images/h5@2x.png");
             // background-repeat: no-repeat;
-            // background-size: cover;
-            // height: 100%;
+            // background-size: 100% 100%;
+            // // height: 100px;
             // width: 100%;
-            img{
-                width:100%;
-                height:100%;
-            }
+            // img{
+            //     width:100%;
+            //     height:100%;
+            // }
         }
-        .vip_top{
-            position: absolute;
-            left: 15px;
-            top:430px;
-            width:330px;
-            background:rgba(255,255,255,1);
-            border-radius:2px;
-            padding-left: 15px;
-            padding-top: 15px;
+        .img_warp{
+            background: #FFC476;
             padding-bottom: 20px;
+            min-height: 350px;
+            margin-top:-7px;
+            .vip_top{
+                border-radius:2px;
+                margin:0px 15px;
+                overflow-y:scroll;
+                .NoMargin{
+                    margin-top: -12px;
+                }
             img{
                 width:224px;
                 height:38px;
             }
             .header_info {
-                position: relative;
+                background:rgba(255,255,255,1);
+                border-radius:8px;
                 margin-top: 15px;
+                padding-top: 22px;
+                padding-left: 15px;
+                padding-bottom: 15px;
                 .vipMesg{
                     display: flex;
                     justify-content: center;
@@ -279,6 +279,8 @@ export default {
                 }
             }
         }
+        }
+        
         .details_msg{
             display: flex;
             justify-content: space-between;

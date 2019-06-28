@@ -141,6 +141,64 @@ export function HaveHeadAuth(userId){
     })
 }
 
+//团购列表
+export function GroupList(){
+    return request({
+        url:'/gymManager/manager/groupRule/listGroupRuleForH5',
+        method:'get',
+    })
+}
+//年会员详情
+export function YearDetail(id){
+    return request({
+        url:'/gymManager/manager/groupRule/'+id,
+        method:'get',
+    })
+}
+
+//订单详情
+export function GroupDetail(params){
+    return request({
+        url:'/gymManager/manager/groupRule/getGroupRuleByIdAndUser',
+        method:'get',
+        params
+    })
+}
+
+//狂欢详情
+export function GroupShopDetail(id,userId){
+    return request({
+        url:'/gymManager/manager/groupActivity/getDetailByIdForH5/'+id+'/'+userId,
+        method:'get',
+    })
+}
+
+//生成口令
+export function PostTokenId(params){
+    return request({
+        url:'/gymManager/manager/command',
+        method:'post',
+        data:params
+    })
+}
+
+//获取订单详情
+export function GroupOrderDetail(params){
+    return request({
+        url:'/gymManager/manager/groupActivity/groupActivityForOrderVo',
+        method:'get',
+        params
+    })
+}
+
+//生成订单
+export function GroupOrder(params){
+    return request({
+        url:'/gym-order/order/groupMemOrder',
+        method:'post',
+        data:params
+    })
+}
 
 
 

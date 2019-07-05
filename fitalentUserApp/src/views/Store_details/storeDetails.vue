@@ -513,7 +513,7 @@
                     Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
                 s = s * 6378.137; // EARTH_RADIUS;
                 s = Math.round(s * 10000) / 10000; //输出为公里
-                this.distance = s;
+                this.distance = s.toFixed(1);
                 //s=s.toFixed(4);
             },
 

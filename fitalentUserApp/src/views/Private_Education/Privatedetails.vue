@@ -136,43 +136,27 @@ export default {
             userId:this.$route.query.userId
         }
     },
-        //在页面离开时记录滚动位置
-    // beforeRouteLeave(to, from, next) {
-            // window.scrollTo(0,0)
-            // this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop
-            // console.log(this.scrollTop)
-            // next()
-        // },
+      
+    //在页面离开时记录滚动位置
+        beforeRouteLeave(to, from, next) {
+            this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            sessionStorage.setItem('scrollTop',this.scrollTop)
+            next()
+        },
         //进入该页面时，用之前保存的滚动位置赋值
-    // beforeRouteEnter(to, from, next) {
-    //     next(vm => {
-    //         document.body.scrollTop = vm.scrollTop
-    //     })
-    // },
-    beforeRouteLeave(to, from, next) {
-        let position = window.scrollY  //记录离开页面的位置
-        if (position == null) position = 0
-        this.$store.commit('changeRecruitScrollY', position) //离开路由时把位置存起来
-        next()
-    },
-    watch: {
-        '$route' (to, from) {
-            // alert(1)
-            console.log('$route',to,from)
-        if (to.name === 'Privatedetails') {//跳转的的页面的名称是"NewRecruit",这里就相当于我们listview页面，或者原始页面
-            let recruitScrollY = this.$store.state.recruitScrollY
-            window.scroll(0, recruitScrollY)
-        }
-        }
+        beforeRouteEnter(to, from, next) {
+            next(vm => {
+                // document.documentElement = 400
+            })
+        },
+    created(){
+        
     },
     mounted(){
         console.log(this.$route)
-        // window.scrollTo(0,0)
         this.coachId = this.$route.query.coachId;
         this.CoachDetail();
         this.getCoursessold();
-        // window.addEventListener('scroll', this.handleScroll,true);
-        
     },
     // activated() {
     

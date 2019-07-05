@@ -2,7 +2,7 @@
     <div class="order_details">
         <div class="order_img pr_pl15">
             <div>
-                <img :src="coverImg" alt="">
+                <img :src="reduceImg" alt="">
             </div>
             <div class="order_text">
                 <span class="text_ellipsis">{{trainingCampList.courseName}}</span>
@@ -123,7 +123,7 @@
             <div class="appointment_icon"> 
                 <span>共计：¥{{total}}</span>
             </div>
-            <van-button class="appointment_btn"  @click="trainingMayment()" type="primary">去支付</van-button>
+            <van-button class="appointment_btn" @click.stop="trainingMayment()" type="primary">去支付</van-button>
         </div>
     </div>
 </template>
@@ -138,6 +138,7 @@ export default {
             couponName:'',
             checked: false,
             courseId:'',
+            showBtn:true,
             coverImg:'',
             checked1:false,
             checked2:false,
@@ -251,7 +252,7 @@ export default {
                 this.immageDto = res.data.obj.immageDto
                 this.goodCourse = res.data.obj.classStartTime.split("/ ")
                 this.total = this.trainingCampList.price
-                this.coverImg = this.immageDto.coverUrl.url
+                this.reduceImg = this.immageDto.reduceUrl.url
                 // this.goodCourse = res.data.obj.coach.goodCourse.split("、")
                 // this.onlyPeopele = (res.data.obj.startClassNum - res.data.obj.peopleNum)
                 // this.swiperImgs = this.immageDto.spreadUrl
@@ -335,47 +336,51 @@ export default {
                 }
                 return
             }
-            debugger
+            const appointmentBtn = document.querySelectorAll('.appointment_btn')[0]
+            appointmentBtn.setAttribute('disabled','disabled')
+            setTimeout (function(){
+                appointmentBtn.removeAttribute('disabled')
+            },2000)
             const params = 
-                {   
-                    amount: 1,
-                    couponId:this.couponId,
-                    productId: this.trainingCampList.trainingCampBusinessId,
-                    productType: this.trainingCampList.courseType,
-                    userId: this.$route.query.userId,
-                    orderType: 0,
-                }
-            AddOrder(params).then(res=>{
-                this.obj = res.data.obj
-                this.obj.type = 'pay'
-                if(this.total == 0){
-                    Dialog.confirm({
-                        title: '下单成功',
-                        cancelButtonText:'首页',
-                        confirmButtonText:'订单中心',
-                        }).then(() => {
-                        // on confirm
-                            if(this.isAndroid){
-                                window.andriod.postMessage(JSON.stringify({
-                                    type:'orderCenter'
-                                }))
-                            }else if (this.isiOS){
-                                window.webkit.messageHandlers.orderCenter.postMessage({
-                                    type:'orderCenter'
-                                })
-                            }
-                        }).catch(() => {
-                        // on cancel
-                            if(this.isAndroid){
-                                window.andriod.postMessage(JSON.stringify({
-                                    type:'Home'
-                                }))
-                            }else if (this.isiOS){
-                                window.webkit.messageHandlers.Home.postMessage({
-                                    type:'Home'
-                                })
-                            }
-                    });
+            {   
+                amount: 1,
+                couponId:this.couponId,
+                productId: this.trainingCampList.trainingCampBusinessId,
+                productType: this.trainingCampList.courseType,
+                userId: this.$route.query.userId,
+                orderType: 0,
+            }
+        AddOrder(params).then(res=>{
+            this.obj = res.data.obj
+            this.obj.type = 'pay'
+            if(this.total == 0){
+                Dialog.confirm({
+                    title: '下单成功',
+                    cancelButtonText:'首页',
+                    confirmButtonText:'订单中心',
+                    }).then(() => {
+                    // on confirm
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'orderCenter'
+                            }))
+                        }else if (this.isiOS){
+                            window.webkit.messageHandlers.orderCenter.postMessage({
+                                type:'orderCenter'
+                            })
+                        }
+                    }).catch(() => {
+                    // on cancel
+                        if(this.isAndroid){
+                            window.andriod.postMessage(JSON.stringify({
+                                type:'Home'
+                            }))
+                        }else if (this.isiOS){
+                            window.webkit.messageHandlers.Home.postMessage({
+                                type:'Home'
+                            })
+                        }
+                });
                 }else{
                     if(this.isAndroid){
                         window.andriod.postMessage(JSON.stringify(this.obj))
@@ -384,7 +389,6 @@ export default {
                     }
                 }
             })
-         
             // this.$router.back(-1)
         },
     },

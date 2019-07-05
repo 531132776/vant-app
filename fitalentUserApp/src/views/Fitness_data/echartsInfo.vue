@@ -99,20 +99,20 @@
                 </div>
               </div>
               <!-- 饼图 -->
-              <div class="pr_pl15 Pie_chart mt15" v-show="backgroundImg">
-                  <canvas :id="'mountNodeList'+i" width="100%" heihgt:="260px"></canvas>
+              <div class=" Pie_chart mt15" v-show="backgroundImg">
+                  <canvas :id="'mountNodeList'+i" width="100%" heihgt:="226px"></canvas>
               </div>
-              <div class="p15 Pie_chart mt15" v-show="!backgroundImg">
+              <div class="pt_pb20 Pie_chart mt15" v-show="!backgroundImg">
                   <img src="../../assets/images/pri.png" style="max-width: 100%" alt="">
               </div>
               <!-- 柱状图 -->
-              <div class="Histogram_info pr_pl15" v-show="backgroundImg">
+              <div class="Histogram_info pr15" v-show="backgroundImg">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
                   <canvas :id="'histogramList'+i" width="100%" heihgt:="260px"></canvas>
                 </div>
               </div>
-              <div class="p15 Pie_chart mt15" v-show="!backgroundImg">
+              <div class="pt_pb15 Pie_chart mt15" v-show="!backgroundImg">
                   <img src="../../assets/images/zhuimg.png" style="max-width: 100%" alt="">
               </div>
             </div>
@@ -701,6 +701,8 @@ export default {
       })
       var chart = new F2.Chart({
         id:'mountNodeList'+index,
+        // width: 375,
+        height: 226,
         pixelRatio: window.devicePixelRatio,
         padding: [20, "auto"]
       });
@@ -708,7 +710,7 @@ export default {
       chart.source(res5, {
         percent: {
           formatter: function formatter(val) {
-            alert(2)
+            // alert(2)
             console.log(val,'饼图')
             return val + "分钟";
           }
@@ -721,12 +723,27 @@ export default {
         itemFormatter: function itemFormatter(val) {
           // console.log(val,'lllll')
           return val + '    ' + map[val];
+        },
+        marker: {
+          symbol: 'circle', // marker 的形状（圆形）
+          radius: 5, // 半径大小
+        },
+        wordSpace:16,//marker 的形状与文本间距
+        offsetX:18,//饼图与文本间距
+        nameStyle: {
+          // textAlign: 'center', // 文本对齐方向，可取值为： start middle end
+          fill: '#9399A5', // 文本的颜色
+          fontSize: '15', // 文本大小
+          // fontWeight: 'bold', // 文本粗细
+          // textBaseline: 'top', // 文本基准线，可取 top middle bottom，默认为middle
+          // width: 20, // 设置文本的宽度
+          height: 22 // 设置文本的高度
         }
       });
       chart.coord("polar", {
         transposed: true,
-        innerRadius: 0.7,
-        radius: 0.85
+        innerRadius: 0.75,
+        radius: 0.9,
       });
       chart.axis(false);
       chart.tooltip(false);
@@ -736,7 +753,7 @@ export default {
         .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"]
         )
         .adjust("stack")
-        .size(15)
+        .size(16)
 
       chart.guide().html({
         position: ["50%", "45%"],
@@ -855,9 +872,9 @@ export default {
           return "#F85842"
         }
       }).size('year',value => {
-        if(value>=0 && value < 10 ){
+        if(item.length < 10){
           return 20
-        }else if(value>=0 && value < 1000){
+        }else{
           return 5
         }
         

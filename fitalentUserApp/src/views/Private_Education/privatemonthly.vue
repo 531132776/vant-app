@@ -104,7 +104,7 @@ export default {
     methods:{
         toApp(){
             if(this.isAndroid){
-                
+                window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.jkcq.gym.phone'
             }else if (this.isiOS){
                 window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
             }

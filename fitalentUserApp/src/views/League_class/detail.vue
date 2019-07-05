@@ -230,7 +230,7 @@
             },
             toPrivate() {
                 this.$router.push({
-                    path: '/Privatedetails?coachId=' + this.coachList.coachId + '&userId=' + this.userId,
+                    path: '/Privatedetails/showShareBtn?coachId=' + this.coachList.coachId + '&userId=' + this.userId,
                 })
             },
             //联系客服

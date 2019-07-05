@@ -7,7 +7,7 @@
           <ul>
             <li>
               <img
-                :src="immageDto.coverUrl!== (null && undefined) ? immageDto.coverUrl.url : ''"
+                :src="immageDto.reduceUrl!== (null && undefined) ? immageDto.reduceUrl.url : ''"
                 alt
               >
             </li>

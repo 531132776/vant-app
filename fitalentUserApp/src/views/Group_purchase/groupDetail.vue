@@ -98,17 +98,26 @@
                 <div class="appointment_btn" v-if="share != 1">
                     <div v-if="from == 0">
                         <div v-if="detail.status == 1">
-                            <!-- <div @click="appointment()" v-if="detail.canBuy == 1 && detail.hasJoin == 0">立即参团</div> -->
-                            <div @click="inviteToGroup()" v-if="detail.hasJoin != 0">邀请好友参团</div>
-                            <!-- <div v-if="detail.canBuy != 1" >此商品您已达到拼团上限</div> -->
+                             <div v-if="detail.hasJoin == 0">
+                                <div v-if="detail.canBuy != 1">此商品您已达到拼团上限</div>
+                                <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
+                            </div>
+                            <div v-if="detail.hasJoin != 0">
+                                <div @click="inviteToGroup()">邀请好友参团</div>
+                            </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
                         <div v-if="detail.status == 3" @click="toList()">查看更多拼团商品</div>
                     </div>
                     <div v-if="from == 1">
                         <div v-if="detail.status == 1">
-                            <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
-                            <div @click="inviteToGroup()" v-if="detail.hasJoin != 0">邀请好友参团</div>
+                            <div v-if="detail.hasJoin == 0">
+                                <div v-if="detail.canBuy != 1">此商品您已达到拼团上限</div>
+                                <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
+                            </div>
+                            <div v-if="detail.hasJoin != 0">
+                                <div @click="inviteToGroup()">邀请好友参团</div>
+                            </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
                         <div v-if="detail.status == 3" @click="toList()">查看更多拼团商品</div>
@@ -299,7 +308,7 @@ export default {
         },
         toDownApp(){
             if(this.isAndroid){
-                    
+                window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.jkcq.gym.phone'  
             }else if(this.isiOS){
                 window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
             }
@@ -505,7 +514,7 @@ export default {
                             display: inline-block;
                             position: absolute;
                             top: 45px;
-                            left: 0px;
+                            left: 5%;
                         }
                         .waman {
                             background-color: rgb(242, 192, 87);

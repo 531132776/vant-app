@@ -241,7 +241,7 @@ export default {
         },
         toApp(){
             if(this.isAndroid){
-                
+                window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.jkcq.gym.phone'
             }else if (this.isiOS){
                 window.location.href = 'https://itunes.apple.com/us/app/id1298370833?ls=1&mt=8'
             }
@@ -277,7 +277,7 @@ export default {
             //     window.webkit.messageHandlers.toTrainingCamp.postMessage(this.TrainingCamp)
             // }
              this.$router.push({
-                  path:'/Privatedetails?coachId='+this.coachList.coachId+'&userId='+this.userId,
+                  path:'/Privatedetails/showShareBtn?coachId='+this.coachList.coachId+'&userId='+this.userId,
             })
         },
         // swiper

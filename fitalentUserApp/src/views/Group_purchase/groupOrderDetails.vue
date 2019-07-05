@@ -150,9 +150,9 @@
                         </dt>
                         <dt>{{Number(totalPrice).toFixed(2)}}</dt>
                     </li>
-                    <li @click="vipPayment()">
-                        <span>去支付</span>
-                    </li>
+                    <button class="appointment_btn" @click.stop="vipPayment()" type="primary">
+                      去支付
+                    </button>
                 </ul>
             </div>
         </div>
@@ -189,6 +189,7 @@
                 couponId:null,
                 vipDetail:'',
                 OrderMen:{},
+                showBtn:true,
                 afterCoupon:'',
                 couponCount:'',
                 couponValue:0,
@@ -329,7 +330,7 @@
                     console.log(111)
                     this.couponValue = 0
                     if(this.activityId){
-                        this.totalPrice = this.vipDetail.groupOwnerPrice
+                        this.totalPrice = this.vipDetail.groupMemberPrice
                     }else{
                         this.totalPrice = this.vipDetail.groupOwnerPrice
                     }
@@ -345,6 +346,11 @@
                     Toast('请勾选健康传奇开通会员协议');
                     return
                 }
+                const appointmentBtn = document.querySelectorAll('.appointment_btn')[0]
+                appointmentBtn.setAttribute('disabled','disabled')
+                setTimeout (function(){
+                    appointmentBtn.removeAttribute('disabled')
+                },2000)
                 let params =  {   
                     amount: this.vipDetail.goodsNum,
                     couponId:this.couponId?this.couponId:null,
@@ -357,6 +363,7 @@
                     groupRoleType:this.activityId?1:0
                 }
                 GroupOrder(params).then(res => {
+                    this.showBtn = false
                     this.OrderMen = res.data.obj;
                     this.OrderMen.type = 'pay';
                     if(this.isAndroid){
@@ -658,7 +665,7 @@
                         font-weight: 400;
                     }
                 }
-                li:nth-child(2) {
+                button{
                     width: 60%;
                     flex: 0 1 50%;
                     padding: 10px 0;
@@ -666,10 +673,10 @@
                     color: #fff;
                     font-weight: 400;
                     border-radius: 23px;
-                    height: 28px;
                     background: rgba(29, 206, 116, 1);
                     text-align: center;
-                    line-height: 1.7
+                    line-height: 1.7;
+                    border: none;
                 }
             }
         }

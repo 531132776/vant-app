@@ -586,6 +586,7 @@ export default {
                             const aerobicDeviceList = this.totalFitnessData.aerobicDeviceList;
                             const anaerobicDeviceList = this.totalFitnessData.anaerobicDeviceList;
                             console.log('有氧1',aerobicDeviceList)
+                            console.log('无氧1',anaerobicDeviceList)
                             // console.log('有氧2',aerobic)
                             // var newList = aerobicDeviceList.map((value, index) => {
                             //     if (value.name !==null ? value.name.includes("跑步机") : '') {
@@ -599,28 +600,29 @@ export default {
                             //     return value;
                             //     });
                                 // console.log("还是", newList);
-                            for(var n in aerobicDeviceList){
-                                if(aerobicDeviceList[n].name == aerobic[n].name){
-                                    arr.push({"src":aerobic[n].src,"name":aerobic[n].name,"time":aerobicDeviceList[n].time})
-                                }else {
-                                    for(var j in aerobic){
-                                        if(aerobic[j].name == aerobicDeviceList[n].name){
-                                            arr.push({"src":aerobic[j].src,"name":aerobic[j].name,"time":aerobicDeviceList[n].time})
-                                        }
+                            aerobicDeviceList.map((v,s) =>{
+                                aerobic.map((val,n) =>{
+                                    if(v.name == val.name){
+                                        arr.push({
+                                            src:aerobic[n].src,
+                                            name:aerobic[n].name,
+                                            time:aerobicDeviceList[s].time})
                                     }
-                                }
-                            }
-                            for(var n in anaerobicDeviceList){
-                                if(anaerobicDeviceList[n].name == anaerobic[n].name){
-                                    arr2.push({"src":anaerobic[n].src,"name":anaerobic[n].name,"time":anaerobicDeviceList[n].time})
-                                }else {
-                                    for(var j in anaerobic){
-                                        if(anaerobic[j].name == aerobicDeviceList[n].name){
-                                            arr2.push({"src":anaerobic[j].src,"name":anaerobic[j].name,"time":anaerobicDeviceList[n].time})
-                                        }
+                                })
+                            })
+                            anaerobicDeviceList.map((v,i) =>{
+                                // console.log(v,i)
+                                anaerobic.map((val,j) =>{
+                                    if(v.name == val.name){
+                                        arr2.push({
+                                            src:anaerobic[j].src,
+                                            name:anaerobic[j].name,
+                                            time:anaerobicDeviceList[i].time
+                                        })
                                     }
-                                }
-                            }
+                                })
+                            })
+
                         }
                         console.log('有氧新数据',arr);
                         console.log('无氧新数据',arr2);

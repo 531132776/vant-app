@@ -80,6 +80,10 @@ ul {
     padding: 15px;
 }
 
+.pt10 {
+    padding-top: 5px;
+}
+
 .pt_pb20 {
     padding-top: 20px;
     padding-bottom: 20px;

@@ -80,9 +80,10 @@
                                 <div  class="swiper-slide" >
                                     <div class="swiper_list_dt">
                                     <ul>
-                                        <li :class="i == 0? 'relative':'bbb'">
-                                            <img :src="item" alt="">
+                                        <li :class="(item.status == 0 || i == 0)? 'relative':'bbb'">
+                                            <img :src="item.headShotUrl" alt="">
                                             <span v-if="i == 0" class="captain">团长</span>
+                                            <span v-if="item.status == 0 && i != 0" class="payStatus">待支付</span>
                                         </li>
                                     </ul>
                                     </div>
@@ -103,7 +104,8 @@
                                 <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
                             </div>
                             <div v-if="detail.hasJoin != 0">
-                                <div @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="people != 0" @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="people == 0" @click="toList()">查看更多拼团商品</div>
                             </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
@@ -116,7 +118,8 @@
                                 <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
                             </div>
                             <div v-if="detail.hasJoin != 0">
-                                <div @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="people != 0" @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="people == 0" @click="toList()">查看更多拼团商品</div>
                             </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
@@ -274,8 +277,12 @@ export default {
                 var that = this;
                 that.countTime()
                 for(var i= 0;i<this.people;i++){
-                   this.coachList.push('https://isportcloud.oss-cn-shenzhen.aliyuncs.com/manager/还差1@2x.png')
+                   this.coachList.push({
+                       headShotUrl:'https://isportcloud.oss-cn-shenzhen.aliyuncs.com/manager/还差1@2x.png',
+                       status:null,
+                   })
                 }
+                console.log(this.coachList)
                 if(this.people == 0){
                     this.countdown = true
                     this.countText = '名额已满'
@@ -508,6 +515,18 @@ export default {
                             width:38px;
                             height:13px;
                             background:rgba(223,185,130,1);
+                            border-radius:7px;
+                            font-size:9px;
+                            color:rgba(255,255,255,1);
+                            display: inline-block;
+                            position: absolute;
+                            top: 45px;
+                            left: 5%;
+                        }
+                        .payStatus{
+                            width:38px;
+                            height:13px;
+                            background:rgba(247,124,68,1);
                             border-radius:7px;
                             font-size:9px;
                             color:rgba(255,255,255,1);

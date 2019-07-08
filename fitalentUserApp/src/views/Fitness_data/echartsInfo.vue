@@ -43,12 +43,19 @@
                         </dt>
                         <dt>{{motionDataObj.meanHeartRateStrength}}次/分钟</dt>
                       </dl> -->
-                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength<=59 || motionDataObj.meanHeartRateStrength == 0">
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=0 && motionDataObj.meanHeartRateStrength <= 49">
                         <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
+                          <img src="../../assets/images/0_49.png" alt>
                         </dt>
                         <dt v-if="motionDataObj.avgHartRate == 0">--次/分钟</dt>
                         <dt v-else>{{motionDataObj.avgHartRate}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=50 && motionDataObj.meanHeartRateStrength <= 59">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x.png" alt>
+                        </dt>
+                        <!-- <dt v-if="motionDataObj.avgHartRate == 0">--次/分钟</dt> -->
+                        <dt >{{motionDataObj.avgHartRate}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="motionDataObj.meanHeartRateStrength>=60 && motionDataObj.meanHeartRateStrength<=69">
                         <dt>
@@ -151,13 +158,21 @@
                         </dt>
                         <dt>{{powerMotionData.heart}}次/分钟</dt>
                       </dl> -->
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate<=59 || powerMotionData.avgHartRate == 0">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=0 && powerMotionData.avgHartRate <= 49">
                         <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
+                          <img src="../../assets/images/0_49.png" alt>
                         </dt>
                         <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
                         <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
                         <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=50 && powerMotionData.avgHartRate <= 59">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x.png" alt>
+                        </dt>
+                        <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
+                        <!-- <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt> -->
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
@@ -251,14 +266,21 @@
                       </dl>
                     </li>
                     <li>
-                      
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate<=59 || powerMotionData.avgHartRate == 0">
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=0 && powerMotionData.avgHartRate <= 49">
                         <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
+                          <img src="../../assets/images/0_49.png" alt>
                         </dt>
                         <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
                         <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
                         <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
+                      </dl>
+                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=50 && powerMotionData.avgHartRate <= 59">
+                        <dt>
+                          <img src="../../assets/images/分组_6@2x.png" alt>
+                        </dt>
+                        <!-- <dt style="color:#9399A5">{{powerMotionData.heart}}次/分钟</dt> -->
+                        <!-- <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt> -->
+                        <dt >{{powerMotionData.heart}}次/分钟</dt>
                       </dl>
                       <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
                         <dt>
@@ -334,10 +356,10 @@ import HelloWorld from '@/components/HelloWorld'
 import { Tab, Tabs, version,Dialog } from "vant";
 import { siveDataDetails, typeDetails } from "@/request/api";
 import houseAimg3 from "../../../public/aggregate.json";
-import F2 from "@antv/f2";
+// import F2 from "@antv/f2";
+import F2 from "@antv/f2/lib/index-all"
+import { constants } from 'crypto';
 // import echarts from 'echarts'
-// import echartsInfoPir from '../../components/chart/echartsinfo_pir'
-// import echartsInfobar from '../../components/chart/echartsinfo_bar'
 export default {
   data() {
     return {
@@ -367,6 +389,11 @@ export default {
         },
         {
           name: "热身",
+          percent: "",
+          a: "1"
+        },
+        {
+          name: "休闲",
           percent: "",
           a: "1"
         }
@@ -481,35 +508,7 @@ export default {
             console.log('josn',aggregate)
             const arr = [];
             if (this.tabLists.length > 0) {
-              // for (var n in this.tabLists) {
-                // console.log(n,'====>')
-                // if(this.tabLists[n].name !==null){
-                
-                // if (this.tabLists[n].name == aggregate[n].name) {
-                //   arr.push({
-                //     src: aggregate[n].src,
-                //     img: aggregate[n].img,
-                //     name: aggregate[n].name,
-                //     time: this.tabLists[n].time,
-                //     type: this.tabLists[n].type,
-                //     id: this.tabLists[n].id
-                //   });
-                // } else {
-                //   for (var j in aggregate) {
-                //     if (aggregate[j].name == this.tabLists[n].name) {
-                //       arr.push({
-                //         src: aggregate[j].src,
-                //         img: aggregate[j].img,
-                //         name: aggregate[j].name,
-                //         time: this.tabLists[n].time,
-                //         type: this.tabLists[n].type,
-                //         id: this.tabLists[n].id
-                //       });
-                //     }
-                //   }
-                // }
-                // }
-              // }
+              
               this.tabLists.map((v,i) => {
                 aggregate.map((val,j) => {
                   if(v.name == val.name){
@@ -590,7 +589,7 @@ export default {
               // debugger
               this.initPiechart(this.heartRate,index);
              
-              this.intipriec(this.heartRate,index);
+              this.intipriec(index);
                console.log(this.heartRate,'....>>>>')
                this.heartRate.map((v,i) =>{
                  console.log(this.heartRate[i])
@@ -631,6 +630,7 @@ export default {
         this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
       );
       var map = {};
+      var res6 = [];
       var res = [];
       var res1 = [];
       var res2 = [];
@@ -641,7 +641,12 @@ export default {
         // console.log(obj,'dfsdfsd')
         // map[obj.name] = _this.headCreateTime(obj.percent*60);
         // console.log(obj)
-        if(obj>0 && obj<=59){
+        if(obj>=0 && obj<=49){
+             res6.push({obj});
+          return res.length
+          // console.log(obj.length,'====')
+        }
+        else if(obj>49 && obj<=59){
              res.push({obj});
           return res.length
           // console.log(obj.length,'====')
@@ -690,11 +695,11 @@ export default {
           a:'1',
           name: "热身"
         },
-        // {
-        //   percent:res0.length,
-        //   a:'1',
-        //   name: "休闲"
-        // }
+        {
+          percent:res6.length,
+          a:'1',
+          name: "休闲"
+        }
         ];
       res5.map(function(obj) {
         map[obj.name] = _this.headCreateTime(obj.percent*60);
@@ -729,15 +734,16 @@ export default {
           radius: 5, // 半径大小
         },
         wordSpace:16,//marker 的形状与文本间距
-        offsetX:18,//饼图与文本间距
+        offsetX:16,//饼图与文本间距
+        offsetY:10,//饼图与文本间距
         nameStyle: {
           // textAlign: 'center', // 文本对齐方向，可取值为： start middle end
           fill: '#9399A5', // 文本的颜色
-          fontSize: '15', // 文本大小
+          fontSize: '14', // 文本大小
           // fontWeight: 'bold', // 文本粗细
-          // textBaseline: 'top', // 文本基准线，可取 top middle bottom，默认为middle
+          // textBaseline: 'bottom', // 文本基准线，可取 top middle bottom，默认为middle
           // width: 20, // 设置文本的宽度
-          height: 22 // 设置文本的高度
+          height: 21, // 设置文本的高度
         }
       });
       chart.coord("polar", {
@@ -750,11 +756,11 @@ export default {
       chart
         .interval()
         .position("a*percent")
-        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5"]
+        .color("name", ["#F85842", "#FFCB14", "#14D36B", "#3FA6F2", "#9399A5","#BDC1C7"]
         )
         .adjust("stack")
-        .size(16)
-
+        .size(13)
+      chart.interaction('pan');
       chart.guide().html({
         position: ["50%", "45%"],
         html:
@@ -777,57 +783,103 @@ export default {
           });
 
         }
-      })
+      });
+      
       chart.render();
     },
     
-    intipriec(heartRate,index){
-      // var heartRate = [
-      //   31,52,36,60,88,55,99,33,22,11,22,44,73,66
-      // ]
+    intipriec(index){
+      var heartRate = [
+        31,52,36,60,88,55,99,33,22,11,22,44,73,66,60,88,55,99,33,22,
+        15,16,21,48,36,10,19,88,90,92,95,97,66,62,68,72,76,55,53,41,
+        15,16,21,48,36,10,66,60,88,55,99,33,22,26,60,88,55,99,33,22,
+        33,22,11,22,44,73,66,15,16,21,48,36,10,88,55,99,33,22,22,11,
+        97,66,62,68,72,52,53,58,59,54,56,55,75,65,35,25,15,45,44,46,
+        15,16,21,48,36,10,66,60,88,55,99,33,22,26,60,88,55,99,33,22,
+        33,22,11,22,44,73,66,15,16,21,48,36,10,88,55,99,33,22,22,11,
+        97,66,62,68,72,52,53,58,59,54,56,55,75,65,35,25,15,45,44,46,
+      ]
+      var originDates = [];
+      var originSteps = [];
      var item = heartRate.map((v,i) => {
-       
-          if(v>=0 && v<=59){
-            // alert(1)
+          if(v>=0 && v<=49){
+            
+            // originSteps.push(v);
+            return {
+                color:'5',
+                year: i,
+                sales: v
+              }
+            // originDates.push(i);
+          }
+          else if(v>49 && v<=59){
+            
+            // originSteps.push(v);
             return {
                 color:'4',
-                year: i+1,
+                year: i,
                 sales: v
               }
+            // originDates.push(i);
           }
           else if(v>59 && v<=69){
+            
+            // originSteps.push(v);
             return {
                 color:'3',
-                year: i+1,
+                year: i,
                 sales: v
               }
+            // originDates.push(i);
           }
           else if(v>69 && v<=79){
+            
+            // originSteps.push(v);
             return {
                 color:'2',
-                year: i+1,
+                year: i,
                 sales: v
               }
+            // originDates.push(i);
           }
           else if(v>79 && v<=89){
+            
+            // originSteps.push(v);
             return {
                 color:'1',
-                year: i+1,
+                year: i,
                 sales: v
               }
+            // originDates.push(i);
           }
           else if(v>=90){
+            
+            // originSteps.push(v);
             return {
                 color:'0',
-                year: i+1,
+                year: i,
                 sales: v
               }
+            // originDates.push(i);
           }
      })
+      console.log(item,']]]]]]')
+     
+     item.forEach(function(obj) {
+      if (obj.year >= 40) {
+        originDates.push(obj.year);
+        originSteps.push(obj.sales);
+      }
+    });
+console.log(originDates,'}}}')
+console.log(originSteps,'}}}')
       var num = 4;
       if(item.length<=3){
         num = 2
-        // console.log(num)
+      }else if(item.length<=20 && item.length >3){
+        num = 3
+      }else{
+        num = 5
       }
       var chart = new F2.Chart({
         id: 'histogramList'+index,
@@ -843,24 +895,25 @@ export default {
         year: {
           tickCount: num,
           formatter: function formatter(val,i) {
-            // console.log('year',val,i)
             return val.toFixed(0)+'min'
-          }
+          },
+          values: originDates,
         },
         sales:{
           // tickCount: 4,
-          // min:0,
-          // max:100,
           formatter: function formatter(val) {
-            // console.log(val)
             return (val * 1).toFixed(0)+'%';
            
-          }
+          },
+          values: originSteps
         }
       });
       
       chart.interval().position('year*sales').color('color',value =>{
-        if(value == 4){
+        if(value == 5){
+          return "#BDC1C7"
+        }
+        else if(value == 4){
           return "#9399A5"
         }else if(value == 3){
           return "#3FA6F2"
@@ -872,13 +925,18 @@ export default {
           return "#F85842"
         }
       }).size('year',value => {
-        if(item.length < 10){
+        if(item.length <= 10){
           return 20
-        }else{
-          return 5
+        }else if(item.length >10 && item.length <= 80){
+          return 3
+        }else {
+          return 2
         }
         
-      })
+      });
+      
+     
+      chart.interaction('pan');
       chart.render();
       },
    

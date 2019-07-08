@@ -5,9 +5,13 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 export default new Router({
-    // scrollBehavior(to, from, savedPosition) {
-    //     return { x: 0, y: 0 }
-    // },
+    scrollBehavior(to, from, savedPosition) {
+        if (savedPosition) {
+            return savedPosition
+        } else {
+            return { x: 0, y: 0 }
+        }
+    },
     // mode: 'history',
     base: process.env.BASE_URL,
     routes: [{
@@ -47,7 +51,7 @@ export default new Router({
                 import ( /* webpackChunkName: "about" */ './views/Private_Education/Privatedetails.vue'),
             meta: {
                 title: '私教',
-                // keepAlive: true
+                keepAlive: true
             }
         },
         //教练证书

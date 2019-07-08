@@ -277,7 +277,7 @@ export default {
             //     window.webkit.messageHandlers.toTrainingCamp.postMessage(this.TrainingCamp)
             // }
              this.$router.push({
-                  path:'/Privatedetails/showShareBtn?coachId='+this.coachList.coachId+'&userId='+this.userId,
+                  path:'/Privatedetails/showShareBtn?coachId='+this.coachList.coachId+'&userId='+this.userId+'&share='+this.share,
             })
         },
         // swiper

@@ -457,7 +457,8 @@
                         path: '/trainingCamp/showShareBtn',
                         query: {
                             courseId: item.courseId,
-                            userId: this.userId
+                            userId: this.userId,
+                            share:this.$route.query.share
                         }
                     })
                     // let url  = {
@@ -477,7 +478,8 @@
                         path: '/Privatedetails/showShareBtn',
                         query: {
                             coachId: item.coachId,
-                            userId: this.userId
+                            userId: this.userId,
+                            share:this.$route.query.share
                         }
                     })
                     // let url ={

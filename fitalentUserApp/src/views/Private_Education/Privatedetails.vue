@@ -139,42 +139,60 @@ export default {
       
     //在页面离开时记录滚动位置
         beforeRouteLeave(to, from, next) {
-            this.scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            sessionStorage.setItem('scrollTop',this.scrollTop)
+            console.log('00')
+            this.coachId = this.$route.query.coachId;
+            this.CoachDetail();
+            this.getCoursessold();
             next()
         },
-        //进入该页面时，用之前保存的滚动位置赋值
-        beforeRouteEnter(to, from, next) {
-            next(vm => {
-                // document.documentElement = 400
-            })
-        },
+        // beforeRouteEnter(to, from, next) {
+        //     console.log(this, 'beforeRouteEnter'); // undefined
+        //     console.log(to, '组件独享守卫beforeRouteEnter第一个参数');
+        //     console.log(from, '组件独享守卫beforeRouteEnter第二个参数');
+        //     console.log(next, '组件独享守卫beforeRouteEnter第三个参数');
+        //     next(vm => {
+        //     //因为当钩子执行前，组件实例还没被创建
+        //     // vm 就是当前组件的实例相当于上面的 this，所以在 next 方法里你就可以把 vm 当 this 来用了。
+        //     console.log(vm);//当前组件的实例
+        //         vm._data.coachId = vm.coachId;
+        //         vm.CoachDetail();
+        //         vm.getCoursessold();
+        //     });
+        // },
     created(){
         
     },
     mounted(){
+        window.scrollTo(0,0)
         console.log(this.$route)
         this.coachId = this.$route.query.coachId;
         this.CoachDetail();
         this.getCoursessold();
+        window.addEventListener('scroll', this.handleScroll, true)
     },
-    // activated() {
-    
-    //     this.scrollTop = sessionStorage.getItem('scrollTop')
-    //     window.addEventListener('scroll',this.handelscroll,true)
-    // },
-    // deactivated(){
-    //     this.scrollTop = sessionStorage.removeItem('scrollTop')
-    //     window.removeEventListener('scroll', this.handleScroll);
-    // },
+    activated() {
+        console.log(this.scrollTop,'===')
+        
+        if(this.scrollTop > 0){
+            window.scrollTo(0, this.scrollTop);
+            this.scrollTop = 0;
+            window.addEventListener('scroll', this.handleScroll);
+             
+          }
+        
+    },
+    deactivated(){
+        // this.scrollTop = sessionStorage.removeItem('scrollTop')
+        window.removeEventListener('scroll', this.handleScroll);
+    },
 
     methods:{
-        // handleScroll () {
-        //     let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
-        //     this.scrollTop = scrollTop;
-        //     sessionStorage.setItem('scrollTop',this.scrollTop)
-        //     //   console.log(this.scrollTop
-        // },
+        handleScroll () {
+            let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            this.scrollTop = scrollTop;
+            sessionStorage.setItem('scrollTop',this.scrollTop)
+            //   console.log(this.scrollTop
+        },
         //跳转到生活照页面
         lifeImg(){
             this.$router.push({
@@ -232,7 +250,8 @@ export default {
                         status:0,
                         educationexperienceId:item.courseId,
                         courseType:item.courseType,
-                        userId:this.userId
+                        userId:this.userId,
+                        share:this.$route.query.share
                     }
                 })
             }else if(item.courseType == 3){

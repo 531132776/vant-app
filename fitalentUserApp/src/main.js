@@ -15,6 +15,9 @@ Vue.use(preview)
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)
 
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
 Vue.config.productionTip = false
 Vue.use(VueAxios, axios)
 

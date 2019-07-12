@@ -79,7 +79,7 @@
             </li>
             <!-- 2是私教课 -->
             <li v-if="status==2">
-              <van-button type="default" @click="reduce">-</van-button>
+              <van-button type="default" @click="reduce" :class="[nmb != privateCourse.lowestSection?'v_false_class':'v_true_class']">-</van-button>
               <span class="coures_nmb">{{nmb}}</span>
               <van-button type="default" @click="increase">+</van-button>
             </li>
@@ -91,7 +91,7 @@
             </li>
             <!-- 1是包月 -->
             <li v-if="status==1">
-              <van-button type="default" @click="monthlyReduce">-</van-button>
+              <van-button type="default" @click="monthlyReduce" :class="[monthlyNmb>1?'v_false_class':'v_true_class']">-</van-button>
               <span class="coures_nmb">{{monthlyNmb}}</span>
               <van-button type="default" @click="monthlyIncrease">+</van-button>
             </li>
@@ -231,7 +231,7 @@
             <div class="popupItemTwo">
               <div class="popupText">
                 <p>{{item.remark}}</p>
-                <p>{{item.effectiveTime}}-{{item.expireTime}}</p>
+                <p>{{item.effectiveTime}}~{{item.expireTime}}</p>
               </div>
               <div class="popupIcon">
                 <van-checkbox v-model="item.checkStatus">
@@ -1304,9 +1304,13 @@ export default {
           font-size: 20px;
           color: #969696;
         }
-        .van-button:nth-child(1) {
+        .v_true_class{
           background-color: #f6f6f6;
         }
+        .v_false_class{
+          background-color: none;
+        }
+        
         .van-button:nth-child(2) {
           background-color: #ecedf0;
         }

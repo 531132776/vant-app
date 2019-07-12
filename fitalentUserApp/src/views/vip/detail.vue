@@ -87,10 +87,23 @@
             <van-button class="appointment_btn"  @click="appointment()" type="primary" v-if="timeStr">立即续费</van-button>
             <van-button class="appointment_btn"  @click="appointment()" type="primary" v-else>立即开通</van-button>
         </div>
+        <!-- 弹窗 -->
+        <van-popup v-model="show">
+            <div>
+                <div class="popText"><img src="../../assets/images/text.png" alt=""></div>
+                <div class="popContent">
+                    <div><img src="../../assets/images/人拿手机@2x.png" alt=""></div>
+                    <div>
+                        <img @click="toFace" src="../../assets/images/上传头像2@2x.png" alt="">
+                        <img @click="toGo" style="margin-top:10px;" src="../../assets/images/上传头像2@2x (1).png" alt="">
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 <script>
-import { Tab, Tabs,Radio,Cell, CellGroup,Dialog } from 'vant';
+import { Tab, Tabs,Popup,Radio,Cell, CellGroup,Dialog } from 'vant';
 import { IsVIP,GetVipList,HaveHeadAuth} from '@/request/api-liu'
 import { appendFile } from 'fs';
 export default {
@@ -98,6 +111,7 @@ export default {
         return{
             yearShow:true,
             monthShow:false,
+            show:false,
             yearObj:[],
             monthObj:{},
             uid:'',
@@ -116,7 +130,6 @@ export default {
                 if(res.data.obj){
                     this.timeStr = res.data.obj
                 }
-                
             })
             GetVipList().then(res=>{
                 this.yearObj = res.data.obj.filter((item=>{
@@ -140,32 +153,49 @@ export default {
                         path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
                     })
                 }else{
-                    Dialog.confirm({
-                    title: '您还未进行人脸认证',
-                   // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
-                    confirmButtonText:'去认证',
-                    cancelButtonText:'继续开通'
-                    }).then(() => {
-                    // on confirm
-                        if(this.isAndroid){
-                            window.andriod.postMessage(JSON.stringify({
-                                type:'takeFace'
-                            }))
-                        }else if(this.isiOS){
-                            window.webkit.messageHandlers.takeFace.postMessage({
-                                type:'takeFace'
-                            })
-                        }
+                    this.show = true
+                //     Dialog.confirm({
+                //     title: '您还未进行人脸认证',
+                //    // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
+                //     confirmButtonText:'去认证',
+                //     cancelButtonText:'继续开通'
+                //     }).then(() => {
+                //     // on confirm
+                //         if(this.isAndroid){
+                //             window.andriod.postMessage(JSON.stringify({
+                //                 type:'takeFace'
+                //             }))
+                //         }else if(this.isiOS){
+                //             window.webkit.messageHandlers.takeFace.postMessage({
+                //                 type:'takeFace'
+                //             })
+                //         }
 
-                    }).catch(() => {
-                    // on cancel
-                        this.$router.push({
-                            path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
-                        })
-                });
+                //     }).catch(() => {
+                //     // on cancel
+                //         this.$router.push({
+                //             path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
+                //         })
+                // });
                 }
             })
            
+        },
+        toFace(){
+            if(this.isAndroid){
+                window.andriod.postMessage(JSON.stringify({
+                    type:'takeFace'
+                }))
+            }else if(this.isiOS){
+                window.webkit.messageHandlers.takeFace.postMessage({
+                    type:'takeFace'
+                })
+            }
+        },
+        toGo(){
+            this.$router.push({
+                 path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
+            })
         },
         toggleYear(){
             this.yearShow = true
@@ -181,6 +211,7 @@ export default {
      components:{
         [Tab.name]:Tab,
         [Tabs.name]:Tabs,
+        [Popup.name]:Popup,
         [Radio.name]:Radio,
         [Cell.name]:Cell,
         [CellGroup.name]:CellGroup,
@@ -190,6 +221,33 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .van-popup{
+            background-color:rgba(0,0,0,0);
+            width:300px;
+            margin:0 auto;
+            .popText{
+                img{
+                  width: 292px;  
+                }
+            }
+            .popContent{
+                margin-top:20px;
+                display: flex;
+                
+                div:nth-child(1){
+                    img{
+                        width:166px;
+                    }
+                }
+                div:nth-child(2){
+                    margin-top: 20px;
+                    text-align: center;
+                    img{
+                        width:100px;
+                    }
+                }
+            }
+    }
     .order_details{
         background: #fff;
         .vip_top{

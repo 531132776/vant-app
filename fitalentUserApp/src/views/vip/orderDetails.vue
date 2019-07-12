@@ -42,7 +42,7 @@
                             数量
                         </li>
                         <li>
-                            <van-button type="default" @click="monthlyReduce">-</van-button>
+                            <van-button type="default" :id="monthlyNmb != 1?'activeColor':'bbb'" @click="monthlyReduce">-</van-button>
                             <span class="coures_nmb">{{monthlyNmb}}</span>
                             <van-button type="default" @click="monthlyIncrease">+</van-button>
                         </li>
@@ -56,8 +56,8 @@
                 <van-cell @click="popup" is-link>
                     <div class="flex_between">
                         <span>选择优惠券</span>
-                        <span v-if="couponListLength && couponCount != 0">{{couponName}}</span>
-                        <span v-else>{{couponCount}}张可用优惠券</span>
+                        <span style="font-size:15px;color:rgba(147,153,165,1);" v-if="couponListLength && this.couponList.length>0">{{couponName}}</span>
+                        <span style="font-size:15px;color:rgba(147,153,165,1);" v-else>{{couponCount}}张可用优惠券</span>
                     </div>
                 </van-cell>
                 <van-cell >
@@ -117,7 +117,7 @@
                             <div class="popupItemTwo">
                                 <div class="popupText">
                                     <p>{{item.remark}}</p>
-                                    <p>{{item.effectiveTime}}-{{item.expireTime}}</p>
+                                    <p>{{item.effectiveTime}}~{{item.expireTime}}</p>
                                 </div>
                                 <div class="popupIcon">
                                     <van-checkbox v-model="item.checkStatus" >
@@ -304,7 +304,7 @@
                 }else{
                     this.couponValue = 0
                     //console.log(this.monthlyTotalPrice)
-                    this.totalPrice = (this.monthlyTotalPrice*this.monthlyNmb).toFixed(2)
+                    this.totalPrice = this.monthlyTotalPrice
                     this.couponId = ''
                     this.couponListLength = false;
                 }
@@ -327,6 +327,7 @@
                     productId: this.$route.query.uid,
                     productType: this.vipDetail.type,
                     userId: this.$route.query.userId,
+                    orderType:0,
                 }
                 AddOrderMen(params).then(res => {
                     if (res.data.code == 2000) {
@@ -386,6 +387,9 @@
         height: 10px;
         background: rgba(242,242,242,1);
         width: 100%;
+    }
+    .van-cell{
+        font-size: 17px;
     }
     .van-cell:not(:last-child)::after {
             content: ' ';
@@ -512,6 +516,9 @@
                         font-size: 20px;
                         color: #969696;
                     }
+                    #activeColor{
+                        background-color: #fff;
+                    }
                     .van-button:nth-child(1) {
                         background-color: #F6F6F6;
                     }
@@ -573,7 +580,10 @@
             line-height: 50px;
         }
         .popupwarp{
-             margin-top:10px; 
+            padding-top:10px;
+            height: 400px;
+            overflow-y: scroll;
+            padding-bottom: 60px; 
         }
         .popupItem{
             display: flex;

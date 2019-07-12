@@ -108,6 +108,18 @@
                 <van-button class="appointment_btn" v-if="share == 1"  @click="toApp()" type="primary">立即下载APP</van-button>
             </div>
         </div>
+        <van-popup v-model="show">
+            <div>
+                <div class="popText"><img src="../../assets/images/text.png" alt=""></div>
+                <div class="popContent">
+                    <div><img src="../../assets/images/人拿手机@2x.png" alt=""></div>
+                    <div>
+                        <img @click="toFace" src="../../assets/images/上传头像2@2x.png" alt="">
+                        <img @click="toGo" style="margin-top:10px;" src="../../assets/images/上传头像2@2x (1).png" alt="">
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 
@@ -122,6 +134,7 @@ export default {
             active:0,
             status:'',
             share:'',
+            show:false,
             trainingCampList:{},
             coachList:{},
             userId:'',
@@ -212,32 +225,49 @@ export default {
                         path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
                     })
                 }else{
-                    Dialog.confirm({
-                    title: '您还未进行人脸认证',
-                   // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
-                    confirmButtonText:'去认证',
-                    cancelButtonText:'继续购买'
-                    }).then(() => {
-                    // on confirm
-                        if(this.isAndroid){
-                            window.andriod.postMessage(JSON.stringify({
-                                type:'takeFace'
-                            }))
-                        }else if(this.isiOS){
-                            window.webkit.messageHandlers.takeFace.postMessage({
-                                type:'takeFace'
-                            })
-                        }
+                    this.show = true
+                    // Dialog.confirm({
+                //     title: '您还未进行人脸认证',
+                //    // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
+                //     confirmButtonText:'去认证',
+                //     cancelButtonText:'继续购买'
+                //     }).then(() => {
+                //     // on confirm
+                //         if(this.isAndroid){
+                //             window.andriod.postMessage(JSON.stringify({
+                //                 type:'takeFace'
+                //             }))
+                //         }else if(this.isiOS){
+                //             window.webkit.messageHandlers.takeFace.postMessage({
+                //                 type:'takeFace'
+                //             })
+                //         }
 
-                    }).catch(() => {
-                    // on cancel
-                        this.$router.push({
-                            path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
-                        })
-                });
+                //     }).catch(() => {
+                //     // on cancel
+                //         this.$router.push({
+                //             path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
+                //         })
+                // });
                 }
             })
             
+        },
+        toFace(){
+            if(this.isAndroid){
+                window.andriod.postMessage(JSON.stringify({
+                    type:'takeFace'
+                }))
+            }else if(this.isiOS){
+                window.webkit.messageHandlers.takeFace.postMessage({
+                    type:'takeFace'
+                })
+            }
+        },
+        toGo(){
+            this.$router.push({
+                path:'/orderDetails?courseId='+this.courseId+'&userId='+this.userId,
+            })
         },
         toApp(){
             if(this.isAndroid){
@@ -276,9 +306,16 @@ export default {
             // }else if (this.isiOS){
             //     window.webkit.messageHandlers.toTrainingCamp.postMessage(this.TrainingCamp)
             // }
-             this.$router.push({
+            if(this.share){
+                this.$router.push({
                   path:'/Privatedetails/showShareBtn?coachId='+this.coachList.coachId+'&userId='+this.userId+'&share='+this.share,
-            })
+                })
+                }else{
+                    this.$router.push({
+                    path:'/Privatedetails/showShareBtn?coachId='+this.coachList.coachId+'&userId='+this.userId
+                })
+            }
+             
         },
         // swiper
         _initSwiper(){
@@ -311,6 +348,33 @@ export default {
             img{
                 display: block;
                 width: 100%;
+            }
+        }
+        .van-popup{
+            background-color:rgba(0,0,0,0);
+            width:300px;
+            margin:0 auto;
+            .popText{
+                img{
+                  width: 292px;  
+                }
+            }
+            .popContent{
+                margin-top:20px;
+                display: flex;
+                
+                div:nth-child(1){
+                    img{
+                        width:166px;
+                    }
+                }
+                div:nth-child(2){
+                    margin-top: 20px;
+                    text-align: center;
+                    img{
+                        width:100px;
+                    }
+                }
             }
         }
         #span_buttom{

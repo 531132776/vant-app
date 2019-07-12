@@ -12,6 +12,9 @@
                     <li v-if="meTrainingCampList.status == 2">
                         课程未开始
                     </li>
+                    <li v-if="meTrainingCampList.status == 10">
+                        课程已取消
+                    </li>
                     <li>
                         <span>{{meTrainingCampList.schedule}}</span>
                     </li>
@@ -23,7 +26,7 @@
                 <div class="header_info pb15">
                     <ul>
                         <li>
-                            <img :src="meTrainingCampList.coverUrl" alt="">
+                            <img :src="meTrainingCampList.reduceUrl" alt="">
                             </li>
                         <li>
                             <!-- <dt v-if="className1==1">包月私教</dt> -->

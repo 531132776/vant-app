@@ -33,10 +33,10 @@
                                     </li>
                                 </ul>
                             </div> -->
-                            <van-tabs v-model="active" :swipeable="false" :swipe-threshold="8" >
+                            <van-tabs v-model="active" :swipeable="false" :swipe-threshold="8"  :class="[expandCalendar == true?fun:'']">
                                 <!-- <span class="before"></span> -->
                                 
-                                <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab" >
+                                <van-tab v-for="(item,i) in 7" :key="i" title="选项" class="var_tab">
                                     <div slot="title" class="slot_content" @click="onTabClick($event,item,i)">
                                         <span class="timeThis" v-if="i==0">今天</span>
                                         <span class="timeThis" v-if="i==1">昨天</span>
@@ -62,14 +62,15 @@
                                             </li>
                                         </ul> -->
                                         <div class="installDay" >
-                        <Calendar
-                        v-on:choseDay="clickDay"
-                        v-on:changeMonth="changeDate"
-                        v-show="show2"
-                        :markDateMore="defaultArr" 
-                        ></Calendar>
-                        <div class="Fitness_data2">
-                                        <ul v-if="show && totalFitnessData.totalExerciseTim!==0">
+                                            <Calendar
+                                            v-on:choseDay="clickDay"
+                                            v-on:changeMonth="changeDate"
+                                            v-show="show2"
+                                            :markDateMore="defaultArr" 
+                                            id="aaaaa"
+                                            ></Calendar>
+                                            <div class="Fitness_data2">
+                                        <ul v-if="show && totalFitnessData.totalExerciseTime!==0">
                                             <li>
                                                 <dt>{{headCreateTime(totalFitnessData.totalExerciseTime)}}</dt>
                                                 <!-- <dt>运动时间/分钟</dt> -->
@@ -102,7 +103,7 @@
             </div>
         </div>
         <!-- 有氧无氧数据 -->
-        <div class="Aerobic_anaerobic" >
+        <div class="Aerobic_anaerobic" v-if="totalFitnessData.totalExerciseTime!==0">
             <div class="pr_pl15">
                 <div class="aerobic_info " v-if="aerobic.length > 0">
                     <div class="text-title">有氧</div>
@@ -184,7 +185,10 @@ export default {
                 20,
                 21,
                 22
-            ]
+            ],
+            expandCalendar:false,
+            fun:'jaja',
+            dataTime:0
         }
     },
     components:{
@@ -271,20 +275,34 @@ export default {
 
                 
     },
+    //在页面离开时记录滚动位置
+        beforeRouteLeave(to, from, next) {
+            const n = sessionStorage.getItem('sessionDate');
+            const s = n.substring(0,7)
+
+            console.log(s,'传值当前时间')
+            console.log('00hahahahahha')
+            this.initFitnessData();
+            this.initComprehensiveData(this.subscribeDate)
+            this.getSameMonth(s)
+            next()
+        },
     methods:{
 
         async getSameMonth(newDate2){
            let respon =await getSameMonthList(newDate2,this.userId);
-           console.log('--------->',respon)
+           console.log(respon.data.obj,'--------->当月运动过的天数')
            if(respon.data.obj.list != undefined || respon.data.obj.list.length>0){
-               var list = respon.data.obj.list || [];
+               const list = respon.data.obj.list || [];
+               const arr = []
                    list.map(v =>{
-                    return this.defaultArr.push({
+                     arr.push({
                         date:newDate2+'-'+v,
                         className:'mark1'
                     })
                 })
-                console.log(this.defaultArr,'------->>>当月天数List')
+                this.$set(this,'defaultArr',[...arr])
+                console.log(this.defaultArr,'------->>>当月运动过的天数List')
            }
 
         
@@ -318,6 +336,7 @@ export default {
             return result;
         },
         onTabClick(event,item,i){
+            this.expandCalendar = false;
             this.show = true;
             this.show2 = false;
             this.show3 = false;
@@ -337,9 +356,11 @@ export default {
             console.log('lolo ',date)
             this.initComprehensiveData(date);
             this.$set(this,'subscribeDate',date)
+            sessionStorage.setItem('sessionDate',date)
         },
         clickDay(data) {
-      console.log(data); //选中某天
+            // debugger
+      console.log(data,'选中某天'); //选中某天
       var data = data.split('/');
       if(data[1]<10){
           var month = '0'+data[1]
@@ -358,9 +379,15 @@ export default {
       var datatime = data[0]+ '-' +month+ '-'+day
       console.log('最终时间',datatime)
       this.initComprehensiveData(datatime);
-      this.$set(this,'subscribeDate',datatime)
+      this.$set(this,'subscribeDate',datatime);
+      this.dataTime = 1;
+      sessionStorage.setItem('thisDate',datatime)
     },
     changeDate(data){
+        let cc = document.querySelector('.wh_chose_day')
+        if(cc){
+            cc.classList.remove('wh_chose_day')
+        }
         console.log(data,'----->切换月份');
         var data = data.split('/');
       if(data[1]<10){
@@ -379,8 +406,16 @@ export default {
       var datatime = data[0]+ '-' +month+ '-'+day;
       var datatime2 = data[0]+ '-' +month;
       console.log('最终时间',datatime)
-      this.initComprehensiveData(datatime);
       this.$set(this,'subscribeDate',datatime)
+    //   if(this.dataTime ==1 ){
+    //       const aa = sessionStorage.getItem('thisDate');
+    //       console.log(aa,'切换月份')
+    //     this.initComprehensiveData(aa);
+    //   }else{
+          this.initComprehensiveData(this.subscribeDate);
+    //   }
+      
+      
       this.getSameMonth(datatime2);
     },
         initTime() {
@@ -407,10 +442,15 @@ export default {
             calendar(){
                 // alert(1)
                 // this.show = !this.show;
+
+                this.expandCalendar = true;
                 this.show2 = !this.show2;
                 this.show3 = !this.show3;
                 this.show4 = !this.show4;
                 // this.disabledTab = !this.disabledTab;
+                const n = sessionStorage.getItem('sessionDate');
+                const s = n.substring(0,7)
+                // this.getSameMonth(s)
             },
             getnewDay(i){
                 var curDate = new Date();
@@ -635,6 +675,7 @@ export default {
                 })
             },
         echartsSurface(){
+            sessionStorage.setItem('sessionDate',this.subscribeDate)
             console.log(this.subscribeDate,'传值当前时间')
             this.$router.push({
                 path:'/echartsInfo',

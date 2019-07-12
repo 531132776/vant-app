@@ -51,7 +51,7 @@ export default new Router({
                 import ( /* webpackChunkName: "about" */ './views/Private_Education/Privatedetails.vue'),
             meta: {
                 title: '私教',
-                keepAlive: true
+                // keepAlive: true
             }
         },
         //教练证书
@@ -202,7 +202,8 @@ export default new Router({
             component: () =>
                 import ( /* webpackChunkName: "about" */ './views/Fitness_data/fitnessHome.vue'),
             meta: {
-                title: '健身数据'
+                title: '健身数据',
+                keepAlive: true
             }
         },
         {

@@ -93,7 +93,7 @@
                 <span>单独购买</span>
             </van-button>
             <!-- <van-button class="appointment_btn group"  @click="appointment()" type="primary" v-if="timeStr">立即续费</van-button> -->
-            <van-button v-if="obj.canBuy == 1" class="appointment_btn group"  @click="appointmentGroup()" type="primary">
+            <van-button v-if="obj.canBuy == 1 && obj.isExpire == 0" class="appointment_btn group"  @click="appointmentGroup()" type="primary">
                 <span>
                     <span>团长价 </span>
                     <em> ¥</em>
@@ -101,7 +101,7 @@
                 </span>
                 <span>去开团</span>
             </van-button>
-            <van-button v-if="obj.canBuy == 0" class="appointment_btn group" style="background:rgba(178,182,188,1);" type="primary">
+            <van-button v-if="obj.canBuy == 0 && obj.isExpire == 0" class="appointment_btn group" style="background:rgba(178,182,188,1);" type="primary">
                 <span>
                     <span>团长价 </span>
                     <em> ¥</em>
@@ -109,15 +109,36 @@
                 </span>
                 <span>此商品您已到达拼团上限</span>
             </van-button>
+            <van-button v-if="obj.isExpire == 1" class="appointment_btn group" style="background:rgba(178,182,188,1);" type="primary">
+                <span>
+                    <span>团长价 </span>
+                    <em> ¥</em>
+                    <span style="font-size: 17px;">{{obj.groupOwnerPrice}}</span>
+                </span>
+                <span>活动已结束</span>
+            </van-button>
         </div>
         <div v-if="share" class="appBtn" @click="toApp">
             前往健康传奇APP拼团
         </div>
+        <!-- 弹窗 -->
+        <van-popup v-model="show">
+            <div>
+                <div class="popText"><img src="../../assets/images/text.png" alt=""></div>
+                <div class="popContent">
+                    <div><img src="../../assets/images/人拿手机@2x.png" alt=""></div>
+                    <div>
+                        <img @click="toFace" src="../../assets/images/上传头像2@2x.png" alt="">
+                        <img @click="toGo" style="margin-top:10px;" src="../../assets/images/上传头像2@2x (1).png" alt="">
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
 </template>
 <script>
 import Swiper from 'swiper';
-import { Tab, Tabs,Radio,Cell, CellGroup,Dialog,Swipe,
+import { Tab, Tabs,Popup,Radio,Cell, CellGroup,Dialog,Swipe,
         SwipeItem,ImagePreview } from 'vant';
 import { IsVIP,GroupDetail,HaveHeadAuth} from '@/request/api-liu'
 import { appendFile } from 'fs';
@@ -127,6 +148,7 @@ export default {
             yearShow:true,
             monthShow:false,
             yearObj:[],
+            show:false,
             id:'',
             obj:'',
             normalPrice:'',
@@ -184,6 +206,52 @@ export default {
             })
         },
         appointmentGroup(){
+              HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                     this.$router.push({
+                        path:'/purchaseGroupVip?groupId='+this.groupId+'&userId='+this.userId,
+                    })
+                }else{
+                    this.show = true
+                //     Dialog.confirm({
+                //     title: '您还未进行人脸认证',
+                //    // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
+                //     confirmButtonText:'去认证',
+                //     cancelButtonText:'继续购买'
+                //     }).then(() => {
+                //     // on confirm
+                //         if(this.isAndroid){
+                //             window.andriod.postMessage(JSON.stringify({
+                //                 type:'takeFace'
+                //             }))
+                //         }else if(this.isiOS){
+                //             window.webkit.messageHandlers.takeFace.postMessage({
+                //                 type:'takeFace'
+                //             })
+                //         }
+
+                //     }).catch(() => {
+                //     // on cancel
+                //          this.$router.push({
+                //             path:'/purchaseGroupVip?groupId='+this.groupId+'&userId='+this.userId,
+                //         })
+                // });
+                }
+            })
+           
+        },
+        toFace(){
+            if(this.isAndroid){
+                window.andriod.postMessage(JSON.stringify({
+                    type:'takeFace'
+                }))
+            }else if(this.isiOS){
+                window.webkit.messageHandlers.takeFace.postMessage({
+                    type:'takeFace'
+                })
+            }
+        },
+        toGo(){
             this.$router.push({
                 path:'/purchaseGroupVip?groupId='+this.groupId+'&userId='+this.userId,
             })
@@ -201,6 +269,7 @@ export default {
     },
      components:{
         [Tab.name]:Tab,
+        [Popup.name]:Popup,
         [Tabs.name]:Tabs,
         [Radio.name]:Radio,
         [Cell.name]:Cell,
@@ -213,6 +282,33 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .van-popup{
+            background-color:rgba(0,0,0,0);
+            width:300px;
+            margin:0 auto;
+            .popText{
+                img{
+                  width: 292px;  
+                }
+            }
+            .popContent{
+                margin-top:20px;
+                display: flex;
+                
+                div:nth-child(1){
+                    img{
+                        width:166px;
+                    }
+                }
+                div:nth-child(2){
+                    margin-top: 20px;
+                    text-align: center;
+                    img{
+                        width:100px;
+                    }
+                }
+            }
+        }
     .order_details{
         background: #fff;
         .vip_top{

@@ -8,6 +8,7 @@
                     </li> -->
                     <li v-if="courseInfo.status == 0">课程进行中</li>
                     <li v-if="courseInfo.status == 1">课程已完成</li>
+                    <li v-if="courseInfo.status == 10">已取消</li>
                     <li>
                         <!-- <span>{{lessonTwo}}</span><span> /{{totalNumber}}节</span> -->
                         <span>{{courseInfo.schedule}}</span>
@@ -127,7 +128,10 @@ export default {
             courseType:this.$route.query.courseType,
             courseInfo:{},
             disabled:false,
-            disabledClass:false
+            disabledClass:false,
+            Front:'',
+            after:'',
+            couerStatus:''
         }
     },
     components:{
@@ -171,7 +175,9 @@ export default {
                     this.timeList = res.data.obj.timeList;
                     this.dd(this.timeList);
                     this.totalNumber = res.data.obj.scheduleAll;
-                    this.lessonTwo = res.data.obj.scheduleUser
+                    this.lessonTwo = res.data.obj.scheduleUser;
+                    this.$set(this,'Front',this.courseInfo.schedule.substring(0,1))
+                    this.$set(this,'after',this.courseInfo.schedule.substring(2,3))
                 }
                 
             }).catch(error => {
@@ -311,11 +317,14 @@ export default {
             // }else if (this.isiOS){
             //     window.webkit.messageHandlers.sing_In.postMessage(this.singInObj)
             // }
-
+            console.log(this.couerStatus)
             if(this.courseType == 1){
                 console.log('私教课')
                 // this.privateEducationCheck()
-                if(this.disabled == true){
+                if(this.couerStatus == 2){
+                    Toast('课程已完成')
+                }
+                else if(this.disabled == true){
                     // alert(1)
                     Toast('您已签到！每次签到时隔1小时！')
                 }else{
@@ -342,7 +351,27 @@ export default {
             }
         }
     },
+    computed: {
+      changeData() {
+        const { index, Front,after} = this
+        return {
+          index,
+          Front,
+          after,
+        }
+      }
+    },
+        
     watch:{
+        changeData:{
+            handler(newVal,oldVal){
+                console.log(newVal,oldVal,'监听');
+                if(newVal.Front == newVal.after){
+                    this.couerStatus = 2
+                }
+            },
+            deep: true
+        },
         lessonTwo:{
             handler(newVal,oldVal){
                 console.log(newVal)

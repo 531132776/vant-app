@@ -140,9 +140,11 @@
                             </dt>
                             <dt>联系客服</dt>
                         </li>
+                            <!-- 私教课立即购买 -->
                             <li v-if="SportsContent==2 && share != 1" @click="shopping">
                                 <span>立即购买</span>
                             </li>
+                            <!--  -->
                             <li v-if="SportsContent==0 && share != 1" @click="shoppingTwo">
                                 <span>立即购买</span>
                             </li>
@@ -152,6 +154,19 @@
                     </ul>
                 </div>
             </div>
+            <!-- 上传头像弹窗 -->
+            <van-popup v-model="show">
+                <div>
+                    <div class="popText"><img src="../../assets/images/text.png" alt=""></div>
+                    <div class="popContent">
+                        <div><img src="../../assets/images/人拿手机@2x.png" alt=""></div>
+                        <div>
+                            <img @click="toFace" src="../../assets/images/上传头像2@2x.png" alt="">
+                            <img @click="toGo" style="margin-top:10px;" src="../../assets/images/上传头像2@2x (1).png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </van-popup>
     </div>
 </template>
 <script>
@@ -174,6 +189,7 @@ export default {
                     // 'https://img.yzcdn.cn/public_files/2017/09/05/c0dab461920687911536621b345a0bc9.jpg',
                
             ],
+            show:false,
             tell2:'400 075 5088',
             SportsContent:this.$route.query.status,//塑形杠铃雕塑状态
             privateEducationId:this.$route.query.privateCourseId,//私教课Id
@@ -308,41 +324,89 @@ export default {
                         }
                     })
                 }else{
-                    Dialog.confirm({
-                    title: '您还未进行人脸认证',
-                    confirmButtonText:'去认证',
-                    cancelButtonText:'继续购买'
-                    }).then(() => {
-                    // on confirm
-                        if(this.isAndroid){
-                            window.andriod.postMessage(JSON.stringify({
-                                type:'takeFace'
-                            }))
-                        }else if(this.isiOS){
-                            window.webkit.messageHandlers.takeFace.postMessage({
-                                type:'takeFace'
-                            })
-                        }
+                    this.show = true
+                //     Dialog.confirm({
+                //     title: '您还未进行人脸认证',
+                //     confirmButtonText:'去认证',
+                //     cancelButtonText:'继续购买'
+                //     }).then(() => {
+                //     // on confirm
+                //         if(this.isAndroid){
+                //             window.andriod.postMessage(JSON.stringify({
+                //                 type:'takeFace'
+                //             }))
+                //         }else if(this.isiOS){
+                //             window.webkit.messageHandlers.takeFace.postMessage({
+                //                 type:'takeFace'
+                //             })
+                //         }
 
-                    }).catch(() => {
-                    // on cancel
-                    this.$router.push({
-                        path:'/purchaseOrderDetails',
-                        query:{
-                            status: this.$route.query.status,
-                            // obj:this.privateCourse,
-                            // privateOne:this.$route.query,
-                            userId:this.userId,
-                            courseType:this.$route.query.courseType,
-                            privateCourseId:this.$route.query.privateCourseId,
-                        }
-                    })
-                });
+                //     }).catch(() => {
+                //     // on cancel
+                //     this.$router.push({
+                //         path:'/purchaseOrderDetails',
+                //         query:{
+                //             status: this.$route.query.status,
+                //             // obj:this.privateCourse,
+                //             // privateOne:this.$route.query,
+                //             userId:this.userId,
+                //             courseType:this.$route.query.courseType,
+                //             privateCourseId:this.$route.query.privateCourseId,
+                //         }
+                //     })
+                // });
                 }
             
             })
         },
-        //私教体验课立即购买
+        //人脸验证
+        toFace(){
+            // alert('人脸验证')
+            if(this.isAndroid){
+                window.andriod.postMessage(JSON.stringify({
+                    type:'takeFace'
+                }))
+            }else if(this.isiOS){
+                window.webkit.messageHandlers.takeFace.postMessage({
+                    type:'takeFace'
+                })
+            }
+        },
+        //go订单支付页面
+        toGo(){
+            //console.log('go订单支付页面')
+            if(this.$route.query.courseType == 1){
+                // alert('courseType==1')
+                //私教课
+                this.$router.push({
+                    path:'/purchaseOrderDetails',
+                    query:{
+                        status: this.$route.query.status,
+                        // obj:this.privateCourse,
+                        // privateOne:this.$route.query,
+                        userId:this.userId,
+                        courseType:this.$route.query.courseType,
+                        privateCourseId:this.$route.query.privateCourseId,
+                    }
+                })
+            }else if(this.$route.query.courseType == 2){
+                // alert('courseType==2')
+                //私教体验课
+                this.$router.push({
+                    path:'/purchaseOrderDetails',
+                    query:{
+                        status: this.$route.query.status,
+                        // obj:this.educationexperie,
+                        // privateTwo:this.$route.query,
+                        userId:this.userId,
+                        courseType:this.$route.query.courseType,
+                        privateTasteCourseId:this.$route.query.educationexperienceId
+                    }
+                })
+            }
+            
+        },
+        //私教体验课购买
         shoppingTwo(){
             HaveHeadAuth(this.userId).then(res=>{
                 if(res.data.obj){
@@ -358,36 +422,37 @@ export default {
                         }
                     })
                 }else{
-                    Dialog.confirm({
-                    title: '您还未进行人脸认证',
-                    confirmButtonText:'去认证',
-                    cancelButtonText:'继续购买'
-                    }).then(() => {
-                    // on confirm
-                        if(this.isAndroid){
-                            window.andriod.postMessage(JSON.stringify({
-                                type:'takeFace'
-                            }))
-                        }else if(this.isiOS){
-                            window.webkit.messageHandlers.takeFace.postMessage({
-                                type:'takeFace'
-                            })
-                        }
+                    this.show = true
+                //     Dialog.confirm({
+                //     title: '您还未进行人脸认证',
+                //     confirmButtonText:'去认证',
+                //     cancelButtonText:'继续购买'
+                //     }).then(() => {
+                //     // on confirm
+                //         if(this.isAndroid){
+                //             window.andriod.postMessage(JSON.stringify({
+                //                 type:'takeFace'
+                //             }))
+                //         }else if(this.isiOS){
+                //             window.webkit.messageHandlers.takeFace.postMessage({
+                //                 type:'takeFace'
+                //             })
+                //         }
 
-                    }).catch(() => {
-                    // on cancel
-                    this.$router.push({
-                        path:'/purchaseOrderDetails',
-                        query:{
-                            status: this.$route.query.status,
-                            // obj:this.educationexperie,
-                            // privateTwo:this.$route.query,
-                            userId:this.userId,
-                            courseType:this.$route.query.courseType,
-                            privateTasteCourseId:this.$route.query.educationexperienceId
-                        }
-                    })
-                });
+                //     }).catch(() => {
+                //     // on cancel
+                //     this.$router.push({
+                //         path:'/purchaseOrderDetails',
+                //         query:{
+                //             status: this.$route.query.status,
+                //             // obj:this.educationexperie,
+                //             // privateTwo:this.$route.query,
+                //             userId:this.userId,
+                //             courseType:this.$route.query.courseType,
+                //             privateTasteCourseId:this.$route.query.educationexperienceId
+                //         }
+                //     })
+                // });
                 }
             
             })
@@ -396,8 +461,39 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .van-popup{
+            background-color:rgba(0,0,0,0);
+            width:300px;
+            margin:0 auto;
+            .popText{
+                img{
+                  width: 292px;  
+                }
+            }
+            .popContent{
+                margin-top:20px;
+                display: flex;
+                
+                div:nth-child(1){
+                    img{
+                        width:166px;
+                    }
+                }
+                div:nth-child(2){
+                    margin-top: 20px;
+                    text-align: center;
+                    img{
+                        width:100px;
+                    }
+                }
+            }
+    }
     .Course_Details_content{
+        // background: #fff;
         padding-bottom: 70px;
+        height:100%;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
         .header_swiper{
             height: 160px;
             border-radius: 8px;
@@ -584,6 +680,10 @@ export default {
                 }
             }
         }
+    }
+    .Course_Details_content::-webkit-scrollbar{
+        width: 0;
+        height: 0;
     }
     .Immediate_purchase{
             position: fixed;

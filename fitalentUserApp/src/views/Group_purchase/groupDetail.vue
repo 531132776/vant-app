@@ -101,11 +101,13 @@
                         <div v-if="detail.status == 1">
                              <div v-if="detail.hasJoin == 0">
                                 <div v-if="detail.canBuy != 1">此商品您已达到拼团上限</div>
-                                <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
+                                <div @click="appointment()" v-if="detail.canBuy == 1 && people != 0">立即参团</div>
+                                <div @click="toList()" v-if="people == 0">查看更多拼团商品</div>
                             </div>
                             <div v-if="detail.hasJoin != 0">
-                                <div v-if="people != 0" @click="inviteToGroup()">邀请好友参团</div>
-                                <div v-if="people == 0" @click="toList()">查看更多拼团商品</div>
+                                <div @click="appointment()" v-if="detail.pay == 0">立即参团</div>
+                                <div v-if="detail.pay != 0 && people != 0" @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="detail.pay != 0 && people == 0" @click="toList()">查看更多拼团商品</div>
                             </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
@@ -115,11 +117,13 @@
                         <div v-if="detail.status == 1">
                             <div v-if="detail.hasJoin == 0">
                                 <div v-if="detail.canBuy != 1">此商品您已达到拼团上限</div>
-                                <div @click="appointment()" v-if="detail.canBuy == 1">立即参团</div>
+                                <div @click="appointment()" v-if="detail.canBuy == 1 && people != 0">立即参团</div>
+                                <div @click="toList()" v-if="people == 0">查看更多拼团商品</div>
                             </div>
                             <div v-if="detail.hasJoin != 0">
-                                <div v-if="people != 0" @click="inviteToGroup()">邀请好友参团</div>
-                                <div v-if="people == 0" @click="toList()">查看更多拼团商品</div>
+                                <div @click="appointment()" v-if="detail.pay == 0">立即参团</div>
+                                <div v-if="detail.pay != 0 && people != 0" @click="inviteToGroup()">邀请好友参团</div>
+                                <div v-if="detail.pay != 0 && people == 0" @click="toList()">查看更多拼团商品</div>
                             </div>
                         </div>
                         <div v-if="detail.status == 2" @click="toList()">查看更多拼团商品</div>
@@ -219,7 +223,7 @@ export default {
         },
         toList(){
             this.$router.push({
-                    path:'/groupList/showShareBtn',
+                    path:'/groupList/showShareBtn?userId='+this.userId,
             })
         },
         toDetail(){

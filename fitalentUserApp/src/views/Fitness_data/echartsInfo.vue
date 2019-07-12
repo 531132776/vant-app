@@ -107,16 +107,16 @@
               </div>
               <!-- 饼图 -->
               <div class=" Pie_chart mt15" v-show="backgroundImg">
-                  <canvas :id="'mountNodeList'+i" width="100%" heihgt:="226px"></canvas>
+                  <canvas :id="'mountNodeList'+i" width="100%" heihgt="226px"></canvas>
               </div>
               <div class="pt_pb20 Pie_chart mt15" v-show="!backgroundImg">
                   <img src="../../assets/images/pri.png" style="max-width: 100%" alt="">
               </div>
               <!-- 柱状图 -->
-              <div class="Histogram_info pr15" v-show="backgroundImg">
+              <div class="Histogram_info pr_pl15" v-show="backgroundImg">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
-                  <canvas :id="'histogramList'+i" width="100%" heihgt:="260px"></canvas>
+                  <div :id="'histogramList'+i" class="histogramList" ></div>
                 </div>
               </div>
               <div class="pt_pb15 Pie_chart mt15" v-show="!backgroundImg">
@@ -360,6 +360,9 @@ import houseAimg3 from "../../../public/aggregate.json";
 import F2 from "@antv/f2/lib/index-all"
 import { constants } from 'crypto';
 // import echarts from 'echarts'
+let echarts = require('echarts/lib/echarts')
+//根据需要引入相应图的组件
+require('echarts/lib/chart/bar')//柱状图
 export default {
   data() {
     return {
@@ -418,6 +421,10 @@ export default {
       fatMovement:'',
       warmUp:'',
       backgroundImg:false,
+      data2: [5, 20, 36, 10,56,95,64,54,26,48,78,74,
+      33,76,15,20, 36, 10,56,95,64,54,26,48,89,79,85,
+      80,69,62,41,22,45,20, 36, 10,],
+      lists:[]
     };
   },
   components: {
@@ -425,17 +432,18 @@ export default {
     [Tabs.name]: Tabs,
     HelloWorld,
     [Dialog.name]: Dialog
-    // echartsInfoPir,
-    // echartsInfobar
+  },
+  created() {
+    // this.intipriec();
   },
   mounted() {
     this.init();
     
   },
-  updated() {},
-  created() {
-    
+  updated() {
+   
   },
+  
   methods: {
      fomatFloat(x) {
       // if(isNaN(num)){
@@ -563,35 +571,15 @@ export default {
               this.distance = this.motionDataObj.distance;
               this.endTime = this.motionDataObj.endTime.split(" ")[1];
               this.startTime = this.motionDataObj.startTime.substr(0, 16);
-              this.$set(
-                this.data[0],
-                "percent",
-                this.motionDataObj.maximalExercise
-              );
-              this.$set(
-                this.data[1],
-                "percent",
-                this.motionDataObj.anaerobicExercise
-              );
-              this.$set(
-                this.data[2],
-                "percent",
-                this.motionDataObj.aerobicExercise
-              );
-              this.$set(
-                this.data[3],
-                "percent",
-                this.motionDataObj.fatMovement
-              );
-              this.$set(this.data[4], "percent", this.motionDataObj.warmUp);
              
-              console.log('图饼数据',this.data)
               // debugger
               this.initPiechart(this.heartRate,index);
              
-              this.intipriec(index);
+              this.intipriec(this.heartRate,index);
+              // this.intipriec(this.data2,index);
                console.log(this.heartRate,'....>>>>')
                this.heartRate.map((v,i) =>{
+                 
                  console.log(this.heartRate[i])
                  if(this.heartRate[i] == 0){
                    this.backgroundImg = false;
@@ -787,158 +775,147 @@ export default {
       
       chart.render();
     },
-    
-    intipriec(index){
-      var heartRate = [
-        31,52,36,60,88,55,99,33,22,11,22,44,73,66,60,88,55,99,33,22,
-        15,16,21,48,36,10,19,88,90,92,95,97,66,62,68,72,76,55,53,41,
-        15,16,21,48,36,10,66,60,88,55,99,33,22,26,60,88,55,99,33,22,
-        33,22,11,22,44,73,66,15,16,21,48,36,10,88,55,99,33,22,22,11,
-        97,66,62,68,72,52,53,58,59,54,56,55,75,65,35,25,15,45,44,46,
-        15,16,21,48,36,10,66,60,88,55,99,33,22,26,60,88,55,99,33,22,
-        33,22,11,22,44,73,66,15,16,21,48,36,10,88,55,99,33,22,22,11,
-        97,66,62,68,72,52,53,58,59,54,56,55,75,65,35,25,15,45,44,46,
-      ]
-      var originDates = [];
-      var originSteps = [];
-     var item = heartRate.map((v,i) => {
-          if(v>=0 && v<=49){
-            
-            // originSteps.push(v);
-            return {
-                color:'5',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
-          else if(v>49 && v<=59){
-            
-            // originSteps.push(v);
-            return {
-                color:'4',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
-          else if(v>59 && v<=69){
-            
-            // originSteps.push(v);
-            return {
-                color:'3',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
-          else if(v>69 && v<=79){
-            
-            // originSteps.push(v);
-            return {
-                color:'2',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
-          else if(v>79 && v<=89){
-            
-            // originSteps.push(v);
-            return {
-                color:'1',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
-          else if(v>=90){
-            
-            // originSteps.push(v);
-            return {
-                color:'0',
-                year: i,
-                sales: v
-              }
-            // originDates.push(i);
-          }
+    fGetChartFontSize(){
+        const dpr = window.devicePixelRatio;
+        let fontSize = '';
+        const heartRate = this.heartRate;
+        if(heartRate.length > 0 && heartRate.length<=10){
+          // alert(1)
+            fontSize = 15;
+        }
+        else if(heartRate.length > 10 && heartRate.length<=50){
+          // alert(0)
+            fontSize = 9;
+        }
+        else if(heartRate.length > 50 && heartRate.length<=100){
+          // alert(2)
+            fontSize = 5;
+        } 
+        else{
+            fontSize = 3
+        }
+        return fontSize;
+    },
+    intipriec(data2,index){
+      const barWidth = this.fGetChartFontSize();
+      let lists = []
+     data2.map((v,i) =>{
+       lists.push(i+1)
      })
-      console.log(item,']]]]]]')
-     
-     item.forEach(function(obj) {
-      if (obj.year >= 40) {
-        originDates.push(obj.year);
-        originSteps.push(obj.sales);
-      }
-    });
-console.log(originDates,'}}}')
-console.log(originSteps,'}}}')
-      var num = 4;
-      if(item.length<=3){
-        num = 2
-      }else if(item.length<=20 && item.length >3){
-        num = 3
-      }else{
-        num = 5
-      }
-      var chart = new F2.Chart({
-        id: 'histogramList'+index,
-        pixelRatio: window.devicePixelRatio
-      });
-      chart.clear();
-      chart.legend(false);
-      chart.tooltip(false);
-      chart.axis('sales',{
-        labelOffset: 20
-      })
-      chart.source(item, {
-        year: {
-          tickCount: num,
-          formatter: function formatter(val,i) {
-            return val.toFixed(0)+'min'
-          },
-          values: originDates,
+     // 基于准备好的dom，初始化echarts实例
+      let myChart = echarts.init(document.getElementById('histogramList'+index))
+      // 绘制图表
+      myChart.setOption({
+        // title: { text: '心率等级分布/分钟' },
+        // tooltip: {},
+        grid:{
+            top:20,
+            left:50,// 调整这个属性
+            right:10,
+            bottom:30,
         },
-        sales:{
-          // tickCount: 4,
-          formatter: function formatter(val) {
-            return (val * 1).toFixed(0)+'%';
-           
+        xAxis: {
+          data: lists,
+          axisLabel:{
+            formatter: '{value} min',
+            textStyle:{
+              color: '#515A6B'
+            }
           },
-          values: originSteps
-        }
+          axisTick:{       //y轴刻度线
+            show:false
+          },
+          lineStyle:{
+            width:0
+          },
+          axisLine:{
+            lineStyle: {
+                    color: "#dedede",
+                    // width: 0,
+                    type: "solid"
+                }
+          }
+        },
+        yAxis: {
+          
+          axisLine:{
+            show:false,
+          },
+          
+          type:'value',
+          axisLabel:{
+            formatter: '{value} %',
+            textStyle:{
+            // fontSize:size //此处设置提示文字大小
+            color: '#515A6B',
+            },
+          },
+          
+          axisTick:{       //y轴刻度线
+            show:false
+          },
+          splitLine:{
+              show:true,
+              lineStyle:{
+                  type:'dashed',
+                  color:'#E7E8EB'
+              }
+          }
+          // data:[0,60,70,80,90,100,120]
+        },
+        series: [{
+          // name: '销量',
+          type: 'bar',
+          data: data2,
+          barWidth:barWidth,
+          barMinHeight:0,
+          barMaxHeight:100,
+          itemStyle:{
+            normal:{
+              color:function(v){
+                // console.log(v)
+
+                if(v.value>0 && v.value<=49){
+                  return '#BDC1C7'
+                }
+                else if(v.value>49 && v.value<=59){
+                  return '#9399A5'
+                }
+                else if(v.value>59 && v.value<=69){
+                  return '#3FA6F2'
+                }
+                else if(v.value>69 && v.value<=79){
+                  return '#14D36B'
+                }
+                else if(v.value>79 && v.value<=89){
+                  return '#FFCB14'
+                }
+                else if(v.value>=90){
+                  return '#F85842'
+                }
+              }
+            }
+          }
+        }],
+        dataZoom: [
+            {
+                type: 'slider',
+                show: false,
+                start: 34,
+                end: 100,
+                handleSize: 8
+            },
+            {
+                type: 'inside',
+                start: 34,
+                end: 100
+            },
+           
+        ],
       });
       
-      chart.interval().position('year*sales').color('color',value =>{
-        if(value == 5){
-          return "#BDC1C7"
-        }
-        else if(value == 4){
-          return "#9399A5"
-        }else if(value == 3){
-          return "#3FA6F2"
-        }else if(value == 2){
-          return "#14D36B"
-        }else if(value == 1){
-          return "#FFCB14"
-        }else if(value == 0){
-          return "#F85842"
-        }
-      }).size('year',value => {
-        if(item.length <= 10){
-          return 20
-        }else if(item.length >10 && item.length <= 80){
-          return 3
-        }else {
-          return 2
-        }
-        
-      });
-      
-     
-      chart.interaction('pan');
-      chart.render();
-      },
+    },
+    
    
     //时间戳转换日期
 

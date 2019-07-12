@@ -27,7 +27,7 @@
         </div>
         <!-- 详细地址 -->
         <div class="details_addres pr_pl15">
-            <ul @click="nativePostMap">
+            <ul @click="nativePostMap(clubInfo.address)">
                 <li>
                     <img :src="addressIcon" alt="">
                 </li>
@@ -317,13 +317,15 @@
         },
 
         methods: {
-            nativePostMap() {
+            nativePostMap(address) {
+                console.log(address,'地址')
                 let map = {
                     type: "map",
                     currentLng: this.lng2,
                     currentLat: this.lat2,
                     clubLng: this.clubInfo.longitude,
-                    clubLat: this.clubInfo.latitude
+                    clubLat: this.clubInfo.latitude,
+                    destination: address
                 }
                 if (this.isAndroid) {
                     window.andriod.postMessage(JSON.stringify(map))
@@ -921,12 +923,16 @@
                                 }
                             }
                             li:nth-child(2) {
-                                padding: 8px 0;
+                                padding: 8px 5px;
                                 text-align: center;
                                 span {
                                     font-size: 15px;
                                     font-family:PingFangSC-Semibold;
-                                    font-weight: 600
+                                    font-weight: 600;
+                                    white-space: nowrap;
+                                    overflow: hidden;
+                                    text-overflow: ellipsis;
+                                    display: block;
                                 }
                             }
                             li:nth-child(3),

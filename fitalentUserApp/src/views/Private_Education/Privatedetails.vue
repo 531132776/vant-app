@@ -364,9 +364,14 @@ export default {
                         align-content: flex-start;
                         flex-flow: column wrap;
                         flex: 0 1 76%;
+                        overflow: hidden;
                         span:nth-child(1){
                             font-size: 17px;
                             font-weight: 600;
+                            display: block;
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
                         }
                         span:nth-child(2),
                         span:nth-child(3){

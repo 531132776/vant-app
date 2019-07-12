@@ -59,8 +59,8 @@
                 <van-cell @click="popup" is-link>
                     <div class="flex_between">
                         <span>选择优惠券</span>
-                        <span v-if="couponListLength && couponCount != 0">{{couponName}}</span>
-                        <span v-else>{{couponCount}}张可用优惠券</span>
+                        <span style="font-size:15px;color:rgba(147,153,165,1);" v-if="couponListLength && this.couponList.length>0">{{couponName}}</span>
+                        <span style="font-size:15px;color:rgba(147,153,165,1);" v-else>{{couponCount}}张可用优惠券</span>
                     </div>
                 </van-cell>
                 <van-cell >
@@ -334,7 +334,6 @@
                     }else{
                         this.totalPrice = this.vipDetail.groupOwnerPrice
                     }
-                    
                     this.couponId = ''
                     this.couponListLength = false;
                 }
@@ -389,6 +388,9 @@
         height: 10px;
         background: rgba(242,242,242,1);
         width: 100%;
+    }
+    .van-cell{
+        font-size: 17px;
     }
     .van-cell:not(:last-child)::after {
             content: ' ';
@@ -575,7 +577,10 @@
             line-height: 50px;
         }
         .popupwarp{
-             margin-top:10px; 
+            padding-top:10px;
+            height: 400px;
+            overflow-y: scroll;
+            padding-bottom: 60px; 
         }
         .popupItem{
             display: flex;

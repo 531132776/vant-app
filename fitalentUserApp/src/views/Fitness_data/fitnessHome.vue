@@ -272,7 +272,7 @@ export default {
                 this.$set(this,'sameMath',newDate2)
                 this.initComprehensiveData(this.subscribeDate)
                 this.getSameMonth(newDate2)
-
+                sessionStorage.setItem('thisDate',newDate2)
                 
     },
     //在页面离开时记录滚动位置
@@ -356,9 +356,10 @@ export default {
             console.log('lolo ',date)
             this.initComprehensiveData(date);
             this.$set(this,'subscribeDate',date)
-            sessionStorage.setItem('sessionDate',date)
+            sessionStorage.setItem('thisDate',date.substring(0,7))
+            this.getSameMonth(date.substring(0,7));
         },
-        clickDay(data) {
+    clickDay(data) {
             // debugger
       console.log(data,'选中某天'); //选中某天
       var data = data.split('/');
@@ -380,8 +381,9 @@ export default {
       console.log('最终时间',datatime)
       this.initComprehensiveData(datatime);
       this.$set(this,'subscribeDate',datatime);
-      this.dataTime = 1;
-      sessionStorage.setItem('thisDate',datatime)
+    //   this.dataTime = 1;
+    //   this.getSameMonth(datatime.substring(0,7));
+      sessionStorage.setItem('thisDate',datatime.substring(0,7))
     },
     changeDate(data){
         let cc = document.querySelector('.wh_chose_day')
@@ -406,16 +408,10 @@ export default {
       var datatime = data[0]+ '-' +month+ '-'+day;
       var datatime2 = data[0]+ '-' +month;
       console.log('最终时间',datatime)
-      this.$set(this,'subscribeDate',datatime)
-    //   if(this.dataTime ==1 ){
-    //       const aa = sessionStorage.getItem('thisDate');
-    //       console.log(aa,'切换月份')
-    //     this.initComprehensiveData(aa);
-    //   }else{
-          this.initComprehensiveData(this.subscribeDate);
-    //   }
-      
-      
+    //   this.$set(this,'subscribeDate',datatime)
+   
+    //   this.initComprehensiveData(datatime);
+      sessionStorage.setItem('thisDate',datatime2)
       this.getSameMonth(datatime2);
     },
         initTime() {
@@ -434,11 +430,6 @@ export default {
                     console.log(err)
                 })
             },
-            tabClick(index,title){
-                // alert(1)
-                console.log('哈哈',index,title)
-                //     this.initComprehensiveData(this.formatDate(new Date(this.timeList[index])))
-            },
             calendar(){
                 // alert(1)
                 // this.show = !this.show;
@@ -448,9 +439,9 @@ export default {
                 this.show3 = !this.show3;
                 this.show4 = !this.show4;
                 // this.disabledTab = !this.disabledTab;
-                const n = sessionStorage.getItem('sessionDate');
-                const s = n.substring(0,7)
-                // this.getSameMonth(s)
+                const n = sessionStorage.getItem('thisDate');
+                // const s = n.substring(0,7)
+                // this.getSameMonth(n)
             },
             getnewDay(i){
                 var curDate = new Date();

@@ -146,7 +146,7 @@
                           <img src="../../assets/images/时长copy@2x.png" alt>
                         </dt>
                         <dt>
-                          <em>{{avgspeed}}</em>公里/小时
+                          <em>{{KeepDecima1(avgspeed)}}</em>公里/小时
                         </dt>
                         <dt>平均速度</dt>
                       </dl>
@@ -548,7 +548,7 @@ export default {
     },
 
     initTypeDetail(type, id,index) {
-      console.log(index,'======>>>')
+      console.log(type,'======>>>')
       let params = {
         type: type,
         // userId: "1128609374529040385",
@@ -602,8 +602,10 @@ export default {
                 for(var i = 0; i < len ; i++){
                     sum += parseFloat(this.powerMotionData.dataDetails[i].speed);
                 }
-        //        返回数组的和与长度求平均值
-                this.avgspeed = sum/len;
+                console.log(sum,'数组和')
+                //返回数组的和与长度求平均值
+                this.avgspeed = (this.powerMotionData.distance/1000)/(this.powerMotionData.motionTime/3600);
+                // this.avgspeed = sum/len
             console.log(this.avgspeed,'平均值')
             }
           }

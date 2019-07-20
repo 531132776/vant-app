@@ -305,18 +305,23 @@
                     window.webkit.messageHandlers.moreList.postMessage(params)
                 }
             },
-            // oc_to_js(){
-            //     this.lat2 = this.$route.query.lat;
-            //     this.lng2 = this.$route.query.lng;
-            //     this.clubId = this.$route.query.clubId;
-            //     this.userId = this.$route.query.userId;
-            //     this.getClubDetail(this.clubId);
-            //     this.countPeopleByClub(this.clubId);
-            //     this.getH5Config();
-            //     this.initTime(sessionStorage.getItem('dayTime'));
-            //     this.getCoach() //获取教练list
-            //     this.getTrainingList();
-            // },
+            oc_to_js(){
+                this.lat2 = this.$route.query.lat;
+                this.lng2 = this.$route.query.lng;
+                this.clubId = this.$route.query.clubId;
+                this.userId = this.$route.query.userId;
+                this.getClubDetail(this.clubId);
+                this.countPeopleByClub(this.clubId);
+                this.getH5Config();
+                // this.initTime(sessionStorage.getItem('dayTime'));
+                if(this.active==0){
+                    this.initTime(Date.parse(new Date()));
+                }else{
+                    this.initTime(sessionStorage.getItem('dayTime'));
+                }
+                this.getCoach() //获取教练list
+                this.getTrainingList();
+            },
             initTime(dayTime) {
                 let params = {
                     createTime: Date.parse(new Date()),
@@ -342,7 +347,6 @@
                     if (res.data.code == 2000) {
                         this.trainingList = res.data.obj || [];
                     }
-                    this.$store.commit('trainingList', JSON.parse(this.teamClassList))
                 }).catch(error => {
 
                 })
@@ -358,7 +362,6 @@
                     if (res.data.code == 2000) {
                         this.teamClassList = res.data.obj || [];
                     }
-                    this.$store.commit('teamClassList', JSON.parse(this.teamClassList))
                 }).catch(error => {
 
                 })

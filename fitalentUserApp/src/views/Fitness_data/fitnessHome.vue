@@ -81,7 +81,7 @@
                                                 <dt>消耗/千卡</dt>
                                             </li>
                                             <li>
-                                                <dt>{{totalFitnessData.powerGeneration || 0}}</dt>
+                                                <dt>{{(totalFitnessData.powerGeneration/1000).toFixed(1) || 0}}</dt>
                                                 <dt>发电量/千焦</dt>
                                             </li>
                                         </ul>

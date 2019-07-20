@@ -106,13 +106,14 @@
                         <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
                             <div class="popupItemOneBlue" v-if="item.couponType == 1">
                                 <span style="font-size:17px">{{item.discountValue}}</span>
-                                <span v-if="item.couponType == 0">代金券</span>
-                                <span v-if="item.couponType == 1">免费券</span>
+                                <span>免费券</span>
                             </div>
                             <div class="popupItemOneYellow" v-if="item.couponType == 0">
-                                <span style="font-size:17px">{{item.discountValue}}</span>
-                                <span v-if="item.couponType == 0">代金券</span>
-                                <span v-if="item.couponType == 1">免费券</span>
+                                <span >
+                                    <em>￥</em>
+                                    <span style="font-size:17px;line-height: 1.5;">{{item.discountValue}}</span>
+                                </span>
+                                <span>满{{item.thresholdValue}}元可用</span>
                             </div>
                             <div class="popupItemTwo">
                                 <div class="popupText">
@@ -122,7 +123,7 @@
                                 <div class="popupIcon">
                                     <van-checkbox v-model="item.checkStatus" >
                                         <img
-                                            @click="aaa(item)"
+                                            @click="triggerActive(item)"
                                             style="width:18px;"
                                             slot="icon"
                                             :src="item.checkStatus ? couponIcon.normal : couponIcon.active"
@@ -259,19 +260,27 @@
                         res.data.obj.list[0].checkStatus = true
                         this.couponList = res.data.obj.list
                         this.choosePopup()
+                    }else{
+                        this.couponListLength = true
+                        this.couponList = res.data.obj.list
+                        this.couponValue = 0
                     }
                 })
             },
-            aaa(item){
+            triggerActive(item){
                 if(!item.checkStatus){
                     this.couponList.map(function(res){
                         if(res.uid != item.uid){
                             res.checkStatus = false
                             return res
                         }
-                    
                     })
+                }else{
+                    console.log(111)
+                    // return this.couponList
                 }
+                // console.log(this.couponList[0].checkStatus)
+                // console.log(this.couponList[1].checkStatus)
             },
             popup(){
                 if(this.couponCount != 0){
@@ -581,7 +590,7 @@
         }
         .popupwarp{
             padding-top:10px;
-            height: 400px;
+            height: 350px;
             overflow-y: scroll;
             padding-bottom: 60px; 
         }

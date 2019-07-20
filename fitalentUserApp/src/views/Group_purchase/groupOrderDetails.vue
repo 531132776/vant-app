@@ -108,15 +108,16 @@
                     </div>
                     <div class="popupwarp">
                         <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
-                            <div class="popupItemOneBlue" v-if="item.couponType == 1">
+                             <div class="popupItemOneBlue" v-if="item.couponType == 1">
                                 <span style="font-size:17px">{{item.discountValue}}</span>
-                                <span v-if="item.couponType == 0">代金券</span>
-                                <span v-if="item.couponType == 1">免费券</span>
+                                <span>免费券</span>
                             </div>
                             <div class="popupItemOneYellow" v-if="item.couponType == 0">
-                                <span style="font-size:17px">{{item.discountValue}}</span>
-                                <span v-if="item.couponType == 0">代金券</span>
-                                <span v-if="item.couponType == 1">免费券</span>
+                                <span >
+                                    <em>￥</em>
+                                    <span style="font-size:17px;line-height: 1.5;">{{item.discountValue}}</span>
+                                </span>
+                                <span>满{{item.thresholdValue}}元可用</span>
                             </div>
                             <div class="popupItemTwo">
                                 <div class="popupText">

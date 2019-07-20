@@ -26,7 +26,8 @@
                 <div class="header_info pb15">
                     <ul>
                         <li>
-                            <img :src="meTrainingCampList.reduceUrl" alt="">
+                            <!-- <img :src="meTrainingCampList.reduceUrl" alt=""> -->
+                            <img :src="meTrainingCampList.coverUrl" alt="">
                             </li>
                         <li>
                             <!-- <dt v-if="className1==1">包月私教</dt> -->

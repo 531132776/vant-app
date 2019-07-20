@@ -224,9 +224,9 @@
         <div class="popupwarp">
           <div v-for="item in couponList" :key="item.uid" class="popupItem" style="display:flex">
             <div :class="[item.couponType == 0 ? popupItemThree : popupItemOne]">
-              <span style="font-size:17px">¥{{item.discountValue}}</span>
-              <span v-if="item.couponType == 0">代金券</span>
-              <span v-if="item.couponType == 1">免费券</span>
+              <span><em class="span2">¥</em><em class="span">{{item.discountValue}}</em></span>
+              <span class="span2" v-if="item.couponType == 0">满{{item.thresholdValue}}元可使用</span>
+              <span class="span2" v-if="item.couponType == 1">免费券</span>
             </div>
             <div class="popupItemTwo">
               <div class="popupText">
@@ -1145,6 +1145,17 @@ export default {
     color: rgba(255, 255, 255, 1);
     width: 114px;
     height: 104px;
+    .span{
+      font-size:17px;
+      font-weight: 600;
+    }
+    .span2{
+      font-size:13px;
+      font-weight:400;
+    }
+    .span2:nth-child(1){
+      margin-right:2px;
+    }
   }
     .popupItemThree {
     background-image: url(../../assets/images/yellow.png);
@@ -1157,6 +1168,17 @@ export default {
     color: rgba(255, 255, 255, 1);
     width: 114px;
     height: 104px;
+    .span{
+      font-size:17px;
+      font-weight: 600;
+    }
+    .span2{
+      font-size:13px;
+      font-weight:400;
+    }
+    .span2:nth-child(1){
+      margin-right:2px;
+    }
   }
   .popupItemTwo {
     background-image: url(../../assets/images/矩形copy2@2x1.png);
@@ -1175,12 +1197,21 @@ export default {
       font-family: PingFangSC-Regular;
       font-weight: 400;
       color: rgba(16, 29, 55, 1);
+      font-size: 13px;
+      p:nth-child(2){
+        color:#9399A5;
+      }
     }
     .popupIcon {
       display: flex;
       align-self: center;
       padding-right: 10px;
     }
+  }
+}
+@media screen and (max-width:320px){
+  .popupItem .popupItemTwo .popupText{
+    padding: 5px 10px ;
   }
 }
 .privatemonthlyOrder_content {

@@ -51,7 +51,8 @@
         <!-- 教练相册 -->
         <div class="Professional_certificate pr_pl15">
             <div class="Professional_info pt_pb20">
-                <ul @click="lifeImg">
+                <!-- <ul @click="lifeImg"> -->
+                <ul @click="swiperImgClick()">
                     <li>教练相册</li>
                     <li>
                         <dt >
@@ -118,6 +119,7 @@
 </template>
 <script>
 import {getCoachDetail,getCourseClass} from '@/request/api'
+import { ImagePreview,Dialog } from 'vant';
 export default {
     data(){
         return{
@@ -136,7 +138,9 @@ export default {
             userId:this.$route.query.userId
         }
     },
-      
+    components:{
+        [ImagePreview.name]:ImagePreview,
+    },
     //在页面离开时记录滚动位置
         beforeRouteLeave(to, from, next) {
             console.log('00')
@@ -195,12 +199,29 @@ export default {
         },
         //跳转到生活照页面
         lifeImg(){
-            this.$router.push({
-                path:'/lifeImg',
-                query:{
-                    images:this.swiperImgs
-                }
-            })
+            // this.$router.push({
+            //     path:'/lifeImg',
+            //     query:{
+            //         images:this.swiperImgs
+            //     }
+            // })
+            this.show= true
+        },
+        //生活照图片预览
+        swiperImgClick(){
+            const imgList = []
+            for(var i=0;i<this.swiperImgs.length;i++){
+                imgList.push(this.swiperImgs[i].url)
+            }
+            ImagePreview(imgList)
+        },
+        //证书照预览
+        cshImgClick(){
+            const imgList = []
+            for(var i=0;i<this.seniorityUrl.length;i++){
+                imgList.push(this.seniorityUrl[i].url)
+            }
+            ImagePreview(imgList)
         },
         //获取教练详情
         CoachDetail(){
@@ -570,6 +591,17 @@ export default {
                         width: 128px;
                         height: 106px;
                     }
+                }
+            }
+        }
+        .popContent{
+            max-height: 300px;
+            width: 100%;
+            .van-swipe{
+                height: 100%;
+                img{
+                    display:block;
+                    width: 100%;
                 }
             }
         }

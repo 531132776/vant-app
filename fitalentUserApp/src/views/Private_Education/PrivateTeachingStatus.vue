@@ -91,12 +91,16 @@
                             <dt>联系教练</dt>
                         </li>
                         <!-- <li @click="signIn" v-if="conditionHide!==1"> -->
-                        <li v-if="courseType == 1 || courseType ==2">
-                            <van-button type="primary" @click="signIn" :class="{'disabledClass':disabledClass}">签到</van-button>
-                        </li>
-                        <!-- <li @click="signIn" v-if="courseInfo.status == 1">
-                            <van-button type="primary" :disabled="disabled">签到</van-button>
-                        </li> -->
+                        <!-- <span v-esle> -->
+                            <li v-if="courseInfo.status == 10">
+                                <van-button  type="primary" @click="CancelledSignIn" class="disabledClass">签到</van-button>
+                            </li>
+                            <li v-if="courseInfo.status !== 10 && courseType == 1 || courseInfo.status !== 10 && courseType ==2">
+                               <van-button type="primary" @click="signIn" :class="{'disabledClass':disabledClass}">签到</van-button> 
+                            </li>
+                        <!-- </span> -->
+                        
+                        
                     </ul>
                 </div>
             </div>
@@ -108,6 +112,7 @@ import {Dialog,Button,Toast} from 'vant'
 export default {
     data(){
         return{
+            disabled2:true,
             peopleHead:require('../../assets/images/10.png'),
             phomeIcon:require("../../assets/images/电话 2@2x.png"),
             // oneImg:require('../../assets/images/4.jpg'),
@@ -127,6 +132,7 @@ export default {
             courseId:this.$route.query.courseId,
             courseType:this.$route.query.courseType,
             courseInfo:{},
+            // courseType:1,
             disabled:false,
             disabledClass:false,
             Front:'',
@@ -308,6 +314,10 @@ export default {
             // on cancel
             });
             
+        },
+        CancelledSignIn(){
+            // alert(1)
+            Toast('课程已取消')
         },
         //签到
         signIn(){
@@ -632,13 +642,6 @@ export default {
                     li:nth-child(2){
                         width: 60%;
                         flex:0 1 70%;
-                        // padding: 10px 0;
-                        // font-size: 17px;
-                        color: #fff;
-                        // font-weight: 400;
-                        border-radius: 23px;
-                        // background:rgba(29,206,116,1);
-                        text-align: center;
                         .van-button--primary{
                             height: auto;
                             border-radius:25px;
@@ -647,6 +650,14 @@ export default {
                             font-size: 17px;
                             letter-spacing: 2px;
                             font-weight: 400;
+                            
+                            // padding: 10px 0;
+                            // font-size: 17px;
+                            color: #fff;
+                            // font-weight: 400;
+                            border-radius: 23px;
+                            // background:rgba(29,206,116,1);
+                            text-align: center;
                         }
                         .disabledClass{
                             opacity: .5;

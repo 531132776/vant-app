@@ -169,7 +169,19 @@
                 </div>
             </van-popup>
         </div>
-         <!-- 预约 -->
+          <!-- 弹窗 -->
+        <van-popup v-model="faceShow">
+            <div>
+                <div class="popText"><img src="../../assets/images/text.png" alt=""></div>
+                <div class="popContent">
+                    <div><img src="../../assets/images/人拿手机@2x.png" alt=""></div>
+                    <div>
+                        <img @click="toFace" src="../../assets/images/上传头像2@2x.png" alt="">
+                        <img @click="toGo" style="margin-top:10px;" src="../../assets/images/上传头像2@2x (1).png" alt="">
+                    </div>
+                </div>
+            </div>
+        </van-popup>
     </div>
     <!-- </van-pull-refresh> -->
 <!-- </div> -->
@@ -183,6 +195,7 @@ export default {
        data(){
         return{
             yearShow:true,
+            faceShow:false,
             monthShow:false,
             sysAppIds:'sss',
             countdown:false,
@@ -280,13 +293,22 @@ export default {
                 this.endDate2 = res.data.obj.expireTime.replace(/-/g,'/')
                 var that = this;
                 that.countTime()
-                for(var i= 0;i<this.people;i++){
-                   this.coachList.push({
-                       headShotUrl:'https://isportcloud.oss-cn-shenzhen.aliyuncs.com/manager/还差1@2x.png',
-                       status:null,
-                   })
+                if(res.data.obj.status != 3){
+                    for(var i= 0;i<this.people;i++){
+                        this.coachList.push({
+                            headShotUrl:'https://isportcloud.oss-cn-shenzhen.aliyuncs.com/manager/1563269822971还差1@2x.png',
+                            status:null,
+                        })
+                    }
+                }else if(res.data.obj.status == 3){
+                    this.people = res.data.obj.memberSizePerGroup - this.coachList.length
+                    for(var i= 0;i<this.people;i++){
+                        this.coachList.push({
+                            headShotUrl:'https://isportcloud.oss-cn-shenzhen.aliyuncs.com/manager/1563269822971还差1@2x.png',
+                            status:null,
+                        })
+                    }
                 }
-                console.log(this.coachList)
                 if(this.people == 0){
                     this.countdown = true
                     this.countText = '名额已满'
@@ -337,42 +359,32 @@ export default {
                     }   
                 )
             }else{
-                this.$router.push({
-                    path:'/purchaseGroupVip?groupId='+this.detail.groupId+'&userId='+this.userId+'&activityId='+this.detail.activityId,
+                HaveHeadAuth(this.userId).then(res=>{
+                if(res.data.obj){
+                     this.$router.push({
+                        path:'/purchaseGroupVip?groupId='+this.detail.groupId+'&userId='+this.userId+'&activityId='+this.detail.activityId,
+                    })
+                }else{
+                    this.faceShow = true
+                    }
                 })
             }
-            //  HaveHeadAuth(this.userId).then(res=>{
-            //     if(res.data.obj){
-            //          this.$router.push({
-            //             path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
-            //         })
-            //     }else{
-            //         Dialog.confirm({
-            //         title: '您还未进行人脸认证',
-            //        // message: '您将预约FHIT-中强度有氧搏击 操LOP团课 上课时间： 03.02 / 周一 / 19:30～20:30',
-            //         confirmButtonText:'去认证',
-            //         cancelButtonText:'继续开通'
-            //         }).then(() => {
-            //         // on confirm
-            //             if(this.isAndroid){
-            //                 window.andriod.postMessage(JSON.stringify({
-            //                     type:'takeFace'
-            //                 }))
-            //             }else if(this.isiOS){
-            //                 window.webkit.messageHandlers.takeFace.postMessage({
-            //                     type:'takeFace'
-            //                 })
-            //             }
-
-            //         }).catch(() => {
-            //         // on cancel
-            //             this.$router.push({
-            //                 path:'/purchaseVip?uid='+this.uid+'&userId='+this.userId,
-            //             })
-            //     });
-            //     }
-            // })
-           
+        },
+        toFace(){
+            if(this.isAndroid){
+                window.andriod.postMessage(JSON.stringify({
+                    type:'takeFace'
+                }))
+            }else if(this.isiOS){
+                window.webkit.messageHandlers.takeFace.postMessage({
+                    type:'takeFace'
+                })
+            }
+        },
+        toGo(){
+            this.$router.push({
+                path:'/purchaseGroupVip?groupId='+this.detail.groupId+'&userId='+this.userId+'&activityId='+this.detail.activityId,
+            })
         },
         toggleYear(){
             this.yearShow = true
@@ -402,6 +414,33 @@ export default {
 }
 </script>
 <style lang="less" scoped>
+    .van-popup{
+            background-color:rgba(0,0,0,0);
+            width:300px;
+            margin:0 auto;
+            .popText{
+                img{
+                  width: 292px;  
+                }
+            }
+            .popContent{
+                margin-top:20px;
+                display: flex;
+                
+                div:nth-child(1){
+                    img{
+                        width:166px;
+                    }
+                }
+                div:nth-child(2){
+                    margin-top: 20px;
+                    text-align: center;
+                    img{
+                        width:100px;
+                    }
+                }
+            }
+        }
     .van-pull-refresh{
         overflow: initial;
     }

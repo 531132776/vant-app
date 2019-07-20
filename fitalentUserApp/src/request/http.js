@@ -100,7 +100,15 @@ axios.interceptors.response.use(
                 //     });
                 // }, 1000);
                 // break;
-                // 404请求不存在                
+                // 404请求不存在
+                case 500:
+                    Toast({
+                        message: '服务器异常',
+                        duration: 1500,
+                        forbidClick: true
+                    });
+                    break;
+                    // 其他错误，直接抛出错误提示               
                 case 404:
                     Toast({
                         message: '网络请求不存在',
@@ -111,7 +119,7 @@ axios.interceptors.response.use(
                     // 其他错误，直接抛出错误提示                
                 default:
                     Toast({
-                        message: '服务器异常',
+                        message: error.response.data.message,
                         duration: 1500,
                         forbidClick: true
                     });

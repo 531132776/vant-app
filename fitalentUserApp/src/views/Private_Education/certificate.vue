@@ -52,9 +52,9 @@ export default {
                 padding-bottom: 34px;
                 dt{
                     width: 237px;
-                    height: 177px;
+                    // height: 177px;
                     margin: 0 auto;
-                    // padding-bottom: 13px;
+                    padding-bottom: 13px;
                     overflow: hidden;
                     img{
                         width: 100%;

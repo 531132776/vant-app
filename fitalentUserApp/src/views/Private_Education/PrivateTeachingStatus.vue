@@ -137,7 +137,8 @@ export default {
             disabledClass:false,
             Front:'',
             after:'',
-            couerStatus:''
+            couerStatus:'',
+            singInStatus:'',//签到状态
         }
     },
     components:{
@@ -184,6 +185,8 @@ export default {
                     this.lessonTwo = res.data.obj.scheduleUser;
                     this.$set(this,'Front',this.courseInfo.schedule.substring(0,1))
                     this.$set(this,'after',this.courseInfo.schedule.substring(2,3))
+                    this.$set(this,'tell2',this.courseInfo.mobile)
+                    console.log(this.tell2)
                 }
                 
             }).catch(error => {
@@ -192,6 +195,7 @@ export default {
         },
         //联系教练
         tell(){
+            console.log(this.tell2)
             window.location.href='tel://'+this.tell2
         },
         dd(timeList){
@@ -218,9 +222,15 @@ export default {
                     console.log('私教课查询是否可签到',res);
                     if(res.data.code == 2000){
                         if(res.data.obj.status == 0){
-                            // alert(2)
+                            // alert(0)
                             return
+                        }else if(res.data.obj.status == 3){
+                            // alert(1)
+                            this.singInStatus = 3
+                            this.disabled = true;
+                            this.disabledClass = true;
                         }else{
+                            // alert(2)
                             this.disabled = true;
                             this.disabledClass = true;
                         }
@@ -333,6 +343,8 @@ export default {
                 // this.privateEducationCheck()
                 if(this.couerStatus == 2){
                     Toast('课程已完成')
+                }else if(this.singInStatus == 3){
+                    Toast('课程已取消')
                 }
                 else if(this.disabled == true){
                     // alert(1)

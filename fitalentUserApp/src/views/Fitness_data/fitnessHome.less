@@ -87,28 +87,35 @@
 
     }
     .Fitness_data_info{
-        height: 180px;
+        height: 234px;
+        // padding:20px 0;
         display: flex;
         align-content: center;
         justify-content: center;
         background-color: #07c160;
         ul{
             display: flex;
-            flex-flow: row nowrap;
-            justify-content: space-around;
+            flex-flow: row wrap;
+            // justify-content: space-around;
             align-items: center;
+            align-content: center;
             width: 100%;
             // padding-top: 30px;
             li{
                 display: flex;
                 flex-flow: column nowrap;
-                justify-content: space-between;
+                // justify-content: space-between;
+                justify-content: center;
                 align-content:  center;
                 text-align: center;
                 color: #fff;
+                flex:1 50%;
+                // padding:20px 0;
+                height: 50%;
+                position: relative;
                 .dtNth1{
                     font-size: 40px;
-                    padding-bottom: 10px;
+                    padding-bottom: 8px;
                     font-family:BebasNeue;
                     em{
                         font-size:10px;
@@ -118,6 +125,33 @@
                     font-size: 13px;
                     font-family:PingFangSC-Regular;
                     font-weight: 400;
+                }
+                
+            }
+            .three{
+                &:before{
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    right: 0;
+                    top: -50%;
+                    width: 1px;
+                    height: 200%;
+                    background: #ededed;
+                    -webkit-transform:scale(0.5);
+                }
+            }
+            li:nth-child(1),li:nth-child(2){
+                &:after{
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    left: -50%;
+                    bottom: 0;
+                    width: 200%;
+                    height: 1px;
+                    background: #ededed;
+                    -webkit-transform:scale(0.5);
                 }
             }
         }

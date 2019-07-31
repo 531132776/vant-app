@@ -145,7 +145,7 @@ export default {
                 url:"http://192.168.10.15/fitalentUserApp/#/orderDetails",
             },
             immageDto:[],
-            tellNumber:'400 075 5088',
+            tellNumber:this.CustomerPhone,
             oneImg:require("../../assets/images/1.jpg"),
             twoImg:require('../../assets/images/2.jpg'),
             swiperImgs:[

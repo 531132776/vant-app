@@ -2,13 +2,17 @@
     <div class="Fitness_data">
         <div class="Fitness_data_info" v-show="show4">
             <ul>
+                <li class="three">
+                    <dt class="dtNth1" >{{365}}</dt>
+                    <dt class="dtNth2">总运动天数</dt>
+                </li>
                 <li>
                     <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60>10000">{{(Fitnessdata.totalExerciseTime/600000).toFixed(1)}}<em >万</em></dt>
                    <dt class="dtNth1" v-if="Fitnessdata.totalExerciseTime/60<10000">{{(Fitnessdata.totalExerciseTime/60).toFixed(1)}}</dt>
                     <dt class="dtNth2">总运动时间/<em>分钟</em></dt>
                 </li>
                 
-                <li>
+                <li class="three">
                     <dt class="dtNth1" v-if="Fitnessdata.consume/1000<10000">{{(Fitnessdata.consume/1000).toFixed(1)}}</dt>
                     <dt class="dtNth1" v-if="Fitnessdata.consume/1000>10000">{{(Fitnessdata.consume/10000000).toFixed(1)}}<em>万</em></dt>
                     <dt class="dtNth2">总消耗/<em>千卡</em></dt>
@@ -188,7 +192,8 @@ export default {
             ],
             expandCalendar:false,
             fun:'jaja',
-            dataTime:0
+            dataTime:0,
+            monthLast:'',
         }
     },
     components:{
@@ -250,48 +255,46 @@ export default {
         let newDate, newDate2;
         var now = new Date();
         var year=now.getFullYear(); 
-                var month=now.getMonth()+1; 
-                var date=now.getDate(); 
-                var m,d;
-                if(month<10){
-                        m = '0' + month
-                    }else{
-                        m = month
-                    };
-                    if(date<10){
-                        d = '0' + date
-                    }else{
-                        d = date;
-                    }
-                    // return m + d ;
-                 newDate = year+"-"+m+"-"+d;
-                 newDate2 = year+"-"+m;
-                console.log('当天日期',newDate2)
-                this.$set(this,'dayTime',newDate)
-                this.$set(this,'subscribeDate',newDate)
-                this.$set(this,'sameMath',newDate2)
-                this.initComprehensiveData(this.subscribeDate)
-                this.getSameMonth(newDate2)
-                sessionStorage.setItem('thisDate',newDate2)
-                
+        var month=now.getMonth()+1; 
+        var date=now.getDate(); 
+        var m,d;
+        if(month<10){
+                m = '0' + month
+            }else{
+                m = month
+            };
+            if(date<10){
+                d = '0' + date
+            }else{
+                d = date;
+            }
+            // return m + d ;
+            newDate = year+"-"+m+"-"+d;
+            newDate2 = year+"-"+m;
+        // console.log('当天日期',newDate2)
+        this.$set(this,'dayTime',newDate)
+        this.$set(this,'subscribeDate',newDate)
+        this.$set(this,'sameMath',newDate2)
+        this.initComprehensiveData(this.subscribeDate)
+        this.getSameMonth(newDate2)
+        sessionStorage.setItem('thisDate',newDate2)
     },
     //在页面离开时记录滚动位置
         beforeRouteLeave(to, from, next) {
-            const n = sessionStorage.getItem('sessionDate');
+            // const n = sessionStorage.getItem('sessionDate');
+            const n = sessionStorage.getItem('thisDate');
             const s = n.substring(0,7)
-
-            console.log(s,'传值当前时间')
-            console.log('00hahahahahha')
+            // console.log(s,'传值当前时间')
             this.initFitnessData();
             this.initComprehensiveData(this.subscribeDate)
             this.getSameMonth(s)
             next()
         },
     methods:{
-
         async getSameMonth(newDate2){
+            // this.returnTime();
            let respon =await getSameMonthList(newDate2,this.userId);
-           console.log(respon.data.obj,'--------->当月运动过的天数')
+        //    console.log(respon.data.obj,'--------->当月运动过的天数')
            if(respon.data.obj.list != undefined || respon.data.obj.list.length>0){
                const list = respon.data.obj.list || [];
                const arr = []
@@ -302,7 +305,7 @@ export default {
                     })
                 })
                 this.$set(this,'defaultArr',[...arr])
-                console.log(this.defaultArr,'------->>>当月运动过的天数List')
+                // console.log(this.defaultArr,'------->>>当月运动过的天数List')
            }
 
         
@@ -342,9 +345,7 @@ export default {
             this.show3 = false;
             var dd = new Date();
             var y = dd.getFullYear();
-            console.log(y)
-            console.log('tab',event,item,i)
-            console.log('哦哦',event.target.nextElementSibling.innerHTML)
+            // console.log('哦哦',event.target.nextElementSibling.innerHTML)
             if(event.target.innerHTML=='今天' || event.target.innerHTML=='昨天' || event.target.innerHTML=='前天'){
                 var inHtml = event.target.nextElementSibling.innerHTML;
                 var date = y+'-'+inHtml;
@@ -353,7 +354,7 @@ export default {
                 var date = y+'-'+inHtml;
             }   
             
-            console.log('lolo ',date)
+            // console.log('lolo ',date)
             this.initComprehensiveData(date);
             this.$set(this,'subscribeDate',date)
             sessionStorage.setItem('thisDate',date.substring(0,7))
@@ -374,11 +375,8 @@ export default {
       }else {
           var day = data[2]
       }
-    //   console.log(month)
-    //   console.log(day)
-    //   console.log(data)
       var datatime = data[0]+ '-' +month+ '-'+day
-      console.log('最终时间',datatime)
+    //   console.log('最终时间',datatime)
       this.initComprehensiveData(datatime);
       this.$set(this,'subscribeDate',datatime);
     //   this.dataTime = 1;
@@ -402,14 +400,10 @@ export default {
       }else {
           var day = data[2]
       }
-    //   console.log(month)
-    //   console.log(day)
-    //   console.log(data)
       var datatime = data[0]+ '-' +month+ '-'+day;
       var datatime2 = data[0]+ '-' +month;
-      console.log('最终时间',datatime)
+    //   console.log('最终时间',datatime)
     //   this.$set(this,'subscribeDate',datatime)
-   
     //   this.initComprehensiveData(datatime);
       sessionStorage.setItem('thisDate',datatime2)
       this.getSameMonth(datatime2);
@@ -431,9 +425,7 @@ export default {
                 })
             },
             calendar(){
-                // alert(1)
                 // this.show = !this.show;
-
                 this.expandCalendar = true;
                 this.show2 = !this.show2;
                 this.show3 = !this.show3;
@@ -489,7 +481,6 @@ export default {
                 var setDate = function(date) {
                     currentFirstDate = new Date(date);
                     for (var i = 0; i < clen; i++) {
-                        
                         cells[0].innerHTML = '今天';
                         cells[1].innerHTML = '昨天';
                         cells[2].innerHTML = '前天';
@@ -500,31 +491,31 @@ export default {
                 setDate(new Date());
             },
             headCreateTime(time){
-            var hh;
-            var mm;
-            var ss;
-           //传入的时间为空或小于0
-            if(time==null||time<0){
-                return;
-            }
-            //得到小时
-            hh=time/3600|0;
-            time=parseInt(time)-hh*3600;
-            if(parseInt(hh)<10){
-                  hh="0"+hh;
-            }
-            //得到分
-            mm=time/60|0;
-            //得到秒
-            ss=parseInt(time)-mm*60;
-            if(parseInt(mm)<10){
-                 mm="0"+mm;    
-            }
-            if(ss<10){
-                ss="0"+ss;      
-            }
-            return hh+":"+mm+":"+ss;
-        },
+                var hh;
+                var mm;
+                var ss;
+                //传入的时间为空或小于0
+                if(time==null||time<0){
+                    return;
+                }
+                //得到小时
+                hh=time/3600|0;
+                time=parseInt(time)-hh*3600;
+                if(parseInt(hh)<10){
+                    hh="0"+hh;
+                }
+                //得到分
+                mm=time/60|0;
+                //得到秒
+                ss=parseInt(time)-mm*60;
+                if(parseInt(mm)<10){
+                    mm="0"+mm;    
+                }
+                if(ss<10){
+                    ss="0"+ss;      
+                }
+                return hh+":"+mm+":"+ss;
+            },
             //时间戳转换日期
             formatDate(now) { 
                 // console.log(now)
@@ -589,7 +580,7 @@ export default {
                     console.log('健身数据',res);
                     if(res.data.code == 2000){
                         this.Fitnessdata = res.data.obj;
-                        console.log(this.Fitnessdata)
+                        // console.log(this.Fitnessdata)
                     }
                     
                 }).catch(err =>{
@@ -598,8 +589,7 @@ export default {
             },
             //综合数据
             initComprehensiveData(subscribeDate){
-                console.log('开饭',subscribeDate)
-                // const userId = '100';
+                // console.log('初始加载',subscribeDate)
                 const userId = this.userId;
                 // const subscribeDate = '2019-05-06'
                 ComprehensiveData(userId,subscribeDate).then(res =>{
@@ -608,7 +598,7 @@ export default {
                         this.totalFitnessData = res.data.obj
                         // const aerobic = this.aerobic;
                         const aerobic = JSON.parse(sessionStorage.getItem('aa'));
-                        console.log(aerobic,'json')
+                        // console.log(aerobic,'json')
                         // const anaerobic = this.anaerobic;
                         const anaerobic = JSON.parse(sessionStorage.getItem('bb'));
                         const arr = [];//有氧
@@ -616,8 +606,8 @@ export default {
                         if(this.totalFitnessData.aerobicDeviceList !=null || this.totalFitnessData.aerobicDeviceList != undefined){
                             const aerobicDeviceList = this.totalFitnessData.aerobicDeviceList;
                             const anaerobicDeviceList = this.totalFitnessData.anaerobicDeviceList;
-                            console.log('有氧1',aerobicDeviceList)
-                            console.log('无氧1',anaerobicDeviceList)
+                            // console.log('有氧1',aerobicDeviceList)
+                            // console.log('无氧1',anaerobicDeviceList)
                             // console.log('有氧2',aerobic)
                             // var newList = aerobicDeviceList.map((value, index) => {
                             //     if (value.name !==null ? value.name.includes("跑步机") : '') {
@@ -655,10 +645,10 @@ export default {
                             })
 
                         }
-                        console.log('有氧新数据',arr);
-                        console.log('无氧新数据',arr2);
+                        // console.log('有氧新数据',arr);
+                        // console.log('无氧新数据',arr2);
                         this.$set(this,'aerobic',[...arr])
-                        console.log(this.aerobic.length)
+                        // console.log(this.aerobic.length)
                         this.$set(this,'anaerobic',[...arr2])
                     }
                 }).catch(err =>{

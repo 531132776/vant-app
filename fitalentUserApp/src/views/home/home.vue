@@ -557,10 +557,6 @@
                 this.getTeamClass(this.timeList[index]);
                 sessionStorage.setItem('dayTime',this.timeList[index])
             },
-            //拨号
-            tell() {
-                alert("0755-88889889")
-            },
 
         },
     }

@@ -115,7 +115,7 @@ export default {
             status:null,
             userId:'',
             courseId:'',
-            tellNumber:'134221241232',
+            tellNumber:this.CustomerPhone,
             leagurList:{},
             coachList:{},
             goodCourse:[],

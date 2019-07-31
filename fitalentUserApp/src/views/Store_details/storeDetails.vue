@@ -254,7 +254,7 @@
                     'https://img.leoao.com/o_1bpj1t8q125719b6grq10fgjdjrq.png?imageslim&imageView2/1/w/750/h/400',
 
                 ],
-                tell2: '18926484971',
+                tell2: this.CustomerPhone,
                 //门店
                 StoreShop: {
                     url: "http://192.168.10.15/fitalentUserApp/#/storeDetails?id=xx@",
@@ -419,7 +419,7 @@
                     console.log('哈哈', res)
                     if (res.data.code == 2000) {
                         this.clubInfo = res.data.obj;
-                        this.tell2 = this.clubInfo.telephone;
+                        // this.tell2 = this.clubInfo.telephone;
                         this.getDistance(this.clubInfo.latitude, this.clubInfo.longitude, this.lat2, this.lng2);
                         if (this.clubInfo.album != null && this.clubInfo.album.length > 0) {
                             this.swiperImgs = this.clubInfo.album.map(item => {
@@ -604,6 +604,7 @@
             },
             //拨号
             tell() {
+                // console.log(this.CustomerPhone)
                 window.location.href = 'tel://' + this.tell2
             },
             //团课tabs切换

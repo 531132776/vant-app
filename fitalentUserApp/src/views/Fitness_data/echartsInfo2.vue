@@ -1,18 +1,8 @@
 <template>
-  <div class="echarts_info">
-    <div>
-      <van-tabs v-model="active" :swipe-threshold="2" v-if="aggregate.length>0" @change="onTabClick">
-        <van-tab v-for="(item,i) in aggregate" :title="'选项 ' + item.type + item.id" :key="i">
-          <div slot="title" class="slot_content pt15" >
-            <span class="slot_span_img">
-              <img :src="active1==i?item.img:item.src" alt>
-            </span>
-            <span>{{item.name}}</span>
-            <span>{{item.time}}</span>
-          </div>
-          <div class="tab_content mt20">
+    <div class="echarts_info">
+        <div class="tab_content mt20">
             <!-- 健康传奇设备 -->
-            <div v-if="item.type==0 || item.type==1">
+            <!-- <div v-if="item.type==0 || item.type==1"> -->
               <div class="Treadmill pr_pl15">
                 <span class="text_title">{{startTime}}-{{endTime.substring(0,5)}}</span>
                 <div class="header_tit">
@@ -104,7 +94,7 @@
               </div>
               <!-- 饼图 -->
               <div class=" Pie_chart mt15" v-show="backgroundImg">
-                  <canvas :id="'mountNodeList'+i" width="100%" heihgt="226px"></canvas>
+                  <canvas id="mountNodeList" width="100%" heihgt="226px"></canvas>
               </div>
               <div class="pt_pb20 Pie_chart mt15" v-show="!backgroundImg">
                   <img src="../../assets/images/pri.png" style="max-width: 100%" alt="">
@@ -113,238 +103,15 @@
               <div class="Histogram_info pr_pl15" v-show="backgroundImg">
                 <div class="text-title p15">心率等级分布/分钟</div>
                 <div class="Histogram">
-                  <div :id="'histogramList'+i" class="histogramList" ></div>
+                  <div id="histogramList" class="histogramList" ></div>
                 </div>
               </div>
               <div class="pt_pb15 Pie_chart mt15" v-show="!backgroundImg">
                   <img src="../../assets/images/zhuimg.png" style="max-width: 100%" alt="">
               </div>
             </div>
-            <!-- 舒华设备 -->
-            <div v-if="item.type==2">
-              <div class="p15 Treadmill Butterfly_machine">
-                <div class="text_title">
-                  <!-- 2019-04-29 15:00~16:00 -->
-                  {{startTime}}-{{stopTime.substring(0,5)}}
-                </div>
-                <div class="header_tit">
-                  跑步机
-                </div>
-                <div class="pt10 heart_rate">
-                  <ul>
-                    <li>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/时长copy.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{headCreateTime(powerMotionData.motionTime)}}</em>
-                        </dt>
-                        <dt>总时间</dt>
-                      </dl>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/时长copy@2x.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{KeepDecima1(avgspeed)}}</em> 公里/小时
-                        </dt>
-                        <dt>平均速度</dt>
-                      </dl>
-                    </li>
-                    <!-- <li>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=0 && powerMotionData.avgHartRate <= 49">
-                        <dt>
-                          <img src="../../assets/images/0_49.png" alt>
-                        </dt>
-                        <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
-                        <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=50 && powerMotionData.avgHartRate <= 59">
-                        <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
-                        <dt>
-                          <img src="../../assets/images/分组 6@2x_1.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
-                        <dt>
-                          <img src="../../assets/images/分组_6@2x_3.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
-                        <dt>
-                          <img src="../../assets/images/分组6@2x1.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
-                        <dt>
-                          <img src="../../assets/images/分组 6@2x_2.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                    </li> -->
-                    <li>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/Shape@2x.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{KeepDecima1(powerMotionData.calorie/1000)}}</em> 千卡
-                        </dt>
-                        <dt>卡路里</dt>
-                      </dl>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/分组6@2x.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{fomatFloat(powerMotionData.distance/1000)}}</em> 公里
-                        </dt>
-                        <dt>距离</dt>
-                      </dl>
-                    </li>
-                  </ul>
-                </div>
-                <table border="1" cellpadding="“10”" cellspacing="0">
-                  <div>数据详情</div>
-                  <tbody>
-                    <tr>
-                      <td>速度</td>
-                      <td>时间</td>
-                    </tr>
-                    <tr
-                      v-for="(item,i) in powerMotionData.dataDetails !=null ? powerMotionData.dataDetails : []"
-                      :key="i"
-                    >
-                      <td>{{item.speed}}公里/小时</td>
-                      <td>{{headCreateTime(item.time)}}</td>
-                    </tr>
-                   
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- 舒华设备 -->
-            <div v-if="item.type==3">
-              <div class="p15 Treadmill Butterfly_machine">
-                <div class="text_title">
-                  {{startTime}}-{{stopTime.substring(0,5)}}
-                </div>
-                <div class="header_tit">
-                  跑步机
-                </div>
-                <div class="pt10 heart_rate">
-                  <ul>
-                    <li>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/时长copy.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{headCreateTime(powerMotionData.motionTime)}}</em>
-                        </dt>
-                        <dt>总时间</dt>
-                      </dl>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/重量@2x_1.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{powerMotionData.weight}}</em> 公斤
-                        </dt>
-                        <dt>总重量</dt>
-                      </dl>
-                    </li>
-                    <!-- <li>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=0 && powerMotionData.avgHartRate <= 49">
-                        <dt>
-                          <img src="../../assets/images/0_49.png" alt>
-                        </dt>
-                        <dt  v-if="powerMotionData.heart == 0">--次/分钟</dt>
-                        <dt  v-else>{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=50 && powerMotionData.avgHartRate <= 59">
-                        <dt>
-                          <img src="../../assets/images/分组_6@2x.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=60 && powerMotionData.avgHartRate<=69">
-                        <dt>
-                          <img src="../../assets/images/分组 6@2x_1.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=70 && powerMotionData.avgHartRate<=79">
-                        <dt>
-                          <img src="../../assets/images/分组_6@2x_3.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=80 && powerMotionData.avgHartRate<=89">
-                        <dt>
-                          <img src="../../assets/images/分组6@2x1.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                      <dl class="Heart_rate_animation" v-if="powerMotionData.avgHartRate>=90">
-                        <dt>
-                          <img src="../../assets/images/分组 6@2x_2.png" alt>
-                        </dt>
-                        <dt >{{powerMotionData.heart}}次/分钟</dt>
-                      </dl>
-                    </li> -->
-                    <li>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/Shape@2x.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{KeepDecima1((powerMotionData.calorie/1000))}}</em> 千卡
-                        </dt>
-                        <dt>卡路里</dt>
-                      </dl>
-                      <dl>
-                        <dt>
-                          <!-- <img src="../../assets/images/时长_copy@2x.png" alt> -->
-                        </dt>
-                        <dt>
-                          <em>{{powerMotionData.motionTimes}}</em> 次
-                        </dt>
-                        <dt>总次数</dt>
-                      </dl>
-                    </li>
-                  </ul>
-                </div>
-                <table border="1" cellpadding="“10”" cellspacing="0">
-                  <div>数据详情</div>
-                  <tr>
-                    <td>重量</td>
-                    <td>次数</td>
-                  </tr>
-                  <tr
-                    v-for="(item,i) in powerMotionData.dataDetails!=null?powerMotionData.dataDetails:[]"
-                    :key="i"
-                  >
-                    <td>{{item.heavy}}公斤</td>
-                    <td>{{item.times}}次</td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-        </van-tab>
-      </van-tabs>
+        <!-- </div> -->
     </div>
-  </div>
 </template>
 <script>
 import HelloWorld from '@/components/HelloWorld'
@@ -359,7 +126,7 @@ let echarts = require('echarts/lib/echarts')
 //根据需要引入相应图的组件
 require('echarts/lib/chart/bar')//柱状图
 export default {
-  data() {
+    data() {
     return {
       avgspeed:'',
       active: "0",
@@ -420,27 +187,24 @@ export default {
       33,76,15,20, 36, 10,56,95,64,54,26,48,89,79,85,
       80,69,62,41,22,45,20, 36, 10,],
       lists:[]
-    };
-  },
-  components: {
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    HelloWorld,
-    [Dialog.name]: Dialog
-  },
-  created() {
-    // this.intipriec();
-  },
-  mounted() {
-    this.init();
-    
-  },
-  updated() {
-   
-  },
-  
-  methods: {
-     fomatFloat(x) {
+    }
+    },
+    components: {
+        [Tab.name]: Tab,
+        [Tabs.name]: Tabs,
+        HelloWorld,
+        [Dialog.name]: Dialog
+    },
+    mounted(){
+        // let type = this.$route.query.type;
+        // let id = this.$route.query.id;
+        // this.initTypeDetail(type,id)
+        let type = 0;
+        let id = '"1144127331124314114"'
+        this.initTypeDetail(type,id)
+    },
+    methods:{
+        fomatFloat(x) {
       // if(isNaN(num)){
       //   return null;
       // }
@@ -490,58 +254,6 @@ export default {
    } 
    return s; 
     },
-    onTabClick(index, title) {
-      this.active1 = index;
-      let findVal = this.aggregate.find((item,i)=> {return i==index});
-      console.log(findVal,'当前值')
-      this.initTypeDetail(findVal.type, findVal.id,index);
-    },
-   async init() {
-      const userId = this.userId;
-      // const subscribeDate = this.getNowFormatDate();
-      const subscribeDate = this.subscribeDate;
-      console.log(subscribeDate);
-      let respon = await siveDataDetails(userId, subscribeDate);
-        // .then(res => {
-          console.log("初始化数据", respon);
-          if (respon.data.code == 2000) {
-            this.tabLists = respon.data.obj || [];
-            console.log(this.tabLists,'====>>>>')
-            const aggregate = this.aggregate;
-            console.log('josn',aggregate)
-            const arr = [];
-            if (this.tabLists.length > 0) {
-              
-              this.tabLists.map((v,i) => {
-                aggregate.map((val,j) => {
-                  if(v.name == val.name){
-                    arr.push({
-                          src: aggregate[j].src,
-                          img: aggregate[j].img,
-                          name: aggregate[j].name,
-                          time: this.tabLists[i].time,
-                          type: this.tabLists[i].type,
-                          id: this.tabLists[i].id
-                        });
-                  }
-                })
-                
-              })
-              this.$set(this, "aggregate", [...arr]);
-            }
-            else {
-              this.$set(this, "aggregate", []);
-            }
-
-            console.log("对比2", this.aggregate);
-            this.initTypeDetail(this.aggregate[0].type, this.aggregate[0].id, 0);
-          }
-        // })
-        // .catch(err => {
-        //   console.log("请求错误！", err);
-        // });
-    },
-
     initTypeDetail(type, id,index) {
       console.log(type,'======>>>')
       let params = {
@@ -609,7 +321,7 @@ export default {
           console.log("请求错误！", err);
         });
     },
-         initPiechart(data,index) {
+    initPiechart(data,index) {
            var _this = this;
       var motionPoint = new Number(
         this.motionDataObj.motionPoint ? this.motionDataObj.motionPoint : ""
@@ -912,8 +624,6 @@ export default {
       });
       
     },
-    
-   
     //时间戳转换日期
 
     getNowFormatDate() {
@@ -960,8 +670,6 @@ export default {
             }
             return hh+":"+mm+":"+ss;
         }
-    
-  }
-};
+    }
+}
 </script>
-<style lang="less" src="./echartsInfo.less"></style>

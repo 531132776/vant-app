@@ -164,7 +164,7 @@ export default {
             uid:'',
             userId:'',
             timeStr:'',
-            tellNumber:'400 075 5088',
+            tellNumber:this.CustomerPhone,
             vipList:[],
         }
     },

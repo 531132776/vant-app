@@ -3,7 +3,7 @@
         <div class="certificate_img p15">
             <ul>
             <li v-for="(item,i) in seniorityUrl" :key="i">
-                <dt><img :src="item.url" alt=""></dt>
+                <dt><img :src="item.url" alt="" @click="swiperImgClick"></dt>
                 <span>{{item.name}}</span>
                 
             </li>
@@ -17,6 +17,7 @@
     </div>
 </template>
 <script>
+import { Swipe, SwipeItem, ImagePreview } from 'vant';
 export default {
     data(){
         return {
@@ -26,6 +27,11 @@ export default {
             seniorityUrl:[]
         }
     },
+    components:{
+        [Swipe.name]:Swipe,
+        [SwipeItem.name]:SwipeItem,
+        [ImagePreview.name]:ImagePreview,
+    },
     mounted(){
         console.log(this.$route.query.obj)
         this.certificateBehindUrl = this.$route.query.obj.certificateBehindUrl
@@ -34,7 +40,14 @@ export default {
         console.log(this.seniorityUrl)
     },
     methods:{
-
+        //图片预览
+        swiperImgClick(){
+            const imgList = []
+            for(var i=0;i<this.seniorityUrl.length;i++){
+                imgList.push(this.seniorityUrl[i].url)
+            }
+            ImagePreview(imgList)
+        },
     }
 }
 </script>

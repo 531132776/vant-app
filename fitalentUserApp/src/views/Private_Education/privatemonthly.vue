@@ -85,7 +85,7 @@ export default {
                
             ],
             show:false,
-            tell2:'400 075 5088',
+            tell2:this.CustomerPhone,
             educationsectorObj:{},
             educationsectorDetails:{},//详情OBJ
             immageDto:{
@@ -160,6 +160,7 @@ export default {
         },
         //拨号
         tell(){
+            // console.log(this.CustomerPhone)
             window.location.href='tel://'+this.tell2
         },
          //人脸验证

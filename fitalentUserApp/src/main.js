@@ -30,10 +30,13 @@ let isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端 ;
 Vue.prototype.isAndroid = isAndroid;
 Vue.prototype.isiOS = isiOS;
 
-//页面跳转从顶部开始显示
-// router.afterEach((to, from, next) => {
-//     window.scrollTo(0, 0)
-// })
+//客服电话
+let CustomerPhone = '13828714500'
+Vue.prototype.CustomerPhone = CustomerPhone
+    //页面跳转从顶部开始显示
+    // router.afterEach((to, from, next) => {
+    //     window.scrollTo(0, 0)
+    // })
 
 router.beforeEach((to, from, next) => {
         console.log(to, from)

@@ -190,7 +190,7 @@ export default {
                
             ],
             show:false,
-            tell2:'400 075 5088',
+            tell2:this.CustomerPhone,
             SportsContent:this.$route.query.status,//塑形杠铃雕塑状态
             privateEducationId:this.$route.query.privateCourseId,//私教课Id
             privateCourse:{},//私教课obj
@@ -306,6 +306,7 @@ export default {
         },
         //拨号
         tell(){
+            console.log(this.CustomerPhone,'全局')
             window.location.href='tel://'+this.tell2
         },
         //私教课立即购买

@@ -91,7 +91,7 @@ export default {
             peopleHead:require('../../assets/images/10.png'),
             phomeIcon:require("../../assets/images/13.png"),
             oneImg:require('../../assets/images/4.jpg'),
-            tell2:'400 075 5088',
+            tell2:this.CustomerPhone,
             meTrainingCampList:{},
             stepList:[],
             courseId:this.$route.query.courseId,
